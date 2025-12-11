@@ -1,9 +1,40 @@
-LICENSE AGREEMENT
+PROPRIETARY SOFTWARE LICENSE AGREEMENT
 
-Copyright (c) 2025 Driftinn Team. All Rights Reserved.
+VERSION 1.0
+EFFECTIVE DATE: DECEMBER 2025
 
-NOTICE:  All information contained herein is, and remains the property of the Driftinn Team. The intellectual and technical concepts contained herein are proprietary to the Driftinn Team and are protected by trade secret or copyright law. 
+IMPORTANT: PLEASE READ THIS AGREEMENT CAREFULLY.
 
-Dissemination of this information or reproduction of this material is strictly forbidden unless prior written permission is obtained from the copyright holders.
+This Proprietary Software License Agreement ("Agreement") is a legal agreement between the Driftinn Development Team ("Licensor") and any person or entity obtaining access to this codebase ("Licensee").
 
-UNAUTHORIZED USE, COPYING, DISTRIBUTION, OR MODIFICATION OF THIS SOFTWARE, IN WHOLE OR IN PART, IS STRICTLY PROHIBITED. THIS PROJECT IS NOT OPEN SOURCE.
+1.  **OWNERSHIP & COPYRIGHT**
+    1.1. The software, source code, documentation, UI designs, and algorithms contained within the "Driftinn" repository (collectively, the "Software") are the exclusive property of the Licensor.
+    1.2. The Software is protected by international copyright laws and treaties, as well as other intellectual property laws and treaties.
+    1.3. Title, ownership rights, and intellectual property rights in and to the Software shall remain in the Licensor.
+
+2.  **GRANT OF LICENSE (RESTRICTED)**
+    2.1. This Software is **NOT OPEN SOURCE**.
+    2.2. No license is granted to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software.
+    2.3. Access to this repository is granted solely for the purpose of authorized development, auditing, or review as explicitly permitted by the Licensor in writing.
+
+3.  **PRIVATE & CONFIDENTIAL**
+    3.1. The Licensee acknowledges that the Software contains trade secrets and proprietary know-how that belong to the Licensor.
+    3.2. You strictly may not:
+        (a) Decompile, reverse engineer, disassemble, or attempt to derive the source code of any object code components;
+        (b) Copy any portion of the Software's unique design or user interface ("Look and Feel");
+        (c) Use the Software to create a competing product or service.
+
+4.  **RESTRICTIONS ON USE**
+    4.1. You may not upload this Software or any part of it to public code repositories (e.g., GitHub Public, GitLab, Bitbucket) or file-sharing services.
+    4.2. You may not remove or alter any copyright notices, proprietary legends, or trademark signs on any copy of the Software.
+
+5.  **NO WARRANTY**
+    5.1. THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    5.2. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+6.  **TERMINATION**
+    6.1. This license is effective until terminated. Your rights under this license will terminate automatically without notice from the Licensor if you fail to comply with any term(s) of this license.
+    6.2. Upon termination, you shall cease all use of the Software and destroy all copies, full or partial, of the Software.
+
+---
+**COPYRIGHT © 2025 DRIFTINN TEAM. ALL RIGHTS RESERVED.**
