@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Anonymous Chat View</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#6a5ae7",
+              "background-light": "#f6f6f8",
+              "background-dark": "#131121",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display">
+<div class="relative flex h-screen w-full flex-col bg-background-dark dark group/design-root overflow-hidden">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex flex-col bg-background-dark/80 backdrop-blur-sm">
+<div class="flex items-center p-4 pb-2 justify-between">
+<div class="flex size-12 shrink-0 items-center justify-start">
+<span class="material-symbols-outlined text-white text-3xl">arrow_back_ios_new</span>
+</div>
+<div class="flex flex-col items-center">
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Anonymous Chat</h2>
+<div class="flex items-center gap-1.5 mt-1">
+<span class="material-symbols-outlined text-primary text-base">theater_comedy</span>
+<p class="text-xs font-medium text-primary/80">Anon Badge</p>
+</div>
+</div>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 bg-transparent text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<span class="material-symbols-outlined text-white text-2xl">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Reveal Timer Banner -->
+<div class="flex flex-col gap-3 p-4 pt-2 sticky top-[80px] z-10 bg-background-dark/80 backdrop-blur-sm">
+<div class="flex gap-6 justify-between items-center">
+<p class="text-white text-sm font-medium leading-normal">Reveal option unlocks in</p>
+<p class="text-white/70 text-xs font-normal leading-normal">23h 15m left</p>
+</div>
+<div class="rounded-full bg-[#3b3663] h-1.5"><div class="h-1.5 rounded-full bg-primary" style="width: 2%;"></div></div>
+</div>
+<!-- Chat Area -->
+<div class="flex-1 overflow-y-auto px-4 pt-4 pb-2">
+<div class="flex flex-col gap-4">
+<!-- System Message -->
+<div class="flex items-end gap-3 justify-center">
+<div class="flex flex-1 flex-col gap-1 items-center">
+<p class="text-sm font-normal leading-normal text-center max-w-[360px] rounded-xl px-4 py-3 bg-[#292546] text-white">
+                            You've matched with someone! You are both anonymous. Get to know each other before the reveal option unlocks.
+                        </p>
+</div>
+</div>
+<!-- Received Message -->
+<div class="flex items-end gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 h-10 shrink-0" data-alt="Abstract gradient avatar for Creative Cat" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCCMwjJ88Q6bT1QfHAEy-biNyCyiikqygWPqX9vwRwhTiKjL1QvHO9c-5HDgfzp_PL6w2pNPoAJ2yn2Hoo6qneO6tTmyfQuRQakHjneCA-nOQwFXLO-yz4KZrRJpKqtSLhR0f2btemKbch8StihUJts02ftKKJg4RYiSWihmjY6YP-J62l8_rAovjlRqp-YZfiOxxT4dNGRMvciuM3VKjLNu8vXhllLsJSNMv1OYVOK1luyTYiUrOtBMBOdcJIa_SQ4-uB7dFdKBi5C");'></div>
+<div class="flex flex-1 flex-col gap-1.5 items-start">
+<p class="text-[#9b95c6] text-[13px] font-medium leading-normal max-w-[360px]">Creative Cat</p>
+<div class="flex flex-col gap-2 items-start">
+<p class="text-base font-normal leading-normal flex max-w-[360px] rounded-xl rounded-bl-none px-4 py-3 bg-[#292546] text-white">Hey! What's a class you're surprisingly enjoying?</p>
+<span class="text-xs text-white/40">10:41 PM</span>
+</div>
+</div>
+</div>
+<!-- Sent Message -->
+<div class="flex items-end gap-3 justify-end">
+<div class="flex flex-1 flex-col gap-1.5 items-end">
+<p class="text-[#9b95c6] text-[13px] font-medium leading-normal max-w-[360px] text-right">You</p>
+<div class="flex flex-col gap-2 items-end">
+<p class="text-base font-normal leading-normal flex max-w-[360px] rounded-xl rounded-br-none px-4 py-3 bg-primary text-white">
+                                Definitely Intro to Astrophysics. I thought it would be super dry but it's fascinating.
+                            </p>
+<span class="text-xs text-white/40">10:42 PM</span>
+</div>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 h-10 shrink-0" data-alt="Abstract gradient avatar for user" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBmtHlojpcA5XHphUMCATMyS73y6S45x2-7Vb6jYvg4ZDztL4ExrINAMeVxsUQe9O46tr5ZuW1200ETsq-LZ_yWkuIKr-ZK6_0dcXmUt7UQbwxy6aQ-qHdYmFO42v-V12VxvFRHPQbY831c6fhHWlSek0XyQb5DxFqKMYVV0IP085OJA8FNi_x1WK3XRlipj3s8whVlah8n1SyXw-aItCcAbyGkoNBUdDZbD3qRhEUAcbBJfBXOkOzD6JJskpBbmoVSu3LD9RW9mCEj");'></div>
+</div>
+<!-- Received Message -->
+<div class="flex items-end gap-3">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 h-10 shrink-0" data-alt="Abstract gradient avatar for Creative Cat" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB7k8csBHbbQaGWdzGmSr2YYPzPY1gdTkYhb4HJBM36JT6QqSjYDFEsSSCtW5wpR-EVbe30LxvkEiNZc0mm3mHwohPI5avTMGNU0T5Td8xJl20S67FsCtTGXzlq1ZQl9B-9QSjJaUrqnL2mQle3yF6E2jkzYM5dyDVV8rv5krpO4Wj46mQhPQakBNu5S4swKlFnQzMcJbOJIbVUQTAzVeegr_WRwl9fNXf1RlR6-QuuIKpSPAP4cJV54nVDBHSsa6cJuuZQ8WRctncW");'></div>
+<div class="flex flex-1 flex-col gap-1.5 items-start">
+<p class="text-[#9b95c6] text-[13px] font-medium leading-normal max-w-[360px]">Creative Cat</p>
+<div class="flex flex-col gap-2 items-start">
+<p class="text-base font-normal leading-normal flex max-w-[360px] rounded-xl rounded-bl-none px-4 py-3 bg-[#292546] text-white">Oh nice! I'm in that too. What's your take on the last lecture about black holes?</p>
+<span class="text-xs text-white/40">10:43 PM</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Text Input Bar -->
+<div class="sticky bottom-0 bg-background-dark p-4 pt-2">
+<div class="flex items-center gap-2 rounded-xl bg-[#292546] p-2">
+<button class="flex items-center justify-center h-10 w-10 shrink-0 rounded-lg text-primary">
+<span class="material-symbols-outlined text-2xl">lightbulb</span>
+</button>
+<input class="flex-1 bg-transparent text-white placeholder:text-white/50 border-none focus:ring-0 text-base" placeholder="Send a message..." type="text"/>
+<button class="flex items-center justify-center h-10 w-10 shrink-0 rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined text-2xl">arrow_upward</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

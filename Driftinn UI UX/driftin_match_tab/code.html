@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Driftin Match Tab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#4b2bee",
+              "background-light": "#f6f6f8",
+              "background-dark": "#131022",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-screen w-full flex-col">
+<div class="flex items-center p-4">
+<div class="flex size-12 shrink-0 items-center justify-start" data-alt="Placeholder for logo">
+<span class="material-symbols-outlined text-transparent text-2xl"></span>
+</div>
+<h2 class="flex-1 text-center text-lg font-bold leading-tight tracking-[-0.015em] text-zinc-900 dark:text-white">Match</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex h-12 cursor-pointer items-center justify-center overflow-hidden rounded-full bg-transparent text-zinc-900 dark:text-white min-w-0 p-0">
+<span class="material-symbols-outlined text-2xl">
+                        settings
+                    </span>
+</button>
+</div>
+</div>
+<main class="flex flex-1 flex-col items-center justify-center p-4">
+<div class="flex w-full max-w-sm flex-col items-center">
+<h1 class="text-zinc-900 dark:text-white text-[32px] font-bold leading-tight tracking-tight text-center">Your Type: INFP</h1>
+<p class="pt-1 pb-10 text-center text-base font-normal leading-normal text-zinc-600 dark:text-zinc-400">Find your next campus connection.</p>
+<div class="flex w-full flex-col gap-4">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 w-full bg-primary px-5 text-base font-bold leading-normal tracking-[0.015em] text-white">
+<span class="truncate">Start Matching</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center gap-2 overflow-hidden rounded-full h-10 w-full bg-zinc-200/50 dark:bg-white/10 px-4 text-sm font-bold leading-normal tracking-[0.015em] text-zinc-600 dark:text-zinc-300">
+<span class="material-symbols-outlined text-xl">
+                            tune
+                        </span>
+<span class="truncate">Edit Matching Preferences</span>
+</button>
+</div>
+</div>
+</main>
+<div class="w-full border-t border-zinc-200 bg-background-light px-4 pt-2 pb-8 dark:border-zinc-800 dark:bg-background-dark">
+<div class="mx-auto flex max-w-md items-center justify-around">
+<button class="flex flex-col items-center gap-1.5 p-2 text-zinc-500 dark:text-zinc-400">
+<span class="material-symbols-outlined text-2xl">
+                        home
+                    </span>
+<span class="text-xs font-medium">Home</span>
+</button>
+<button class="flex flex-col items-center gap-1.5 p-2 text-primary dark:text-primary">
+<span class="material-symbols-outlined text-2xl">
+                        groups
+                    </span>
+<span class="text-xs font-bold">Match</span>
+</button>
+<button class="flex flex-col items-center gap-1.5 p-2 text-zinc-500 dark:text-zinc-400">
+<span class="material-symbols-outlined text-2xl">
+                        chat_bubble
+                    </span>
+<span class="text-xs font-medium">Chats</span>
+</button>
+<button class="flex flex-col items-center gap-1.5 p-2 text-zinc-500 dark:text-zinc-400">
+<span class="material-symbols-outlined text-2xl">
+                        person
+                    </span>
+<span class="text-xs font-medium">Profile</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>No Drifters Found</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#6a5ae7",
+              "background-light": "#f6f6f8",
+              "background-dark": "#131121",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: { "DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px" },
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings:
+        'FILL' 0,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 24
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display">
+<div class="relative flex h-screen w-full flex-col bg-background-dark">
+<!-- Top App Bar -->
+<header class="flex items-center p-4">
+<button class="text-white flex size-10 shrink-0 items-center justify-center rounded-full">
+<span class="material-symbols-outlined text-2xl">arrow_back_ios_new</span>
+</button>
+</header>
+<!-- Main Content -->
+<main class="flex flex-1 flex-col justify-center px-4 pb-4">
+<div class="flex flex-1 flex-col items-center justify-center gap-6 text-center">
+<!-- Illustration -->
+<div class="w-full max-w-[300px]">
+<img alt="A friendly ghost with a magnifying glass, searching for someone." class="w-full h-auto" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzTrr4cjq77B6jsT1yvglZknGkufqQ-ujklMaTDKWkRufAjk4w_8SqOs_3MlKz2dGa9Vp85p_CQcxee2HIBpzCLSxt1OCxr9DpmhSUeaxS44572eBaH3nO5yaBvP-ZataLVWorateYP2N1R2SR2S28tuARm88cxDkltRh9vBPMXiPBwATzL2kgkcCPiNNePu1fmSYOarX9WIVLxCmsREhV2hgWIcoaAzUE6wqYAvMg1ujM_vHeNwC9TZIuxt_N_S6ARru2uN_XPO58"/>
+</div>
+<!-- Text Content -->
+<div class="flex max-w-md flex-col items-center gap-2">
+<h1 class="text-white text-2xl font-bold leading-tight tracking-tight">Still Exploring</h1>
+<p class="text-gray-300 text-sm font-normal leading-normal">
+                        We couldn't find any compatible drifters with your current preferences. Try expanding your interests or MBTI preferences to discover more people.
+                    </p>
+</div>
+</div>
+</main>
+<!-- Button Group at the bottom -->
+<footer class="p-4 pt-0">
+<div class="flex flex-col items-stretch gap-3">
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-primary text-white text-base font-bold leading-normal tracking-wide w-full">
+<span class="truncate">Expand Preferences</span>
+</button>
+<button class="flex min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-[#292546] text-white text-base font-bold leading-normal tracking-wide w-full">
+<span class="truncate">Try Again</span>
+</button>
+</div>
+</footer>
+</div>
+</body></html>

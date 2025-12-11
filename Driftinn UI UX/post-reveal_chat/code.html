@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Post-Reveal Chat</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+                'FILL' 0,
+                'wght' 400,
+                'GRAD' 0,
+                'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6a5ae7",
+                        "background-light": "#f6f6f8",
+                        "background-dark": "#131121",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "1rem",
+                        "xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex h-screen w-full flex-col group/design-root overflow-hidden">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex flex-col bg-background-dark/80 backdrop-blur-sm">
+<div class="flex items-center p-4">
+<button class="flex size-12 shrink-0 items-center justify-start text-white">
+<span class="material-symbols-outlined text-3xl">arrow_back_ios_new</span>
+</button>
+<div class="flex items-center gap-3 flex-1">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0" data-alt="Profile picture of Jordan Lee" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAIpoU1_kkypAY3ZB-921SrkOg-puURExZkhWIAlZy0P0D6K-FSeHwcIcU0_oMRXeXcO0qCtWG6DqfJEqWcctigW7OCqFF2MzqouVNIQugJmWAkclv8OHqYTreNdICWAJG3CjoUWWoSHkQNXj_X5ldDmK_lrktFlO6wnZe761NLcO_RNYa3_QutQvQ6fUbQlL91xRI3sIPwlA9ZTacgwyHfzAa_cLHeQPC5fUm1v1MFXM0OmwWMd1QZMxA9BWRsYagjo3ApA7YPEDnj");'></div>
+<div class="flex flex-col">
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Jordan Lee</h2>
+<p class="text-green-400 text-sm font-normal leading-tight">Online</p>
+</div>
+</div>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 bg-transparent text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<span class="material-symbols-outlined text-2xl">more_vert</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Chat Body -->
+<div class="flex-1 overflow-y-auto pb-4">
+<div class="flex flex-col gap-2">
+<!-- System Message -->
+<div class="p-4 flex justify-center">
+<div class="bg-primary/20 rounded-full px-4 py-2">
+<p class="text-primary text-xs font-medium text-center">You've both revealed your identities! Welcome to Friendship Mode.</p>
+</div>
+</div>
+<!-- Received Message -->
+<div class="flex items-end gap-3 p-4 pt-0">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0" data-alt="Profile picture of Jordan Lee" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDUt6Qcl4P3GlvNNNJRbPtVsjivlhYXMU51x5Z3vH5qnKAezub_afHuv09gcsthEVyzdH_BV_gXTxpAxvfoxkBjTByB4ZqhmWJ7pfhjY9K54bzfgk6Y-L1LpVKE8BS9vb2SxafI4gcb0JCdL5hDoQdWHbNodmGY1Z49okkAl1YCJZymRZ3olGUgQqw3EMyqb1gBVWQdxjCrt74hAaPiQ5HEKY2xKLUrBa9OP8zDClFxFawXlHX1D2x8feIdOo6-OoLXzTMTgOdyNCC0");'></div>
+<div class="flex flex-1 flex-col gap-1 items-start">
+<p class="text-[#9b95c6] text-[13px] font-normal leading-normal max-w-[360px]">Jordan Lee</p>
+<p class="text-base font-normal leading-normal flex max-w-[360px] rounded-xl rounded-bl-sm px-4 py-3 bg-[#292546] text-white">
+                            Hey! It's so cool to finally see who I've been talking to. Welcome to Friendship Mode!
+                        </p>
+</div>
+</div>
+<!-- Sent Message -->
+<div class="flex items-end gap-3 p-4 pt-0 justify-end">
+<div class="flex flex-1 flex-col gap-1 items-end">
+<p class="text-[#9b95c6] text-[13px] font-normal leading-normal max-w-[360px] text-right">Alex</p>
+<p class="text-base font-normal leading-normal flex max-w-[360px] rounded-xl rounded-br-sm px-4 py-3 bg-primary text-white">You too! I had a feeling we'd get along.</p>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0" data-alt="Profile picture of Alex" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuApXpeRbPHgh9jFuiGEw-TS0kKsc9P8Aylib54FV2zz-BixbQ8G67aH-KRSSiXH_4G4wfYEps669NHBBxHnPchrUyc7Lj2T3-PiC-Gle-g7TaVUGGCm7DfKQWBlRSykc6BxlJEZNir-eXmb7PYgt1VcgbKUilqekwhRMM8XNX4BkZZXvDndvjPCpVYsVKCZvipnC74strl16UYLnXHf_VGxiNeKvR1fegAgVh6yKhc6YFps8yhzhTK8I24zeV2kPFnyvlqFYc7c8qMI");'></div>
+</div>
+<!-- Meetup Suggestion Card -->
+<div class="p-4 pt-0">
+<div class="flex items-stretch justify-between gap-4 rounded-xl bg-[#1d1b32] p-4 shadow-[0_0_4px_rgba(0,0,0,0.1)]">
+<div class="flex flex-[2_2_0px] flex-col gap-4">
+<div class="flex flex-col gap-1">
+<p class="text-white text-base font-bold leading-tight">Grab coffee at The Campus Bean?</p>
+<p class="text-[#9b95c6] text-sm font-normal leading-normal">Meetup Suggestion</p>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-8 px-4 bg-primary/30 text-white text-sm font-medium leading-normal w-fit">
+<span class="truncate">View Details</span>
+</button>
+</div>
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl flex-1" data-alt="A sunlit, modern campus coffee shop" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBpyyYSCFysHbGQooXrgicyF2N3b0ZSh6g1RF-29879jUMUASNn3Lz3JVG7-xtKFbg8st_RSIbBPMJ04OUtf_e_-0D-vV64ZXmZwC_3Zem27rbaEsOo0oJodFBYn901ET97suh1Ey6Ad90C7dSQ6XLhM9__bOosAJ4KvCLbNRZmFZdr48QTtZaTPp-NKFcO-s_UjTrzRfbnKQIFML7VpwQhk7coHCZ9vcKShOxbTtcB7l9VPX9icek5yuwbI_fl3OMtRneAJsRL26WW");'></div>
+</div>
+</div>
+<!-- Message with Image -->
+<div class="flex items-end gap-3 p-4 pt-0">
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0" data-alt="Profile picture of Jordan Lee" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBxZpkgzm3tHQ6aSGBESVUMjhYplgIGLbO8cnVQJRQdsgpj4FW3Ljg4uUKOOcIukRmxK-Oy8Tw3RpUmA_qLVSCoorhOIrdgrlP0olfL5Mg17sr5VLx5C3AXMXqiAUVzTGAz_XIkEeEOQhfqLPM3VjvVNIndRCzep_vsJc7CLtKkLlsn-0qe2YQdzoD2rDncUcr4PiChVJUbGvteDhCyhtTnR3vyqJIPngdXmBtkHMjNrrHt5xP19-RogQmPtVFYhg5xBHsRIpLsZprM");'></div>
+<div class="flex flex-1 flex-col gap-2 items-start">
+<p class="text-[#9b95c6] text-[13px] font-normal leading-normal max-w-[360px]">Jordan Lee</p>
+<p class="text-base font-normal leading-normal flex max-w-[360px] rounded-xl rounded-bl-sm px-4 py-3 bg-[#292546] text-white">
+                            I'm down! When are you free? By the way, here's that pic of my dog I mentioned. He's a goofball.
+                        </p>
+<div class="bg-center bg-no-repeat aspect-video bg-cover rounded-xl w-full max-w-[300px]" data-alt="A golden retriever puppy playing in a park" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAPTCOgstlUqiwKpk4dIndzD5VVGztraRny0aC8OnyKsQSjY6LpDFFGuReMierlHlIz2VJDOHlAdY_nBuZbGEt9M6MqQUioovwnxLUZMNYWaCg0zShTDsF9RJcyYOQKOAAtST84DHo6OPQWD3XwfOxKb-EREeJSKD2KgKS4ebE8a6ZP7xezLwXzIrIyVeCXtDRrXNA3r_7bqVIF-X7lmJFqDJSp10ZdvFnL77mezY6BDXnLqGVDxYFSmJAK5iL6z3AmNDSGQQ9zejCo");'></div>
+</div>
+</div>
+<!-- Sent Voice Note -->
+<div class="flex items-end gap-3 p-4 pt-0 justify-end">
+<div class="flex flex-1 flex-col gap-1 items-end">
+<p class="text-[#9b95c6] text-[13px] font-normal leading-normal max-w-[360px] text-right">Alex</p>
+<div class="flex items-center gap-2 rounded-xl rounded-br-sm px-3 py-2 bg-primary text-white max-w-[360px]">
+<button class="text-white flex items-center justify-center">
+<span class="material-symbols-outlined text-3xl">play_circle</span>
+</button>
+<div class="w-32 h-1 bg-white/30 rounded-full relative">
+<div class="absolute h-1 w-2/3 bg-white rounded-full"></div>
+<div class="absolute h-3 w-3 bg-white rounded-full -top-1" style="left: 66%;"></div>
+</div>
+<span class="text-sm font-mono ml-2">0:23</span>
+</div>
+</div>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0" data-alt="Profile picture of Alex" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCy-CdODhVy4WGfQVQQHVFwBXeRfQbphM3vWMaSjSHDcXJumErECOhlt5ibBKLxNcLyryYo__JeezIi1WX4iN0clPPvYCswAzWDwQIgkXmPe9WN3AbOJefMpgma1Nc2NRlunTHXq6WHt_hZm8a5uuuncI-vBfYRSAB30iHMynWG5enFfvQ2FSNnyPylAWOzG3LUk-hKvpyMwWb8Pxd4FFnjjIu_m-GiHwZ80ftov1qmdgjydarLHAjy593jEiB4l0ZQBnUZzWwgGYwe");'></div>
+</div>
+</div>
+</div>
+<!-- Input Bar and Tools Drawer -->
+<div class="sticky bottom-0 bg-background-dark p-4 pt-2">
+<!-- Tools Drawer (hidden by default) -->
+<div class="grid grid-cols-3 gap-4 pb-4 hidden">
+<button class="flex flex-col items-center gap-2 text-white">
+<div class="flex size-14 items-center justify-center rounded-xl bg-primary/30">
+<span class="material-symbols-outlined text-3xl text-primary">event</span>
+</div>
+<span class="text-xs font-medium">Suggest Meetup</span>
+</button>
+<button class="flex flex-col items-center gap-2 text-white">
+<div class="flex size-14 items-center justify-center rounded-xl bg-primary/30">
+<span class="material-symbols-outlined text-3xl text-primary">calendar_month</span>
+</div>
+<span class="text-xs font-medium">Share Timetable</span>
+</button>
+<button class="flex flex-col items-center gap-2 text-white">
+<div class="flex size-14 items-center justify-center rounded-xl bg-primary/30">
+<span class="material-symbols-outlined text-3xl text-primary">person_add</span>
+</div>
+<span class="text-xs font-medium">Add to Contacts</span>
+</button>
+</div>
+<!-- Enhanced Input Bar -->
+<div class="flex items-center gap-2">
+<button class="flex size-12 shrink-0 items-center justify-center rounded-full bg-[#292546] text-white">
+<span class="material-symbols-outlined text-2xl">add_circle</span>
+</button>
+<div class="relative flex-1">
+<input class="w-full h-12 rounded-full border-none bg-[#292546] pl-4 pr-12 text-white placeholder:text-[#9b95c6]" placeholder="Type a message..." type="text"/>
+<button class="absolute right-2 top-1/2 -translate-y-1/2 flex size-9 items-center justify-center text-white">
+<span class="material-symbols-outlined text-2xl">attach_file</span>
+</button>
+</div>
+<button class="flex size-12 shrink-0 items-center justify-center rounded-full bg-primary text-white">
+<span class="material-symbols-outlined text-2xl">mic</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

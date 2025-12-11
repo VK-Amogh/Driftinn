@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Verify Your OTP</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#6b5be6",
+            "background-light": "#f6f6f8",
+            "background-dark": "#131121",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    input[type=number] {
+      -moz-appearance: textfield;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display text-gray-100">
+<div class="flex flex-col h-screen min-h-screen w-full">
+<header class="flex items-center p-4">
+<button class="flex items-center justify-center size-10 text-gray-200">
+<span class="material-symbols-outlined text-2xl">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold flex-1 text-center text-gray-100 pr-10">Verify Your OTP</h1>
+</header>
+<main class="flex flex-col items-center flex-grow px-6 text-center pt-8">
+<h2 class="text-3xl font-bold tracking-tight text-gray-100">Enter Your Code</h2>
+<p class="mt-2 max-w-sm text-base text-gray-400">We sent a 6-digit code to your phone. Please enter it below to continue.</p>
+<div class="mt-12 mb-8">
+<fieldset class="flex gap-3">
+<input class="size-14 text-center text-2xl font-semibold rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-primary focus:border-primary transition-colors [appearance:textfield] text-gray-100" maxlength="1" type="number" value=""/>
+<input class="size-14 text-center text-2xl font-semibold rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-primary focus:border-primary transition-colors [appearance:textfield] text-gray-100" maxlength="1" type="number" value=""/>
+<input class="size-14 text-center text-2xl font-semibold rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-primary focus:border-primary transition-colors [appearance:textfield] text-gray-100" maxlength="1" type="number" value=""/>
+<input class="size-14 text-center text-2xl font-semibold rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-primary focus:border-primary transition-colors [appearance:textfield] text-gray-100" maxlength="1" type="number" value=""/>
+<input class="size-14 text-center text-2xl font-semibold rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-primary focus:border-primary transition-colors [appearance:textfield] text-gray-100" maxlength="1" type="number" value=""/>
+<input class="size-14 text-center text-2xl font-semibold rounded-lg bg-gray-800 border border-gray-600 focus:ring-2 focus:ring-primary focus:border-primary transition-colors [appearance:textfield] text-gray-100" maxlength="1" type="number" value=""/>
+</fieldset>
+</div>
+<div class="flex items-center justify-center space-x-2 text-sm text-gray-400">
+<span>Resend OTP in</span>
+<span class="font-medium text-primary">00:30</span>
+</div>
+</main>
+<footer class="p-6">
+<button class="w-full h-12 bg-gray-800 text-primary font-bold text-base rounded-full hover:bg-gray-700 transition-colors">
+        Resend OTP
+      </button>
+</footer>
+</div>
+
+</body></html>

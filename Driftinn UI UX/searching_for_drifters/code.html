@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Searching for Drifters</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#6a5ae7",
+              "background-light": "#f6f6f8",
+              "background-dark": "#131121",
+            },
+            fontFamily: {
+              "display": ["Be Vietnam Pro", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .pulsing-circle {
+            position: absolute;
+            border-radius: 9999px;
+            border-style: solid;
+            animation: pulse 4s infinite cubic-bezier(0.66, 0, 0, 1);
+            opacity: 0;
+        }
+        @keyframes pulse {
+            0% { transform: scale(0.5); opacity: 0; }
+            50% { opacity: 1; }
+            100% { transform: scale(1.2); opacity: 0; }
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display">
+<div class="relative flex h-screen w-full flex-col items-center justify-between p-4 bg-background-dark dark overflow-hidden">
+<!-- Header Spacer -->
+<div class="h-12 w-full flex-shrink-0"></div>
+<!-- Main Content -->
+<div class="flex flex-1 flex-col items-center justify-center text-center">
+<!-- Animation Container -->
+<div class="relative mb-12 flex h-64 w-64 items-center justify-center">
+<div class="pulsing-circle" style="width: 100%; height: 100%; border-width: 1px; border-color: rgba(106, 90, 231, 0.3); animation-delay: 0s;"></div>
+<div class="pulsing-circle" style="width: 80%; height: 80%; border-width: 2px; border-color: rgba(106, 90, 231, 0.4); animation-delay: 1s;"></div>
+<div class="pulsing-circle" style="width: 60%; height: 60%; border-width: 2px; border-color: rgba(106, 90, 231, 0.6); animation-delay: 2s;"></div>
+<div class="flex h-36 w-36 items-center justify-center rounded-full bg-primary/20">
+<div class="flex h-24 w-24 items-center justify-center rounded-full bg-primary/30">
+<span class="material-symbols-outlined text-5xl text-primary" data-icon="travel_explore">travel_explore</span>
+</div>
+</div>
+</div>
+<!-- Headline Text -->
+<h1 class="text-white tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3">Finding compatible drifters in your college</h1>
+<!-- Body Text -->
+<p class="text-white/70 text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">Aligning personality types...</p>
+</div>
+<!-- Footer Button -->
+<div class="w-full max-w-md pb-4 pt-4 flex-shrink-0">
+<div class="flex px-4 py-3 justify-center w-full">
+<button class="flex min-w-[84px] w-full max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-5 bg-transparent text-white/80 text-base font-bold leading-normal tracking-[0.015em] border border-white/20 hover:bg-white/10 active:bg-white/20 transition-colors duration-200">
+<span class="truncate">Cancel</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>

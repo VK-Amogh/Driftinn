@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Pre-Match Preferences</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+    </style>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#6a5ae7",
+              "background-light": "#f6f6f8",
+              "background-dark": "#131121",
+            },
+            fontFamily: {
+              "display": ["Inter", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full flex-col">
+<!-- Top App Bar -->
+<div class="sticky top-0 z-10 flex items-center bg-background-light/80 dark:bg-background-dark/80 p-4 pb-2 backdrop-blur-sm">
+<div class="text-white flex size-12 shrink-0 -ml-3 items-center justify-center">
+<span class="material-symbols-outlined text-2xl text-white">arrow_back_ios_new</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Preferences</h2>
+<div class="flex size-12 shrink-0 items-center"></div> <!-- Spacer for centering title -->
+</div>
+<div class="flex-grow px-4 pb-32">
+<!-- My Profile Section -->
+<h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-2 pt-4">My Profile</h3>
+<div class="flex items-stretch justify-between gap-4 rounded-xl bg-[#1d1b32] p-4 shadow-[0_0_4px_rgba(0,0,0,0.1)]">
+<div class="flex flex-col gap-1 flex-[2_2_0px]">
+<p class="text-white text-base font-bold leading-tight">INFP</p>
+<p class="text-[#9b95c6] text-sm font-normal leading-normal">Verified Campus</p>
+</div>
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl flex-1 max-w-[80px]" data-alt="Abstract gradient with purples and blues" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDsRJvI3QfUGvOrtCtOBe99_fdq9Rs0azWNhW2WVg9JPgIvaNBqW9bWt2y8y02aHVlfeIDJsu1QVJVSjJBbHOEDkyrnhZWDt9v-q6cnle-yvPjJ62MC8gO92JHzVutMjnRIyIm0hrZNoJn5EtKpEBZQoDGhZnjtSCXQk-8-Fof4HV8Ga-d3GO-aYysOel-JrSr-3ftwrTgjCgfLps0rAipK0nF8iX7p4U5Ew0YUmdk8bsjZMCow6Df5B5KunSlWRXqHLmh1jvupvzve");'></div>
+</div>
+<!-- Matching Filters Section -->
+<h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] pb-2 pt-8">Matching Filters</h3>
+<div class="flex flex-col gap-2">
+<!-- College Radius Slider -->
+<div class="@container rounded-lg bg-[#1d1b32] px-4 py-3">
+<div class="relative flex w-full flex-col items-start justify-between gap-3 @[480px]:flex-row @[480px]:items-center">
+<div class="flex w-full shrink-[3] items-center justify-between">
+<p class="text-white text-base font-medium leading-normal">College Radius</p>
+<p class="text-white text-sm font-normal leading-normal @[480px]:hidden">15 miles</p>
+</div>
+<div class="flex h-4 w-full items-center gap-4">
+<div class="flex h-1 flex-1 rounded-sm bg-[#3b3663]">
+<div class="h-full w-[32%] rounded-sm bg-primary"></div>
+<div class="relative"><div class="absolute -left-2 -top-1.5 size-4 rounded-full bg-primary ring-2 ring-background-dark"></div></div>
+</div>
+<p class="text-[#9b95c6] text-sm font-normal leading-normal hidden @[480px]:block">15 miles</p>
+</div>
+</div>
+</div>
+<!-- Toggle Switch Component -->
+<div class="flex w-full items-center justify-between rounded-lg bg-[#1d1b32] p-4">
+<div class="flex flex-col gap-1">
+<p class="text-white text-base font-medium leading-normal">Include my MBTI</p>
+<p class="text-[#9b95c6] text-sm">Prioritize matches with compatible types.</p>
+</div>
+<div class="relative inline-flex h-6 w-11 cursor-pointer items-center rounded-full bg-primary">
+<span class="inline-block size-4 translate-x-6 rounded-full bg-white transition"></span>
+</div>
+</div>
+<!-- Multi-select Picker -->
+<div class="flex w-full cursor-pointer items-center justify-between rounded-lg bg-[#1d1b32] p-4">
+<p class="text-white text-base font-medium leading-normal">Academic Year</p>
+<div class="flex items-center gap-2">
+<p class="text-[#9b95c6] text-sm">Any</p>
+<span class="material-symbols-outlined text-xl text-[#9b95c6]">arrow_forward_ios</span>
+</div>
+</div>
+<!-- Multi-select Picker -->
+<div class="flex w-full cursor-pointer items-center justify-between rounded-lg bg-[#1d1b32] p-4">
+<p class="text-white text-base font-medium leading-normal">Department</p>
+<div class="flex items-center gap-2">
+<p class="text-[#9b95c6] text-sm">Any</p>
+<span class="material-symbols-outlined text-xl text-[#9b95c6]">arrow_forward_ios</span>
+</div>
+</div>
+<!-- Segmented Control Component -->
+<div>
+<p class="text-white text-base font-medium leading-normal px-4 py-3">Gender</p>
+<div class="grid grid-cols-3 gap-2 rounded-lg bg-[#1d1b32] p-1">
+<button class="text-white/60 rounded py-2 text-sm font-medium transition-colors hover:bg-white/10">Male</button>
+<button class="bg-primary text-white rounded py-2 text-sm font-medium transition-colors">Any</button>
+<button class="text-white/60 rounded py-2 text-sm font-medium transition-colors hover:bg-white/10">Female</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Floating Action Button -->
+<div class="fixed bottom-0 left-0 right-0 z-10 bg-gradient-to-t from-background-dark to-transparent p-4 pb-6 pt-10">
+<button class="flex h-14 w-full items-center justify-center gap-2 rounded-xl bg-primary text-white text-lg font-bold shadow-lg shadow-primary/30">
+<span class="material-symbols-outlined">auto_awesome</span>
+                Start Matching
+            </button>
+</div>
+</div>
+</body></html>

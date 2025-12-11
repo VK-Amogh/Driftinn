@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Driftin Home Feed</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#4b2bee",
+              "background-light": "#f6f6f8",
+              "background-dark": "#131022",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "1.25rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      body {
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative flex min-h-screen w-full flex-col dark group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10">
+<div class="flex size-12 shrink-0 items-center">
+<span class="material-symbols-outlined text-zinc-900 dark:text-white text-3xl">waves</span>
+</div>
+<h2 class="text-zinc-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1">Good Morning, Alex!</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-12 bg-transparent text-zinc-900 dark:text-white gap-2 text-base font-bold leading-normal tracking-[0.015em] min-w-0 p-0">
+<span class="material-symbols-outlined text-2xl">person</span>
+</button>
+</div>
+</div>
+<main class="flex-1 pb-40">
+<!-- Personalized MBTI Card -->
+<div class="p-4 @container">
+<div class="flex flex-col items-stretch justify-start rounded-xl @xl:flex-row @xl:items-start shadow-[0_4px_10px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.2)] bg-white dark:bg-[#1e1933]">
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-t-xl @xl:rounded-l-xl @xl:rounded-r-none @xl:w-48 @xl:aspect-square" data-alt="Abstract gradient of purples and blues representing a personality type" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBeFYIa7VIbEZULNuCp1ztwAWw0jVk3LUthOasHb65PyuBO0XEUQN9pzCrSNbrAw1c94KZ1VMDRxWZ_B8SeWAxAd35-BBE4XFqm78lu0X82zw5cFZef7BqfO3ABEDwYi3EyLYMppRGnQA8ITkcd56dXBcsSTnHn4t0eJCPsPU_Ne9YIYuCZJIGbLmvamB0uZL_qi4hm67u7-T2xsJgnOJeb-1fjbKq2ba4W1i8_M9NJI6xwOD2hg3FNRwXCW7u2A8KMl0nlBGUOZump");'></div>
+<div class="flex w-full min-w-72 grow flex-col items-stretch justify-center gap-1 py-4 @xl:px-4 px-4">
+<p class="text-zinc-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Your Type: INFP</p>
+<div class="flex items-end gap-3 justify-between">
+<div class="flex flex-col gap-1">
+<p class="text-zinc-600 dark:text-[#9b92c9] text-base font-normal leading-normal">The Mediator</p>
+<p class="text-zinc-500 dark:text-[#9b92c9]/80 text-sm font-normal leading-normal">Idealistic, loyal, and driven by high values.</p>
+</div>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-full h-8 px-4 bg-primary text-white text-sm font-medium leading-normal">
+<span class="truncate">Learn More</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+<!-- Section Header for Carousel -->
+<h2 class="text-zinc-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Today's Insights</h2>
+<!-- Horizontal Carousel -->
+<div class="flex overflow-x-auto [-ms-scrollbar-style:none] [scrollbar-width:none] [&amp;::-webkit-scrollbar]:hidden">
+<div class="flex items-stretch p-4 pt-0 gap-3">
+<div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-40 w-40">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl flex flex-col" data-alt="Abstract gradient with soft pink and yellow hues" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuB2Pq2PgwFnzTWcC7spxNpE6JpJGD-IirhZQQv9m0ujgrteIf9mYxYCCdqcB8GUGjZyTNYy0ELLC7k4KQsDbwZ-PpOOH3V-ECaSOogERGQNPh1GDra-yYhV1wCvgh8c7hNZPS9Llc9gvtzCYRoIuqqtna-2PNPRnrXoEbHhBDxbnv9x6jSojeiqaDmmYcl6d0Bs70NDUfI0tMI5T-mj0DvQoOZg1B3a7R5HeCk8ujFOk3NNiFEY3-k5dqS-hkzTJU6NcwB9II7Zaaau");'></div>
+<div>
+<p class="text-zinc-900 dark:text-white text-base font-medium leading-normal">Conversation Starter</p>
+<p class="text-zinc-600 dark:text-[#9b92c9] text-sm font-normal leading-normal">What's a small thing that made you smile today?</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-40 w-40">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl flex flex-col" data-alt="Abstract gradient with cool blue and green tones" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCAVSN0UA1SkWLx505s3D6ApQgrh8zofocUnf6KzeT9_upXUJQxIpDIO69L5MfFFOK7cYjgt81I5ph_QYetELY60mNiZvauux1ASChm9ERXM75hBuOxBQ0-3Ch0fwju8PvgItudLGXzyQOatAqKzlx2XTfRTFlU9Cc_MhslR4wQao4QuIvcjBWmCoiGugsy1WTomYRdSLL8e7zqUt53s8dybxp7hd4CBSy7W55UHDodZ3zw_QE9c_RGcAxExKJ8J_8-XhbHNOfuFQIh");'></div>
+<div>
+<p class="text-zinc-900 dark:text-white text-base font-medium leading-normal">INFP Tip</p>
+<p class="text-zinc-600 dark:text-[#9b92c9] text-sm font-normal leading-normal">Channel your creative energy into a new campus club.</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-40 w-40">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl flex flex-col" data-alt="Abstract gradient with purple and orange swirls" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBW6TcQeqayGKb6MPc-td6TWisi_rjj_J1_gDD8HgclbgZKqGTm1XBNHyI_Q1Qf_wAj_gMvTbzMGLzkpQ6VRGZaC6n955HQGdlJKU9g-sNNMt7HEW2NsV3KxvHbRrcy_ii2AwosVweIu3KY-c18o8VtRxiBDS7mDg6HjXiBAXxQaDcAERM3v5DcKfGspdVkspBCqelCeI8hA2nYjx_QTVUhOxzBLcgY1R0z-9cxGD9iSYDA0Te8ORNNBb9XklqTzOeCmIzao4PDzffb");'></div>
+<div>
+<p class="text-zinc-900 dark:text-white text-base font-medium leading-normal">Did you know?</p>
+<p class="text-zinc-600 dark:text-[#9b92c9] text-sm font-normal leading-normal">INFJs make up less than 1% of the population.</p>
+</div>
+</div>
+<div class="flex h-full flex-1 flex-col gap-4 rounded-lg min-w-40 w-40">
+<div class="w-full bg-center bg-no-repeat aspect-square bg-cover rounded-xl flex flex-col" data-alt="Abstract gradient with deep blue and purple colors" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAfz3ZMjWO2HFvOFAmt4yNTmXXHagNHtsfwJBddSnETOspDekKXpI6r_onk5E-uQexGs4HNof0Eecb_-yFnFqzTXm7NsR8D6s0oZSqFT2wsXS6YSLEzCfVLNXxkLagIdIhvO7s60itw-JakG64CdW2H6BFBIqPztzdjHnev4e5dLm2lQDI1cB0vICVEqUcZIqkzeoIJaVABaGiueYvvmd7cshtryWQFxZ5HkldPx6gv_A3uZtCrfieAx-_ciCWL2K6P3dS159AyQPCa");'></div>
+<div>
+<p class="text-zinc-900 dark:text-white text-base font-medium leading-normal">Relationship Insight</p>
+<p class="text-zinc-600 dark:text-[#9b92c9] text-sm font-normal leading-normal">Shared values often lead to the strongest friendships.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Section Header for Events -->
+<h2 class="text-zinc-900 dark:text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Happening on Campus</h2>
+<!-- Vertical Stack of Event Cards -->
+<div class="flex flex-col gap-3 px-4">
+<div class="flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-[#1e1933] shadow-[0_4px_10px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+<img class="h-20 w-20 shrink-0 rounded-lg object-cover" data-alt="Students studying together in a library setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuD9ATAMtNghnml37WIlNtULITgXkL-cEsF5UvUyKs2jhVd9hL0OAmalw4YniqpjZWM0R84XMHiQRhk2TnOJcN_81dVJSTHzUBuzwwNiimyV2r81fQa9IEVF_d77VkRZ8tEzfoi4uqcBaAGrFW3649Oxy9D2IaqAZK8s6teOaQhWVq9NdGNOuzDPxNvQGDdELjsiFKkgDS7oEKfUl73r-S5aE72RsbGNiGlu0uBOA_DDZllDOpkssi7oHOGh2SFGR01YZ2nAjW-kZFRH"/>
+<div class="flex-grow">
+<p class="text-xs font-semibold uppercase tracking-wider text-primary">Wed, Nov 15 • 7:00 PM</p>
+<p class="font-bold text-zinc-900 dark:text-white">Late Night Study Session</p>
+<p class="text-sm text-zinc-600 dark:text-zinc-400">Main Library, Room 201</p>
+</div>
+<button class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-lg bg-white dark:bg-[#1e1933] shadow-[0_4px_10px_rgba(0,0,0,0.05)] dark:shadow-[0_4px_20px_rgba(0,0,0,0.2)]">
+<img class="h-20 w-20 shrink-0 rounded-lg object-cover" data-alt="A campus quad with students playing frisbee on a sunny day." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGM8MbHAEQ8q4bKgkT5305zrOUpXqvEqFhcc-biI1nNAlTSEbND3Kh5n5rTeaqXMnTKhdNmaiLke4w92F0cIbnv7gvEUMoxmVUdOc8_EtpUC8_paCF9_CrqoJaHxwovzyZMd7k6zVc5uliwYVhswfMUds2XuyUn7j6lQ7sxTtaXdgKFBqLrrXSCTbxFjaneREZN0azLyQC1jXluvvU8ec8u6WBn1sgGruWJC34CE6B6XDtq-V5CIk5IkX-jCh95f0L0r_5asOBMbq7"/>
+<div class="flex-grow">
+<p class="text-xs font-semibold uppercase tracking-wider text-primary">Thu, Nov 16 • 12:00 PM</p>
+<p class="font-bold text-zinc-900 dark:text-white">Quad Fest &amp; Free Pizza</p>
+<p class="text-sm text-zinc-600 dark:text-zinc-400">Campus Quad</p>
+</div>
+<button class="flex h-9 w-9 items-center justify-center rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-lg">arrow_forward</span>
+</button>
+</div>
+</div>
+</main>
+<!-- Floating Action Button & Bottom Nav Bar -->
+<div class="fixed bottom-0 left-0 right-0 z-20">
+<!-- Start Drift Button -->
+<div class="flex justify-center pb-5">
+<button class="flex items-center justify-center gap-2 h-14 w-48 rounded-full bg-primary text-white text-lg font-bold shadow-lg shadow-primary/30">
+<span>Start a Drift</span>
+<span class="material-symbols-outlined">auto_awesome</span>
+</button>
+</div>
+<!-- Bottom Navigation -->
+<div class="flex justify-around bg-white/80 dark:bg-[#1e1933]/80 backdrop-blur-lg border-t border-zinc-200 dark:border-zinc-700 py-2">
+<a class="flex flex-col items-center gap-1 text-primary w-20" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+<span class="text-xs font-bold">Home</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-500 dark:text-zinc-400 w-20" href="#">
+<span class="material-symbols-outlined">chat_bubble</span>
+<span class="text-xs">Chats</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-500 dark:text-zinc-400 w-20" href="#">
+<span class="material-symbols-outlined">celebration</span>
+<span class="text-xs">Events</span>
+</a>
+<a class="flex flex-col items-center gap-1 text-zinc-500 dark:text-zinc-400 w-20" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="text-xs">Profile</span>
+</a>
+</div>
+</div>
+</div>
+</body></html>

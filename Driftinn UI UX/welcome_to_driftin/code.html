@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Welcome to Driftin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#6b5be6",
+            "background-light": "#f6f6f8",
+            "background-dark": "#131121",
+          },
+          fontFamily: {
+            "display": ["Inter", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "0.5rem",
+            "lg": "1rem",
+            "xl": "1.5rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      font-family: 'Inter', sans-serif;
+    }
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark">
+<div class="relative flex h-screen min-h-screen w-full flex-col group/design-root overflow-x-hidden font-display">
+<div class="flex-shrink-0">
+<div class="flex items-center p-4 pb-2 justify-end"></div>
+</div>
+<div class="flex flex-1 flex-col items-center justify-center p-4 text-center">
+<div class="flex flex-col items-center justify-center">
+<svg fill="none" height="120" viewBox="0 0 120 120" width="120" xmlns="http://www.w3.org/2000/svg">
+<circle cx="60" cy="60" fill="#6b5be6" r="60"></circle>
+<path d="M78.636 50.844C78.636 44.856 83.508 40 89.52 40C95.532 40 100.404 44.856 100.404 50.844C100.404 56.832 95.532 61.688 89.52 61.688H78.636V50.844Z" fill="#f6f6f8"></path>
+<path d="M41.364 69.156C41.364 75.144 36.492 80 30.48 80C24.468 80 19.596 75.144 19.596 69.156C19.596 63.168 24.468 58.312 30.48 58.312H41.364V69.156Z" fill="#f6f6f8"></path>
+<path d="M41.364 50.844C41.364 44.856 46.236 40 52.248 40C58.26 40 63.132 44.856 63.132 50.844C63.132 56.832 58.26 61.688 52.248 61.688H41.364V50.844Z" fill="#f6f6f8"></path>
+<path d="M78.636 69.156C78.636 75.144 73.764 80 67.752 80C61.74 80 56.868 75.144 56.868 69.156C56.868 63.168 61.74 58.312 67.752 58.312H78.636V69.156Z" fill="#f6f6f8"></path>
+</svg>
+</div>
+<h1 class="text-background-light tracking-tight text-[32px] font-extrabold leading-tight pt-8 pb-3">Driftin</h1>
+<p class="text-gray-300 text-base font-normal leading-normal max-w-xs">Find your people, anonymously.</p>
+</div>
+<div class="flex-shrink-0 pb-8 pt-4">
+<div class="flex justify-center">
+<div class="flex w-full max-w-[480px] flex-col items-stretch gap-3 px-4 py-3">
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-primary text-white text-base font-bold leading-normal tracking-[0.015em] w-full">
+<span class="truncate">Register</span>
+</button>
+<button class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-14 px-5 bg-primary/20 text-primary text-base font-bold leading-normal tracking-[0.015em] w-full">
+<span class="truncate">Login</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

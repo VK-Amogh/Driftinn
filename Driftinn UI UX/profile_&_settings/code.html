@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Profile &amp; Settings</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#6a5ae7",
+              "background-light": "#f6f6f8",
+              "background-dark": "#131121",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "Noto Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-size: 24px;
+      }
+      .switch-bg:after {
+        content: '';
+        @apply absolute top-[2px] left-[2px] bg-white rounded-full h-5 w-5 transition-all;
+      }
+      input:checked + .switch-bg:after {
+        @apply transform translate-x-full;
+      }
+      input:checked + .switch-bg {
+        @apply bg-primary;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-dark font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col text-white group/design-root overflow-x-hidden">
+<!-- Top App Bar -->
+<div class="flex items-center bg-background-dark p-4 pb-2 justify-between sticky top-0 z-10">
+<div class="flex size-12 shrink-0 items-center justify-center">
+<span class="material-symbols-outlined text-white">arrow_back_ios_new</span>
+</div>
+<h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] flex-1 text-center">Profile &amp; Settings</h2>
+<div class="flex size-12 shrink-0 items-center"></div>
+</div>
+<div class="p-4 space-y-8">
+<!-- Profile Section -->
+<div class="flex flex-col items-center space-y-4">
+<div class="relative">
+<img class="h-24 w-24 rounded-full object-cover" data-alt="A stylized, abstract avatar with gradient colors." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBSNyz9uQ67i2ww1yRArV0K4N-tD0V9NobVRbaKCWW37BJvZtl2uZDl_ta0O80VXMC3VmHXqMNEOeL1BD6WyHovMQKbHmx0TPvcIVJybw1LNNFxl1PNMDTM1fKwl98UNMBr3ssneM9xDVxUFuqv5Ae5pRPT3hGNvGDzRj0MTG2F9OJZ4zbF5LyMIo0AqQ0cVTSBo8Hd8GEPE4QALpRIzSpOVjVWLPiuFQexiT5FEtDjKlMSS163NZC8d3dSVoCjRrrqroxteZMoiFvC"/>
+<button class="absolute bottom-0 right-0 flex items-center justify-center h-8 w-8 bg-primary rounded-full border-2 border-background-dark">
+<span class="material-symbols-outlined text-white" style="font-size: 20px;">edit</span>
+</button>
+</div>
+<div>
+<h1 class="text-2xl font-bold text-center">CosmicCat</h1>
+<p class="text-sm text-center text-white/60">INFP - The Mediator</p>
+</div>
+</div>
+<!-- Account Settings Section -->
+<div class="space-y-4">
+<h3 class="text-xs font-bold uppercase text-white/40 tracking-wider px-4">Account</h3>
+<div class="bg-white/5 rounded-xl">
+<a class="flex items-center justify-between p-4 border-b border-white/10" href="#">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-primary">edit_note</span>
+<span class="text-base">Edit Alias</span>
+</div>
+<span class="material-symbols-outlined text-white/30">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-4 border-b border-white/10" href="#">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-primary">psychology</span>
+<span class="text-base">Retake MBTI Test</span>
+</div>
+<span class="material-symbols-outlined text-white/30">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-4" href="#">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-primary">interests</span>
+<span class="text-base">Edit Interests</span>
+</div>
+<span class="material-symbols-outlined text-white/30">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Matching & Privacy Section -->
+<div class="space-y-4">
+<h3 class="text-xs font-bold uppercase text-white/40 tracking-wider px-4">Matching &amp; Privacy</h3>
+<div class="bg-white/5 rounded-xl">
+<div class="p-4 border-b border-white/10">
+<div class="flex items-center justify-between">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-primary">visibility</span>
+<span class="text-base">Auto-Reveal Profile</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-white/20 rounded-full peer switch-bg"></div>
+</label>
+</div>
+<p class="text-xs text-white/50 mt-2 pl-10">Automatically reveal profiles after the timer ends.</p>
+</div>
+<a class="flex items-center justify-between p-4 border-b border-white/10" href="#">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-primary">filter_alt</span>
+<span class="text-base">Matching Filters</span>
+</div>
+<span class="material-symbols-outlined text-white/30">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-4" href="#">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-primary">block</span>
+<span class="text-base">Manage Blocked Users</span>
+</div>
+<span class="material-symbols-outlined text-white/30">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Verification & Premium Section -->
+<div class="space-y-4">
+<h3 class="text-xs font-bold uppercase text-white/40 tracking-wider px-4">Status</h3>
+<div class="bg-white/5 rounded-xl">
+<a class="flex items-center justify-between p-4" href="#">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-green-400">verified_user</span>
+<span class="text-base">College Verified</span>
+</div>
+<span class="text-green-400 text-sm font-semibold">Campus Pass</span>
+</a>
+</div>
+<div class="bg-primary/20 rounded-xl p-4 flex items-center space-x-4">
+<div class="bg-primary rounded-lg p-2">
+<span class="material-symbols-outlined text-white">workspace_premium</span>
+</div>
+<div>
+<h4 class="font-bold">Upgrade to Premium</h4>
+<p class="text-sm text-white/70">Unlock exclusive features!</p>
+</div>
+<button class="ml-auto text-sm bg-primary text-white font-semibold py-2 px-4 rounded-full">Explore</button>
+</div>
+</div>
+<!-- App Settings Section -->
+<div class="space-y-4">
+<h3 class="text-xs font-bold uppercase text-white/40 tracking-wider px-4">App Settings</h3>
+<div class="bg-white/5 rounded-xl">
+<div class="flex items-center justify-between p-4 border-b border-white/10">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-primary">notifications</span>
+<span class="text-base">Notifications</span>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-white/20 rounded-full peer switch-bg"></div>
+</label>
+</div>
+<a class="flex items-center justify-between p-4 border-b border-white/10" href="#">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-primary">help</span>
+<span class="text-base">Support &amp; FAQ</span>
+</div>
+<span class="material-symbols-outlined text-white/30">chevron_right</span>
+</a>
+<a class="flex items-center justify-between p-4" href="#">
+<div class="flex items-center space-x-4">
+<span class="material-symbols-outlined text-primary">privacy_tip</span>
+<span class="text-base">Privacy Policy</span>
+</div>
+<span class="material-symbols-outlined text-white/30">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Actions -->
+<div class="space-y-2 pt-4">
+<button class="w-full text-center p-4 rounded-xl text-red-400 font-semibold bg-red-500/10">Log Out</button>
+<button class="w-full text-center p-2 rounded-xl text-white/50 text-sm">Delete Account</button>
+</div>
+</div>
+</div>
+</body></html>

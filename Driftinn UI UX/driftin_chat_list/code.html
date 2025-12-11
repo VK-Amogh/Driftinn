@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Driftin Chat List</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#4b2bee",
+              "background-light": "#f6f6f8",
+              "background-dark": "#131022",
+            },
+            fontFamily: {
+              "display": ["Space Grotesk"]
+            },
+            borderRadius: {"DEFAULT": "1rem", "lg": "2rem", "xl": "3rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+      .material-symbols-outlined {
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display">
+<div class="relative mx-auto flex h-auto min-h-screen w-full max-w-md flex-col overflow-x-hidden bg-background-light dark:bg-gradient-to-b dark:from-[#131022] dark:to-[#1f1a3a]">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex h-20 items-center justify-between bg-background-light/80 px-4 pt-4 backdrop-blur-sm dark:bg-[#131022]/80">
+<div class="flex h-12 w-12 items-center justify-start">
+<img class="h-10 w-10 rounded-full object-cover" data-alt="User's profile picture, a man smiling." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwVfHMTchItbLmzYpBvDixF3JA7mX0HDuHZ3LdejtrqbegnEP-mq8RVRYv7yoUovaUvRpBELUek1bAOY1ZDwv3Ik5-THY9fuDNAMwMVpzTORWWuhhjT_TGwsJ67WNlakAwX6TlQ2Pu0B5yIYbRLmP91sqPM406XbP1DmqHAe78xGcv42RNzxAGcmmbL2Q6o8w1fs5F744TLpUPq-3mrbYKhq-o1YxCs-aQxDwhK-Wjirnf0w0F7LBD3t4mGSflKyNuKsOvBwV5stpy"/>
+</div>
+<h1 class="text-xl font-bold text-slate-900 dark:text-white">Chats</h1>
+<div class="flex h-12 w-12 items-center justify-end">
+<button class="flex h-12 w-12 cursor-pointer items-center justify-center rounded-full text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-2xl">search</span>
+</button>
+</div>
+</header>
+<!-- Main Content: Chat List -->
+<main class="flex-1 space-y-2 px-4 py-4">
+<!-- Chat Item: Unread Message -->
+<div class="flex cursor-pointer items-center gap-4 rounded-lg bg-white/50 p-3 shadow-sm transition-all duration-200 hover:bg-white dark:bg-white/5 dark:hover:bg-white/10">
+<div class="relative h-14 w-14 shrink-0">
+<img class="h-full w-full rounded-full object-cover" data-alt="Abstract gradient avatar with purple and blue hues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBvwsoySQ7Mm6aKdoGqxSuaH1EqhfLK2DF159oWtZetWuAUmfrKhnwo64_DZXlm-xkF9dWP-0ha71BXk458BRkmuyk5fIC5DybkGJtOkKcGT_F1cdvod64Ly-dLS2xevRN0ay-qhkhHf_ksoRUV6CPIN6A7pnDnmd0kGR-KvRheMzei2KW-tmvJeRvqv5z9hqb6sn0AdUnmBvUki6Crp6M-4CSRzZpTHGmhMuvkt2Kn6AoKAuNfa7w6QkaPflLcV1gOn7On33HNElQ7"/>
+<div class="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background-dark bg-[#0bda6c]"></div>
+</div>
+<div class="flex-grow overflow-hidden">
+<p class="truncate font-medium text-slate-900 dark:text-white">Creative Explorer</p>
+<p class="truncate text-sm text-slate-600 dark:text-[#9b92c9]"><span class="font-semibold text-slate-900 dark:text-white">You:</span> Let's grab coffee sometime this week?</p>
+</div>
+<div class="flex shrink-0 flex-col items-end gap-1.5">
+<p class="text-xs text-slate-500 dark:text-[#9b92c9]">10:42 AM</p>
+<div class="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">2</div>
+</div>
+</div>
+<!-- Chat Item: Ready to Reveal -->
+<div class="flex cursor-pointer items-center gap-4 rounded-lg bg-white/50 p-3 shadow-sm transition-all duration-200 hover:bg-white dark:bg-white/5 dark:hover:bg-white/10">
+<div class="h-14 w-14 shrink-0">
+<img class="h-full w-full rounded-full object-cover" data-alt="Abstract gradient avatar with teal and orange hues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBYEQYI0hmnjiNQMRyAOC-D0KJjSVXFb7tzHBBAXZhPNl-bzldyRTYg1AUmWKGWcpKEPqZMyQCOz5N7rKUHVLZvygzuRBktotygCvydEU07HhTvLRf43UeK2pfe1L7LrLfZ3JveRTxfEbQwoGI_iu92TDif6jo20KjUzZy5IgrYJUVJvzC-iBoUNAhjPBcu5ue7vGNXJNGTDzOddQIeIOaYbwzKDdza8aePBCCQMtJk9oQc1ulHPl3Mkx9z1D0U6jWCILB2Lppn37EV"/>
+</div>
+<div class="flex-grow overflow-hidden">
+<p class="truncate font-medium text-slate-900 dark:text-white">Philosophical Wanderer</p>
+<p class="truncate text-sm text-slate-600 dark:text-[#9b92c9]">Sounds good, I'm free on Friday.</p>
+</div>
+<div class="flex shrink-0 items-center justify-center rounded-full bg-primary/20 px-3 py-1.5 text-xs font-medium text-primary dark:bg-primary/30 dark:text-primary-300">
+<span class="material-symbols-outlined mr-1 !text-sm">celebration</span>
+                    Ready to Reveal!
+                </div>
+</div>
+<!-- Chat Item: Reveal Timer -->
+<div class="flex cursor-pointer items-center gap-4 rounded-lg bg-white/50 p-3 shadow-sm transition-all duration-200 hover:bg-white dark:bg-white/5 dark:hover:bg-white/10">
+<div class="h-14 w-14 shrink-0">
+<img class="h-full w-full rounded-full object-cover" data-alt="Abstract gradient avatar with pink and yellow hues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAHjEIY8GN7P_On1qqMIItwrf8E643MGaG1jNhZyUkvA7zJp6dL7Oo1fcLNJbeAXDHKAI8RWZPtWHc9AP6jrhSg6B2B3M_IVWkmbMbzpTvLBvRE28s_9NiV168P3oEkPtY5FmNNZwU_LvZ4yj7mPUoJshY0H14QcI6vUPMdta_yuwyaVRp92-z28ZgTFvoMZeczjmqd8tFBpYvXe56ZF5o843AQBYmDaJpv20ajoeEK18e3Ddou5TaOw0smgCk_WTpFYVtI1wILLIwv"/>
+</div>
+<div class="flex-grow overflow-hidden">
+<p class="truncate font-medium text-slate-900 dark:text-white">Cosmic Dreamer</p>
+<p class="truncate text-sm text-slate-600 dark:text-[#9b92c9]">Haha, that's hilarious.</p>
+</div>
+<div class="flex shrink-0 items-center justify-center rounded-full bg-slate-200 px-3 py-1.5 text-xs font-medium text-slate-600 dark:bg-white/10 dark:text-[#9b92c9]">
+<span class="material-symbols-outlined mr-1 !text-sm">timer</span>
+                    Reveals in 12h
+                </div>
+</div>
+<!-- Chat Item: Sent Photo -->
+<div class="flex cursor-pointer items-center gap-4 rounded-lg bg-white/50 p-3 shadow-sm transition-all duration-200 hover:bg-white dark:bg-white/5 dark:hover:bg-white/10">
+<div class="relative h-14 w-14 shrink-0">
+<img class="h-full w-full rounded-full object-cover" data-alt="Abstract gradient avatar with yellow and green hues." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8Wz4etusNs6ljUHWCfOTXTsuWXeJj5PjaHPahVCSkqLqSfRAOKOpGOV2coe3o6gm_ynkZBZ2zpieeAYyQD4AKG9y2oqH3E5Gbqz1EtvntpAnsvBpJ7ICybzS2nqxVXX-WDVgQxBtrPANZoeCUWvxryqL_1ZKZOggCcQtRyAcOeyoHws6IM3Bu9DpQ0dfQ6qL7u21cHkzBlF5gsobXoIDD3EcBkb2kG73q8Ifaj3xKrbzwOzZNQrBuCVR9BMsy_fURR5pQAFoPsUVd"/>
+<div class="absolute bottom-0 right-0 h-4 w-4 rounded-full border-2 border-background-dark bg-[#0bda6c]"></div>
+</div>
+<div class="flex-grow overflow-hidden">
+<p class="truncate font-medium text-slate-900 dark:text-white">Energetic Artist</p>
+<p class="flex items-center gap-1 truncate text-sm text-slate-600 dark:text-[#9b92c9]">
+<span class="material-symbols-outlined !text-base">photo_camera</span>
+                        Sent a photo.
+                    </p>
+</div>
+<div class="flex shrink-0 flex-col items-end gap-1.5">
+<p class="text-xs text-slate-500 dark:text-[#9b92c9]">Yesterday</p>
+<div class="flex h-6 w-6 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">1</div>
+</div>
+</div>
+<!-- Empty State -->
+<div class="flex flex-col items-center justify-center rounded-lg px-6 py-20 text-center">
+<div class="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 text-primary dark:bg-primary/20">
+<span class="material-symbols-outlined text-4xl">chat_bubble</span>
+</div>
+<h2 class="text-lg font-bold text-slate-900 dark:text-white">Start a Conversation</h2>
+<p class="mt-2 max-w-xs text-sm text-slate-600 dark:text-slate-400">Your future friends are waiting. Head over to the matching screen to find new connections on campus.</p>
+<button class="mt-6 rounded-full bg-primary px-6 py-3 text-base font-bold text-white shadow-lg shadow-primary/30 transition-transform duration-200 hover:scale-105">Find a Match</button>
+</div>
+</main>
+</div>
+</body></html>

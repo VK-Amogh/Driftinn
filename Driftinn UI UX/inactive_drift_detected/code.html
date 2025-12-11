@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Inactive Drift Detected</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings:
+            'FILL' 0,
+            'wght' 400,
+            'GRAD' 0,
+            'opsz' 24;
+        }
+    </style>
+<script>
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "primary": "#6a5ae7",
+              "background-light": "#f6f6f8",
+              "background-dark": "#131121",
+            },
+            fontFamily: {
+              "display": ["Plus Jakarta Sans", "sans-serif"]
+            },
+            borderRadius: {"DEFAULT": "0.5rem", "lg": "1rem", "xl": "1.5rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display">
+<div class="relative flex h-auto min-h-screen w-full flex-col bg-background-light dark:bg-background-dark overflow-x-hidden group/design-root">
+<!-- TopAppBar -->
+<div class="flex items-center bg-background-light dark:bg-background-dark p-4 pb-2 justify-between">
+<div class="flex size-12 shrink-0 items-center justify-start">
+<span class="material-symbols-outlined text-white" style="font-size: 24px;">close</span>
+</div>
+<div class="flex w-auto items-center justify-end">
+<p class="text-[#9b95c6] text-base font-bold leading-normal tracking-[0.015em] shrink-0">Decide Later</p>
+</div>
+</div>
+<!-- Images -->
+<div class="flex w-full justify-center px-4 pt-6">
+<div class="flex items-center justify-center size-24 bg-primary/20 rounded-full">
+<span class="material-symbols-outlined text-primary" style="font-size: 48px;">hourglass_disabled</span>
+</div>
+</div>
+<!-- HeadlineText -->
+<h1 class="text-white tracking-light text-[32px] font-bold leading-tight px-4 text-center pb-3 pt-6 font-display">Inactive Drift Detected</h1>
+<!-- BodyText -->
+<p class="text-[#9b95c6] text-base font-normal leading-normal pb-3 pt-1 px-4 text-center font-display">
+            It's been quiet for 48 hours. Choose how you'd like to manage this chat to keep your space tidy.
+        </p>
+<div class="flex flex-col gap-4 p-4 pt-8">
+<!-- ListItem 1: Close Drift -->
+<div class="flex flex-col gap-4 bg-[#1e1e2f] p-4 rounded-xl">
+<div class="flex items-center gap-4">
+<div class="text-primary flex items-center justify-center rounded-lg bg-primary/20 shrink-0 size-12">
+<span class="material-symbols-outlined" style="font-size: 24px;">archive</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-white text-base font-medium leading-normal line-clamp-1 font-display">Close Drift</p>
+<p class="text-[#9b95c6] text-sm font-normal leading-normal line-clamp-2 font-display">Archive the match and save the chat history. You can reconnect later if they return.</p>
+</div>
+</div>
+<button class="flex items-center justify-center w-full h-12 bg-primary rounded-lg">
+<span class="text-white text-base font-bold font-display">Keep &amp; Close</span>
+</button>
+</div>
+<!-- ListItem 2: Delete Chat -->
+<div class="flex flex-col gap-4 bg-[#1e1e2f] p-4 rounded-xl">
+<div class="flex items-center gap-4">
+<div class="text-red-400 flex items-center justify-center rounded-lg bg-red-400/20 shrink-0 size-12">
+<span class="material-symbols-outlined" style="font-size: 24px;">delete</span>
+</div>
+<div class="flex flex-col justify-center">
+<p class="text-white text-base font-medium leading-normal line-clamp-1 font-display">Delete Chat History</p>
+<p class="text-[#9b95c6] text-sm font-normal leading-normal line-clamp-2 font-display">Permanently unmatches you and deletes the entire conversation for both of you.</p>
+</div>
+</div>
+<button class="flex items-center justify-center w-full h-12 bg-transparent border border-red-400 rounded-lg">
+<span class="text-red-400 text-base font-bold font-display">Delete Forever</span>
+</button>
+</div>
+</div>
+</div>
+</body></html>
