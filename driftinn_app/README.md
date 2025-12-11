@@ -1,45 +1,90 @@
-# Driftinn
-**Anonymous-first friendship for college students.**
+# Driftinn App (Flutter Client) 📱
 
-> "Find real friends, not profiles."
+This directory contains the source code for the **Driftinn** mobile application.
 
-## 🚀 Elevator Pitch
-Driftin helps college students form genuine friendships by matching anonymous, campus-verified peers based on personality signals (MBTI), shared interests, and conversational intent — then safely revealing identities only when both people agree.
+## 📂 Project Structure
 
-## 📖 About Driftin
-Driftin is a campus-first app that makes it easier to meet real friends without the pressure of photos or quick judgments. Students create a light anonymous profile (MBTI + interests + intent), match with peers from the same college, chat anonymously for a short period, and mutually reveal identities only when both agree.
+Verified breakdown of the codebase:
 
-College is the time to build friendships that matter — but social media, group chats, and surface-level scrolling often make it hard to meet people who actually click with you. Driftin solves that by flipping the script: it prioritizes personality and conversation over photos and follower counts.
+### Root Directory
+- **`lib/`**:  Main source code.
+- **`manifest.lock`**: Dependency lockfile.
+- **`pubspec.yaml`**: Dart package dependencies.
+- **`firebase.json`**: Firebase Emulator & Hosting configuration.
+- **`functions/`**: Backend Cloud Functions (Node.js).
 
-## ✨ Key Features
-- **Campus-verified sign-up**: Secure verification via college email or phone OTP.
-- **Anonymous-first matching**: Match based on specific interests, MBTI personality signals, and friendship intent tags.
-- **Text-only anonymous chat**: No images or files pre-reveal to encourage honest conversation and remove pressure.
-- **Reveal-on-consent**: Identities (names, photos, social links) are revealed *only* when both users accept.
-- **Strict Safety**: 
-    - Clear rejection policy (single-sided rejects close the match).
-    - Block & report tools.
-    - Automated moderation and admin review queues.
-- **Post-reveal features**: Media sharing, voice notes, contact sharing, and meet suggestions unlock after the reveal.
+### Source Code (`lib/`)
 
-## 🔄 How it Works
-1. **Sign Up**: Register with your college email or phone and verify your student status.
-2. **Profile Setup**: Complete a brief MBTI-style quiz, pick your interests, and define what kind of friend you're looking for.
-3. **Start Drift**: Tap "Start Drift" to enter the matching pool. We find compatible, nearby students.
-4. **Chat**: Begin an anonymous, text-only conversation. Use prompts and icebreakers to spark real talk.
-5. **Reveal (or Drift Away)**: After the chat meets a threshold (time or message count), either user can request a reveal.
-    - **Mutual Yes**: Profiles unlock!
-    - **One No**: The match is closed, and anonymous content is archived/removed.
+#### **`main.dart`**
+- **Entry Point**: Initializes the app.
+- **Configuration**: Sets up Firebase (with Windows fallbacks), Riverpod ProviderScope, and the main MaterialApp.
 
-## 🛡️ Safety & Privacy
-- **Verified Students Only**: We ensure everyone on the platform is a verified student.
-- **Text-Only First**: Reduces abuse risk during the anonymous phase.
-- **Server-Enforced Reveal**: Clients cannot force a reveal; it strictly requires mutual consent log on the server.
-- **Moderation**: Built-in automated moderation plus human review for flagged content.
-- **Data Privacy**: Anonymous messages are subject to retention policies to control data lifespan.
+#### **`features/`** (Modular Feature Architecture)
+- **`auth/`**: Authentication Logic.
+    - **`screens/`**:
+        - `login_screen.dart`: The main login UI (Tabs for Email/Phone).
+        - `otp_screen.dart`: UI for entering the 6-digit verification code.
+    - **`controller/`**:
+        - `auth_controller.dart`: Riverpod StateNotifier managing auth state and navigation logic.
+    - **`repository/`**:
+        - `auth_repository.dart`: Handles data interactions with Firebase Auth and Cloud Functions. includes **Windows-specific REST fallbacks** for local development.
 
-## 💡 Why it Matters
-Driftin reduces social friction and the performative bias of photo-first apps, making it quicker and safer for students to find friends who actually fit their interests and conversational style. It turns campus anonymity into a tool for authenticity — not for hiding — by giving students a pressure-free space to discover real connections and reveal only when they’re ready.
+#### **`branding/`** (or `core/`)
+- **`theme.dart`**: Contains the app's color palette, text styles, and theme data.
+
+#### **`providers/`**
+- **`app_providers.dart`**: Global Riverpod providers.
 
 ---
-*Chat anonymous → Reveal mutual → Make a friend.*
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Flutter SDK (Latest Stable)
+- Node.js (for Firebase Tools)
+- Firebase CLI (`npm install -g firebase-tools`)
+
+### 1. Setup Environment
+```bash
+# Install dependencies
+flutter pub get
+```
+
+### 2. Start Backend (Emulators)
+To develop locally without affecting the live database:
+```bash
+firebase emulators:start --project driftinn
+```
+*Keep this terminal running.*
+
+### 3. Run the App
+```bash
+# Run on Windows (Debug)
+flutter run -d windows
+```
+
+---
+
+## 🧪 Testing & Verification
+
+### Authentication Flow (Local)
+1. **Email**: Enter any valid `.edu` email. (Mocked success).
+2. **Phone**: Enter a phone number (e.g. `+1551234567`).
+3. **OTP**:
+    - The emulator **will not** send a real SMS.
+    - Check the **Emulator Logs** (Terminal or `http://127.0.0.1:4000/logs`) for the 6-digit code.
+    - Enter code in `OTPScreen`.
+4. **Account Check**:
+    - The app automatically checks if the user exists via Cloud Functions (`accountCheck`).
+    - Redirects to Onboarding (New User) or Home (Existing).
+
+---
+
+## ⚠️ Windows Development Notes
+- **Google Services**: `google-services.json` is **not required** for Windows debug builds connecting to emulators. A dummy options workaround is implemented in `main.dart`.
+- **Cloud Functions**: Direct SDK calls (`functions.httpsCallable`) can be unstable on Windows. We use a **REST API Fallback** (`http.post`) in `AuthRepository` when `kDebugMode` is true.
+
+---
+
+## 🔒 License
+Proprietary software. See root `LICENSE` file.
