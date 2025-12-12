@@ -5,20 +5,18 @@ import 'package:google_generative_ai/google_generative_ai.dart';
 
 class MbtiService {
   // Replace with the user's provided API Key
-  static const String _apiKey = 'AIzaSyDVNgAAibDauHkrxmpYFqOCXBo6kp19NOU';
+  static const String _apiKey = 'YOUR_API_KEY_HERE';
 
-  late GenerativeModel _model; // Removed 'final' to allow updates
+  late GenerativeModel _model;
 
   // History of the conversation/test session to give context to the AI
   final List<Content> _sessionHistory = [];
 
   MbtiService() {
     _model = GenerativeModel(
-      model: 'gemini-pro', // Default starting model
+      model: 'gemini-pro',
       apiKey: _apiKey,
-      generationConfig: GenerationConfig(
-        responseMimeType: 'application/json', // Force JSON response
-      ),
+      generationConfig: GenerationConfig(responseMimeType: 'application/json'),
     );
   }
 
@@ -27,7 +25,6 @@ class MbtiService {
   Future<MbtiQuestion> startAssessment() async {
     _sessionHistory.clear();
 
-    // Initial System Instruction for the "AI Psychologist"
     const String systemPrompt = """
       You are an expert Psychologist and Career Counselor AI. 
       Your goal is to determine a user's MBTI type AND core interests/hobbies in exactly 25 steps.
@@ -126,10 +123,12 @@ class MbtiService {
   Future<MbtiQuestion> _fetchNextQuestionFromAi(String prompt) async {
     // List of models to try in order of preference
     const List<String> modelsToTry = [
-      'gemini-1.5-flash',
       'gemini-pro',
+      'gemini-1.5-flash',
       'gemini-1.0-pro',
     ];
+
+    String? lastError;
 
     for (final modelName in modelsToTry) {
       try {
@@ -142,13 +141,9 @@ class MbtiService {
           ),
         );
 
-        // We create a temporary history for this attempt to avoid polluting the main history with failed attempts
-        // Actually, we must add the prompt to the history sent to the model.
-        // But since we modify _sessionHistory in place, we need to be careful.
-        // A better approach: We only add to _sessionHistory once successful, or we use a copy.
-        // For simplicity: We add the PROMPT to history. If it fails, we remove it.
-
+        // Add prompt temporarily.
         _sessionHistory.add(Content.text(prompt));
+
         final response = await model.generateContent(_sessionHistory);
 
         if (response.text == null) throw Exception("Empty AI Response");
@@ -168,10 +163,8 @@ class MbtiService {
             ? decoded.first
             : decoded;
 
-        // Success! Update history using the SUCCESSFUL model's output
+        // Success!
         _sessionHistory.add(Content.model([TextPart(jsonString)]));
-
-        // Update the main _model to verify we found a working one (optional, but good for next call)
         _model = model;
 
         return MbtiQuestion(
@@ -191,8 +184,8 @@ class MbtiService {
         );
       } catch (e) {
         debugPrint("Model $modelName failed: $e");
-        // Remove the failed prompt from history so we don't duplicate it on retry
-        // The last item is the prompt we just added.
+        lastError = e.toString();
+        // Remove the failed prompt from history so we don't have it twice
         if (_sessionHistory.isNotEmpty) {
           _sessionHistory.removeLast();
         }
@@ -200,49 +193,276 @@ class MbtiService {
       }
     }
 
-    // If ALL models fail, use OFFLINE SIMULATION (Hard Fallback) to ensure app works
-    debugPrint("ALL AI MODELS FAILED. Using Offline Simulation.");
-    return _generateOfflineFallback(prompt);
+    // If ALL models fail, use OFFLINE SIMULATION
+    debugPrint("ALL AI MODELS FAILED. Switching to Offline Mode.");
+    return _generateOfflineFallback(lastError);
   }
 
-  /// Generates a valid question locally without AI, so the user can finish the flow.
-  MbtiQuestion _generateOfflineFallback(String prompt) {
-    // Generate a simple fallback ID based on time
-    final String id = 'offline_${DateTime.now().millisecondsSinceEpoch}';
+  /// Generates a valid question locally without AI using a predefined bank.
+  MbtiQuestion _generateOfflineFallback(String? error) {
+    // Determine the step number based on history length approximately
+    // Each question adds 2 items (User Prompt + AI Response). +1 for System.
+    // So (Length - 1) / 2 = Number of completed questions.
+    int currentQuestionIndex = 0;
+    if (_sessionHistory.isNotEmpty) {
+      currentQuestionIndex = (_sessionHistory.length - 1) ~/ 2;
+    }
+
+    // Ensure we don't go out of bounds of our static list
+    // We Loop if user goes beyond bank size
+    final int index = currentQuestionIndex % _staticQuestions.length;
+
+    final Map<String, dynamic> output = _staticQuestions[index];
+
+    // Create a subtitle that includes the error ONLY for the first few failures to help debug
+    String subtitle = output['subtitle'];
+    if (error != null && currentQuestionIndex < 2) {
+      subtitle += "\n[AI Error: $error]";
+    } else {
+      subtitle += " (Offline Backup Mode)";
+    }
 
     return MbtiQuestion(
-      id: id,
-      dimension: 'General',
-      question:
-          "Since our AI is currently taking a nap (Connection Error), which of these describes you best?",
-      subtitle: "Offline Backup Mode Active.",
-      options: [
-        MbtiOption(
-          label: 'A',
-          text: "I prefer clear plans and schedules.",
-          scores: {'J': 2},
-        ),
-        MbtiOption(
-          label: 'B',
-          text: "I prefer to go with the flow.",
-          scores: {'P': 2},
-        ),
-        MbtiOption(
-          label: 'C',
-          text: "I enjoy being center of attention.",
-          scores: {'E': 2},
-        ),
-        MbtiOption(
-          label: 'D',
-          text: "I enjoy deep one-on-one talks.",
-          scores: {'I': 2},
-        ),
-      ],
+      id: 'offline_$index',
+      question: output['question'],
+      subtitle: subtitle,
+      dimension: output['dimension'],
+      options: (output['options'] as List).map((opt) {
+        return MbtiOption(
+          label: opt['label'],
+          text: opt['text'],
+          scores: Map<String, int>.from(opt['scores']),
+        );
+      }).toList(),
     );
   }
 
+  // --- STATIC QUESTION BANK FOR OFFLINE MODE ---
+  static const List<Map<String, dynamic>> _staticQuestions = [
+    {
+      "question": "At a party, do you usually...",
+      "subtitle": "Let's start by gauging your social energy.",
+      "dimension": "E/I",
+      "options": [
+        {
+          "label": "A",
+          "text": "Interact with many, including strangers.",
+          "scores": {"E": 2},
+        },
+        {
+          "label": "B",
+          "text": "Interact with a few people known to you.",
+          "scores": {"I": 2},
+        },
+        {
+          "label": "C",
+          "text": "Leave early to recharge.",
+          "scores": {"I": 1},
+        },
+        {
+          "label": "D",
+          "text": "Host the party and entertain.",
+          "scores": {"E": 3},
+        },
+      ],
+    },
+    {
+      "question": "When solving a problem, do you prefer...",
+      "subtitle": "How do you process information?",
+      "dimension": "S/N",
+      "options": [
+        {
+          "label": "A",
+          "text": "Proven methods and concrete facts.",
+          "scores": {"S": 2},
+        },
+        {
+          "label": "B",
+          "text": "New ideas and future possibilities.",
+          "scores": {"N": 2},
+        },
+        {
+          "label": "C",
+          "text": "Using physical tools and hands-on work.",
+          "scores": {"S": 1},
+        },
+        {
+          "label": "D",
+          "text": "Brainstorming abstract theories.",
+          "scores": {"N": 1},
+        },
+      ],
+    },
+    {
+      "question": "Creating a travel itinerary:",
+      "subtitle": "Planning vs. Spontaneity.",
+      "dimension": "J/P",
+      "options": [
+        {
+          "label": "A",
+          "text": "Plan every hour in detail.",
+          "scores": {"J": 2},
+        },
+        {
+          "label": "B",
+          "text": "Have a rough list but go with the flow.",
+          "scores": {"P": 1},
+        },
+        {
+          "label": "C",
+          "text": "Decide when I get there.",
+          "scores": {"P": 2},
+        },
+        {
+          "label": "D",
+          "text": "Make a checklist of must-sees.",
+          "scores": {"J": 1},
+        },
+      ],
+    },
+    {
+      "question": "In a debate, is it more important to be:",
+      "subtitle": "Heart vs. Head decision making.",
+      "dimension": "T/F",
+      "options": [
+        {
+          "label": "A",
+          "text": "Truthful, even if it hurts feelings.",
+          "scores": {"T": 2},
+        },
+        {
+          "label": "B",
+          "text": "Kind and maintain harmony.",
+          "scores": {"F": 2},
+        },
+        {
+          "label": "C",
+          "text": "Objective and logical.",
+          "scores": {"T": 1},
+        },
+        {
+          "label": "D",
+          "text": "Empathetic to the other side.",
+          "scores": {"F": 1},
+        },
+      ],
+    },
+    {
+      "question": "After a long week, you crave:",
+      "subtitle": "Recharging Strategy.",
+      "dimension": "E/I",
+      "options": [
+        {
+          "label": "A",
+          "text": "A night out with friends.",
+          "scores": {"E": 2},
+        },
+        {
+          "label": "B",
+          "text": "A quiet book or movie at home.",
+          "scores": {"I": 2},
+        },
+        {
+          "label": "C",
+          "text": "A big concert or event.",
+          "scores": {"E": 1},
+        },
+        {
+          "label": "D",
+          "text": "Solo hobby time.",
+          "scores": {"I": 1},
+        },
+      ],
+    },
+    {
+      "question": "You consider yourself more:",
+      "subtitle": "Self-Perception.",
+      "dimension": "S/N",
+      "options": [
+        {
+          "label": "A",
+          "text": "Realistic and Practical.",
+          "scores": {"S": 2},
+        },
+        {
+          "label": "B",
+          "text": "Imaginative and Creative.",
+          "scores": {"N": 2},
+        },
+        {
+          "label": "C",
+          "text": "Observant of details.",
+          "scores": {"S": 1},
+        },
+        {
+          "label": "D",
+          "text": "Future-oriented vision.",
+          "scores": {"N": 1},
+        },
+      ],
+    },
+    {
+      "question": "Deadlines are:",
+      "subtitle": "Time Management.",
+      "dimension": "J/P",
+      "options": [
+        {
+          "label": "A",
+          "text": "Strict targets to be met early.",
+          "scores": {"J": 2},
+        },
+        {
+          "label": "B",
+          "text": "Detailed suggestions.",
+          "scores": {"P": 2},
+        },
+        {
+          "label": "C",
+          "text": "Stressful but necessary.",
+          "scores": {"J": 1},
+        },
+        {
+          "label": "D",
+          "text": "Flexible markers.",
+          "scores": {"P": 1},
+        },
+      ],
+    },
+    {
+      "question": "When a friend is upset, you first:",
+      "subtitle": "Emotional Response.",
+      "dimension": "T/F",
+      "options": [
+        {
+          "label": "A",
+          "text": "Offer practical solutions.",
+          "scores": {"T": 2},
+        },
+        {
+          "label": "B",
+          "text": "Listen and offer emotional support.",
+          "scores": {"F": 2},
+        },
+        {
+          "label": "C",
+          "text": "Analyze why they are upset.",
+          "scores": {"T": 1},
+        },
+        {
+          "label": "D",
+          "text": "Give them a hug.",
+          "scores": {"F": 1},
+        },
+      ],
+    },
+  ];
+
   // Helper kept for legacy/fallback support if needed
   String calculateMbtiType(Map<String, int> scores) {
+    // Simple mock calculation if needed locally
+    int e = scores['E'] ?? 0;
+    int i = scores['I'] ?? 0;
+    // ... logic ...
     return "AI_DETERMINED";
   }
 }
