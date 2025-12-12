@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:driftinn_mobile/core/services/auth_service.dart';
 import 'package:driftinn_mobile/core/theme/app_theme.dart';
 import 'package:driftinn_mobile/features/mbti/screens/mbti_intro_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart'; // Add this
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -113,27 +114,49 @@ class _PasswordEnterScreenState extends State<PasswordEnterScreen> {
       _isLoading = true;
     });
 
-    // Create user with Firebase Auth
-    final user = await _authService.signUpWithEmailAndPassword(
-      widget.email,
-      password,
-    );
+    try {
+      // Create user with Firebase Auth
+      final user = await _authService.signUpWithEmailAndPassword(
+        widget.email,
+        password,
+      );
 
-    if (context.mounted) {
-      setState(() {
-        _isLoading = false;
-      });
+      if (context.mounted) {
+        setState(() {
+          _isLoading = false;
+        });
 
-      if (user != null) {
-        // Success - Navigate to Home or Login
-        _showSnackBar('Account Created Successfully!');
-        // Navigate to MBTI Intro Screen
-        Navigator.of(context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (context) => const MbtiIntroScreen()),
-          (route) => false,
-        );
-      } else {
-        _showSnackBar('Registration Failed. Please try again.', isError: true);
+        if (user != null) {
+          _showSnackBar('Account Created Successfully!');
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const MbtiIntroScreen()),
+            (route) => false,
+          );
+        }
+      }
+    } on FirebaseAuthException catch (e) {
+      if (context.mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+
+        String errorMsg = 'Registration Failed.';
+        if (e.code == 'email-already-in-use') {
+          errorMsg = 'This email is already registered. Please login.';
+        } else if (e.code == 'weak-password') {
+          errorMsg = 'Password is too weak.';
+        } else if (e.code == 'network-request-failed') {
+          errorMsg = 'Network error. Check connection.';
+        }
+
+        _showSnackBar(errorMsg, isError: true);
+      }
+    } catch (e) {
+      if (context.mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+        _showSnackBar('An unexpected error occurred: $e', isError: true);
       }
     }
   }

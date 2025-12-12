@@ -17,7 +17,7 @@ class AuthService {
       return result.user;
     } catch (e) {
       debugPrint(e.toString());
-      return null;
+      rethrow; // Rethrow so the UI knows what went wrong
     }
   }
 

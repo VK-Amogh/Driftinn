@@ -1,4 +1,5 @@
 import 'package:driftinn_mobile/core/theme/app_theme.dart';
+import 'package:driftinn_mobile/features/mbti/screens/mbti_question_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -134,7 +135,12 @@ class MbtiIntroScreen extends StatelessWidget {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    // TODO: Navigate to Test Screen
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const MbtiQuestionScreen(),
+                      ),
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppTheme.primary,
