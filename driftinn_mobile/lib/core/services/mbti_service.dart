@@ -14,7 +14,7 @@ class MbtiService {
 
   MbtiService() {
     _model = GenerativeModel(
-      model: 'gemini-pro',
+      model: 'gemini-1.5-flash',
       apiKey: _apiKey,
       generationConfig: GenerationConfig(responseMimeType: 'application/json'),
     );
@@ -122,11 +122,8 @@ class MbtiService {
 
   Future<MbtiQuestion> _fetchNextQuestionFromAi(String prompt) async {
     // List of models to try in order of preference
-    const List<String> modelsToTry = [
-      'gemini-pro',
-      'gemini-1.5-flash',
-      'gemini-1.0-pro',
-    ];
+    // gemini-1.5-flash is the most reliable and fastest for this API version
+    const List<String> modelsToTry = ['gemini-1.5-flash'];
 
     String? lastError;
 
@@ -193,9 +190,12 @@ class MbtiService {
       }
     }
 
-    // If ALL models fail, use OFFLINE SIMULATION
-    debugPrint("ALL AI MODELS FAILED. Switching to Offline Mode.");
-    return _generateOfflineFallback(lastError);
+    // If ALL models fail, use OFFLINE SIMULATION silently
+    debugPrint(
+      "ALL AI MODELS FAILED. Switching to Offline Mode (Silent Fallback). Last Error: $lastError",
+    );
+    // Pass null as error so the UI doesn't show the error message to the user
+    return _generateOfflineFallback(null);
   }
 
   /// Generates a valid question locally without AI using a predefined bank.
