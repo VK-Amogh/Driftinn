@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:driftinn_mobile/core/theme/app_theme.dart';
+import 'package:driftinn_mobile/core/utils/toast_utils.dart';
 import 'package:driftinn_mobile/core/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -536,12 +537,15 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
           setState(() {
             _isVerifying = false;
             _isOtpError = false;
-            _verifyStatusMessage = "Phone Verified Successfully!";
-            _verifyStatusColor = Colors.green;
+            _verifyStatusMessage = null;
           });
+          ToastUtils.show(
+            context,
+            message: "Phone Verified Successfully!",
+          );
           debugPrint('Navigating to PasswordEnterScreen...');
           // Navigate to Password Set Screen
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(
               builder: (context) {
@@ -557,9 +561,13 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
           setState(() {
             _isVerifying = false;
             _isOtpError = true;
-            _verifyStatusMessage = "Wrong OTP or Verification Failed.";
-            _verifyStatusColor = Colors.red;
+            _verifyStatusMessage = null;
           });
+          ToastUtils.show(
+            context,
+            message: "Wrong OTP or Verification Failed.",
+            isError: true,
+          );
         }
       } else {
         debugPrint('Context NOT mounted. Cannot navigate.');

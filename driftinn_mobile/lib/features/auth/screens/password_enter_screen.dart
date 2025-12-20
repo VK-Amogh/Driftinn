@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:driftinn_mobile/core/services/auth_service.dart';
 import 'package:driftinn_mobile/core/theme/app_theme.dart';
+import 'package:driftinn_mobile/core/utils/toast_utils.dart';
 import 'package:driftinn_mobile/features/mbti/screens/mbti_intro_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart'; // Add this
 import 'package:flutter/material.dart';
@@ -27,23 +28,10 @@ class _PasswordEnterScreenState extends State<PasswordEnterScreen> {
   final AuthService _authService = AuthService();
 
   void _showSnackBar(String message, {bool isError = false}) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        content: Text(
-          message,
-          style: GoogleFonts.plusJakartaSans(
-            color: Colors.white,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-        backgroundColor: isError
-            ? Colors.red.withOpacity(0.9)
-            : const Color(0xFF1D1A30), // Dark background
-        behavior: SnackBarBehavior.floating, // Floating behavior
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-        margin: const EdgeInsets.all(16),
-        duration: const Duration(seconds: 3),
-      ),
+    ToastUtils.show(
+      context,
+      message: message,
+      isError: isError,
     );
   }
 
@@ -173,9 +161,7 @@ class _PasswordEnterScreenState extends State<PasswordEnterScreen> {
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 0),
               child: Row(
                 children: [
-                  _buildBackButton(context),
-                  Spacer(), // Or progress bar if needed
-                  SizedBox(width: 40), // Balance
+                  const Spacer(),
                 ],
               ),
             ),
@@ -376,25 +362,6 @@ class _PasswordEnterScreenState extends State<PasswordEnterScreen> {
               ),
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBackButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.pop(context),
-      child: Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-          color: AppTheme.surfaceDark,
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(
-          Icons.arrow_back_ios_new,
-          color: AppTheme.offWhite,
-          size: 20,
         ),
       ),
     );

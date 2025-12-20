@@ -2,124 +2,144 @@
 <html class="dark" lang="en"><head>
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>MBTI Questions</title>
+<title>MBTI Question</title>
 <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
 <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
-<script>
-    tailwind.config = {
-      darkMode: "class",
-      theme: {
-        extend: {
-          colors: {
-            "primary": "#6a5ae7",
-            "background-light": "#f6f6f8",
-            "background-dark": "#131121",
-          },
-          fontFamily: {
-            "display": ["Inter", "sans-serif"]
-          },
-          borderRadius: {
-            "DEFAULT": "0.5rem",
-            "lg": "1rem",
-            "xl": "1.5rem",
-            "full": "9999px"
-          },
-        },
-      },
-    }
-  </script>
 <style>
-    .material-symbols-outlined {
-      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-    }
-    body {
-      min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
-    }
-    .carousel {
-      scroll-snap-type: x mandatory;
-      -webkit-overflow-scrolling: touch;
-    }
-    .carousel-item {
-      scroll-snap-align: center;
-    }
-  </style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 1,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#412bee",
+                "background-light": "#f6f6f8",
+                "background-dark": "#121022",
+                "deep-indigo": "#4C51BF",
+                "electric-teal": "#3CDBC0",
+                "off-white": "#F8F9FA",
+                "near-black": "#212529",
+                "muted-gray": "#6C757D"
+              },
+              fontFamily: {
+                "display": ["Plus Jakarta Sans", "sans-serif"]
+              },
+              borderRadius: {
+                "DEFAULT": "1rem",
+                "lg": "2rem",
+                "xl": "3rem",
+                "full": "9999px"
+              },
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #121022; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2d3748; 
+            border-radius: 4px;
+        }
+    </style>
 <style>
     body {
       min-height: max(884px, 100dvh);
     }
   </style>
   </head>
-<body class="font-display bg-background-dark text-zinc-100">
-<div class="relative flex h-full min-h-full w-full flex-col group/design-root">
-<header class="sticky top-0 z-10 w-full bg-background-dark/80 backdrop-blur-sm">
-<div class="flex items-center p-4">
-<button class="flex size-10 shrink-0 items-center justify-center text-zinc-100">
-<span class="material-symbols-outlined !text-2xl">arrow_back_ios_new</span>
-</button>
-<h1 class="flex-1 text-center text-lg font-bold leading-tight tracking-[-0.015em] text-zinc-100 -ml-10">MBTI Questions</h1>
-</div>
-<div class="px-4 pb-3">
-<div class="h-2 w-full rounded-full bg-zinc-800">
-<div class="h-2 rounded-full bg-primary" style="width: 31%;"></div>
-</div>
-</div>
-</header>
-<main class="flex flex-1 flex-col overflow-hidden">
-<div class="carousel flex h-full w-full snap-x snap-mandatory overflow-x-auto scroll-smooth">
-<div class="carousel-item flex w-full flex-shrink-0 snap-center flex-col items-center justify-center p-4 pb-24">
-<div class="flex w-full max-w-md flex-col items-center gap-6">
-<h2 class="text-center text-3xl font-bold leading-tight text-zinc-100">When you're at a party, do you...</h2>
-<div class="flex w-full flex-col items-stretch gap-4">
-<button class="flex min-h-[72px] cursor-pointer items-center justify-center overflow-hidden rounded-xl border-2 border-primary bg-primary/30 px-5 py-3 text-center text-base font-bold leading-normal text-zinc-100 transition-transform active:scale-95">
-<span>...tend to interact with many people, including strangers?</span>
-</button>
-<button class="flex min-h-[72px] cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-zinc-800/80 px-5 py-3 text-center text-base font-bold leading-normal text-zinc-100 transition-transform active:scale-95 hover:bg-zinc-700">
-<span>...prefer to interact with a few people you know well?</span>
+<body class="font-display bg-background-dark text-off-white antialiased">
+<div class="relative flex min-h-screen w-full flex-col bg-background-dark p-6">
+<div class="absolute left-6 top-14 z-20">
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800/50 hover:bg-gray-800 transition-colors border border-gray-700/50">
+<span class="material-symbols-outlined text-off-white text-sm">arrow_back_ios_new</span>
 </button>
 </div>
+<div class="absolute top-16 left-0 right-0 px-20 flex flex-col items-center">
+<div class="w-full max-w-[120px]">
+<div class="flex justify-between items-center mb-1.5 px-1">
+<span class="text-[10px] font-bold text-gray-400 uppercase tracking-widest">Progress</span>
+<span class="text-[10px] font-bold text-primary">20%</span>
+</div>
+<div class="h-1.5 w-full bg-gray-800 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/5 rounded-full shadow-[0_0_10px_rgba(65,43,238,0.5)]"></div>
 </div>
 </div>
-<div class="carousel-item flex w-full flex-shrink-0 snap-center flex-col items-center justify-center p-4 pb-24">
-<div class="flex w-full max-w-md flex-col items-center gap-6">
-<h2 class="text-center text-3xl font-bold leading-tight text-zinc-100">Are you more of a...</h2>
-<div class="flex w-full flex-col items-stretch gap-4">
-<button class="flex min-h-[72px] cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-zinc-800/80 px-5 py-3 text-center text-base font-bold leading-normal text-zinc-100 transition-transform active:scale-95 hover:bg-zinc-700">
-<span>...realist than an idealist?</span>
+</div>
+<div class="flex flex-1 flex-col justify-center pt-24 pb-8 max-w-md mx-auto w-full">
+<div class="mb-8">
+<span class="inline-block px-3 py-1 mb-4 text-xs font-bold tracking-wider text-primary bg-primary/10 rounded-full border border-primary/20">QUESTION 4 / 20</span>
+<h1 class="text-2xl md:text-3xl font-bold tracking-tight text-white leading-tight">
+                    It's Friday night on campus and your friends want to go to a crowded house party. How do you feel?
+                </h1>
+<p class="mt-3 text-sm text-gray-400 leading-relaxed">
+                    Select the option that best describes your instinctive reaction, not necessarily what you'd force yourself to do.
+                </p>
+</div>
+<div class="space-y-4">
+<button class="group relative w-full text-left p-4 rounded-2xl bg-gray-800/40 border-2 border-transparent hover:bg-gray-800 hover:border-gray-600 active:scale-[0.99] transition-all duration-200">
+<div class="flex items-start gap-4">
+<div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gray-600 text-gray-400 group-hover:border-primary group-hover:text-primary text-xs font-bold mt-0.5 transition-colors">
+                            A
+                        </div>
+<span class="text-gray-300 font-medium text-base group-hover:text-white transition-colors">
+                            Excited! I get energy from meeting new people and being in the mix.
+                        </span>
+</div>
 </button>
-<button class="flex min-h-[72px] cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-zinc-800/80 px-5 py-3 text-center text-base font-bold leading-normal text-zinc-100 transition-transform active:scale-95 hover:bg-zinc-700">
-<span>...idealist than a realist?</span>
+<button class="group relative w-full text-left p-4 rounded-2xl bg-gray-800 border-2 border-primary shadow-[0_4px_20px_-4px_rgba(65,43,238,0.3)] transition-all duration-200">
+<div class="flex items-start gap-4">
+<div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-white text-xs font-bold mt-0.5 shadow-sm">
+                            B
+                        </div>
+<span class="text-white font-medium text-base">
+                            I'd prefer hanging out with just a small group of close friends instead.
+                        </span>
+</div>
+<span class="material-symbols-outlined absolute right-4 top-1/2 -translate-y-1/2 text-primary text-xl">check_circle</span>
+</button>
+<button class="group relative w-full text-left p-4 rounded-2xl bg-gray-800/40 border-2 border-transparent hover:bg-gray-800 hover:border-gray-600 active:scale-[0.99] transition-all duration-200">
+<div class="flex items-start gap-4">
+<div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gray-600 text-gray-400 group-hover:border-primary group-hover:text-primary text-xs font-bold mt-0.5 transition-colors">
+                            C
+                        </div>
+<span class="text-gray-300 font-medium text-base group-hover:text-white transition-colors">
+                            Drained just thinking about it. I'm staying in to recharge alone.
+                        </span>
+</div>
+</button>
+<button class="group relative w-full text-left p-4 rounded-2xl bg-gray-800/40 border-2 border-transparent hover:bg-gray-800 hover:border-gray-600 active:scale-[0.99] transition-all duration-200">
+<div class="flex items-start gap-4">
+<div class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full border border-gray-600 text-gray-400 group-hover:border-primary group-hover:text-primary text-xs font-bold mt-0.5 transition-colors">
+                            D
+                        </div>
+<span class="text-gray-300 font-medium text-base group-hover:text-white transition-colors">
+                            Indifferent. I'll go if my roommate goes, but I might leave early.
+                        </span>
+</div>
+</button>
+</div>
+<div class="mt-10">
+<button class="flex h-14 w-full items-center justify-center gap-2 rounded-full bg-primary text-lg font-bold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:scale-[1.01] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-primary/30">
+<span>Next Question</span>
+<span class="material-symbols-outlined text-xl">arrow_forward</span>
 </button>
 </div>
 </div>
-</div>
-<div class="carousel-item flex w-full flex-shrink-0 snap-center flex-col items-center justify-center p-4 pb-24">
-<div class="flex w-full max-w-md flex-col items-center gap-6">
-<h2 class="text-center text-3xl font-bold leading-tight text-zinc-100">Do you prefer to...</h2>
-<div class="flex w-full flex-col items-stretch gap-4">
-<button class="flex min-h-[72px] cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-zinc-800/80 px-5 py-3 text-center text-base font-bold leading-normal text-zinc-100 transition-transform active:scale-95 hover:bg-zinc-700">
-<span>...make decisions with your head?</span>
-</button>
-<button class="flex min-h-[72px] cursor-pointer items-center justify-center overflow-hidden rounded-xl bg-zinc-800/80 px-5 py-3 text-center text-base font-bold leading-normal text-zinc-100 transition-transform active:scale-95 hover:bg-zinc-700">
-<span>...make decisions with your heart?</span>
-</button>
-</div>
-</div>
-</div>
-</div>
-</main>
-<footer class="pointer-events-none fixed bottom-0 left-0 z-10 w-full p-4 pb-6">
-<div class="flex items-center justify-center gap-2">
-<div class="h-2 w-2 rounded-full bg-primary"></div>
-<div class="h-2 w-2 rounded-full bg-zinc-600"></div>
-<div class="h-2 w-2 rounded-full bg-zinc-600"></div>
-<div class="h-2 w-2 rounded-full bg-zinc-600"></div>
-<div class="h-2 w-2 rounded-full bg-zinc-600"></div>
-<div class="text-sm font-medium text-zinc-500">of 16</div>
-</div>
-</footer>
 </div>
 
 </body></html>

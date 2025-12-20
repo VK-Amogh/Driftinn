@@ -34,7 +34,7 @@ class AuthService {
       return result.user;
     } catch (e) {
       debugPrint(e.toString());
-      return null;
+      rethrow;
     }
   }
 
@@ -52,4 +52,6 @@ class AuthService {
   User? getCurrentUser() {
     return _auth.currentUser;
   }
+
+  String? get currentUserId => _auth.currentUser?.uid;
 }

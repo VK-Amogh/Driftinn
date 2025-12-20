@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Driftin Chat List</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+    }
+    .material-symbols-outlined.filled {
+      font-variation-settings: 'FILL' 1,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#412bee",
+            "background-light": "#f6f6f8",
+            "background-dark": "#121022",
+            "deep-indigo": "#4C51BF",
+            "electric-teal": "#3CDBC0",
+            "off-white": "#F8F9FA",
+            "near-black": "#212529",
+            "muted-gray": "#6C757D"
+          },
+          fontFamily: {
+            "display": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }::-webkit-scrollbar {
+        width: 0px;
+        background: transparent;
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-dark text-off-white selection:bg-primary/30">
+<div class="relative flex min-h-screen w-full flex-col bg-background-dark pb-24">
+<div class="sticky top-0 z-30 bg-background-dark/80 px-6 pt-14 pb-4 backdrop-blur-md">
+<div class="flex items-center justify-between mb-4">
+<div>
+<h1 class="text-2xl font-bold tracking-tight text-white">Matches <span class="text-primary">&amp; Chats</span></h1>
+</div>
+<div class="h-10 w-10 overflow-hidden rounded-full border border-gray-700 bg-gray-800">
+<div class="flex h-full w-full items-center justify-center bg-gradient-to-br from-primary to-deep-indigo text-xs font-bold text-white">
+                        JW
+                    </div>
+</div>
+</div>
+<div class="relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500 material-symbols-outlined text-[20px]">search</span>
+<input class="w-full rounded-2xl border-none bg-gray-800/60 py-3.5 pl-11 pr-4 text-sm text-white ring-1 ring-white/5 placeholder:text-gray-500 focus:bg-gray-800 focus:ring-primary/50" placeholder="Search matches..." type="text"/>
+</div>
+</div>
+<div class="flex flex-1 flex-col px-6 pt-2 gap-4">
+<div class="flex items-center justify-between mt-2">
+<h3 class="text-sm font-bold text-gray-300">Active Drifts</h3>
+<button class="text-xs text-primary hover:text-electric-teal flex items-center gap-1">
+                    Sort by <span class="material-symbols-outlined text-[14px]">sort</span>
+</button>
+</div>
+<div class="space-y-3">
+<button class="w-full group relative flex items-center gap-4 rounded-2xl bg-gray-800/40 p-4 ring-1 ring-white/5 transition-all hover:bg-gray-800 active:scale-[0.99]">
+<div class="relative">
+<div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-pink-500 to-rose-600 text-white shadow-lg shadow-pink-500/20">
+<span class="font-bold text-sm">ESFP</span>
+</div>
+<div class="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-background-dark ring-2 ring-background-dark">
+<span class="material-symbols-outlined text-[14px] text-electric-teal filled">verified</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col items-start overflow-hidden">
+<div class="flex w-full items-center justify-between">
+<h4 class="truncate font-bold text-white text-[15px]">Campus Explorer</h4>
+<span class="text-[10px] font-medium text-gray-500">2m ago</span>
+</div>
+<p class="truncate text-xs text-white font-medium w-full text-left">Hey! Are you going to the mixer tonight?</p>
+<div class="mt-2 flex items-center gap-2">
+<span class="inline-flex items-center gap-1 rounded-full bg-electric-teal/10 px-2 py-0.5 text-[10px] font-bold text-electric-teal border border-electric-teal/20">
+<span class="material-symbols-outlined text-[10px]">lock_open</span> REVEAL READY
+                            </span>
+</div>
+</div>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-end gap-2 opacity-100">
+<div class="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">2</div>
+</div>
+</button>
+<button class="w-full group relative flex items-center gap-4 rounded-2xl bg-gray-800/40 p-4 ring-1 ring-white/5 transition-all hover:bg-gray-800 active:scale-[0.99]">
+<div class="relative">
+<div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 text-white shadow-lg shadow-blue-500/20">
+<span class="font-bold text-sm">INTJ</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col items-start overflow-hidden">
+<div class="flex w-full items-center justify-between">
+<h4 class="truncate font-bold text-white text-[15px]">Chess Master</h4>
+<span class="text-[10px] font-medium text-gray-500">1h ago</span>
+</div>
+<p class="truncate text-xs text-white font-medium w-full text-left">I think the strategy relies on opening...</p>
+<div class="mt-2 flex items-center gap-2">
+<span class="inline-flex items-center gap-1 rounded-full bg-gray-700/50 px-2 py-0.5 text-[10px] font-medium text-gray-400 border border-white/5">
+<span class="material-symbols-outlined text-[10px]">timer</span> 14h to reveal
+                            </span>
+</div>
+</div>
+<div class="absolute right-4 top-1/2 -translate-y-1/2 flex flex-col items-end gap-2 opacity-100">
+<div class="flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-white">1</div>
+</div>
+</button>
+<button class="w-full group relative flex items-center gap-4 rounded-2xl bg-gray-800/40 p-4 ring-1 ring-white/5 transition-all hover:bg-gray-800 active:scale-[0.99]">
+<div class="relative">
+<div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-orange-400 to-amber-600 text-white shadow-lg shadow-orange-500/20">
+<span class="font-bold text-sm">ISTP</span>
+</div>
+<div class="absolute -bottom-1 -right-1 flex h-6 w-6 items-center justify-center rounded-full bg-background-dark ring-2 ring-background-dark">
+<span class="material-symbols-outlined text-[14px] text-electric-teal filled">verified</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col items-start overflow-hidden">
+<div class="flex w-full items-center justify-between">
+<h4 class="truncate font-bold text-white text-[15px]">Tech Wizard</h4>
+<span class="text-[10px] font-medium text-gray-500">3h ago</span>
+</div>
+<p class="truncate text-xs text-gray-400 w-full text-left">Sent a photo.</p>
+<div class="mt-2 flex items-center gap-2">
+<span class="inline-flex items-center gap-1 rounded-full bg-gray-700/50 px-2 py-0.5 text-[10px] font-medium text-gray-400 border border-white/5">
+<span class="material-symbols-outlined text-[10px]">timer</span> 2d to reveal
+                            </span>
+</div>
+</div>
+</button>
+<button class="w-full group relative flex items-center gap-4 rounded-2xl bg-gray-800/40 p-4 ring-1 ring-white/5 transition-all hover:bg-gray-800 active:scale-[0.99]">
+<div class="relative">
+<div class="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-green-500 to-emerald-600 text-white shadow-lg shadow-green-500/20">
+<span class="font-bold text-sm">INFJ</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col items-start overflow-hidden">
+<div class="flex w-full items-center justify-between">
+<h4 class="truncate font-bold text-white text-[15px]">Quiet Poet</h4>
+<span class="text-[10px] font-medium text-gray-500">Yesterday</span>
+</div>
+<p class="truncate text-xs text-gray-400 w-full text-left">Have you read that book yet?</p>
+<div class="mt-2 flex items-center gap-2">
+<span class="inline-flex items-center gap-1 rounded-full bg-gray-700/50 px-2 py-0.5 text-[10px] font-medium text-gray-400 border border-white/5">
+<span class="material-symbols-outlined text-[10px]">timer</span> 5h to reveal
+                            </span>
+</div>
+</div>
+</button>
+<button class="w-full group relative flex items-center gap-4 rounded-2xl bg-gray-800/40 p-4 ring-1 ring-white/5 transition-all hover:bg-gray-800 active:scale-[0.99] opacity-75">
+<div class="relative">
+<div class="flex h-14 w-14 items-center justify-center rounded-full bg-gray-700 text-gray-400 shadow-lg border border-white/5">
+<span class="material-symbols-outlined text-2xl">question_mark</span>
+</div>
+</div>
+<div class="flex flex-1 flex-col items-start overflow-hidden">
+<div class="flex w-full items-center justify-between">
+<h4 class="truncate font-bold text-gray-300 text-[15px]">New Drift</h4>
+<span class="text-[10px] font-medium text-gray-500">Just now</span>
+</div>
+<p class="truncate text-xs text-gray-400 w-full text-left italic">Waiting for them to reply...</p>
+<div class="mt-2 flex items-center gap-2">
+<span class="inline-flex items-center gap-1 rounded-full bg-gray-700/30 px-2 py-0.5 text-[10px] font-medium text-gray-500 border border-white/5">
+<span class="material-symbols-outlined text-[10px]">hourglass_empty</span> Pending
+                            </span>
+</div>
+</div>
+</button>
+</div>
+<div class="py-8 text-center">
+<p class="text-xs text-gray-600">You're all caught up!</p>
+</div>
+</div>
+<div class="fixed bottom-0 left-0 z-50 w-full border-t border-white/5 bg-background-dark/95 backdrop-blur-xl pb-8 pt-2">
+<nav class="flex items-center justify-around px-4">
+<button class="group flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-gray-300">
+<span class="material-symbols-outlined text-[26px] transition-transform group-active:scale-90">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</button>
+<button class="group flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-gray-300">
+<span class="material-symbols-outlined text-[26px] transition-transform group-active:scale-90">diversity_2</span>
+<span class="text-[10px] font-medium">Match</span>
+</button>
+<button class="group flex flex-col items-center gap-1 p-2 text-primary relative">
+<span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary ring-2 ring-background-dark"></span>
+<span class="material-symbols-outlined filled text-[26px] transition-transform group-active:scale-90">chat_bubble</span>
+<span class="text-[10px] font-semibold">Chat</span>
+</button>
+<button class="group flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-gray-300">
+<span class="material-symbols-outlined text-[26px] transition-transform group-active:scale-90">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</nav>
+</div>
+</div>
+
+</body></html>

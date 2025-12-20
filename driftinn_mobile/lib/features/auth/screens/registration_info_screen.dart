@@ -370,15 +370,15 @@ class _RegistrationInfoScreenState extends State<RegistrationInfoScreen> {
         hintStyle: GoogleFonts.plusJakartaSans(color: AppTheme.mutedGray),
         prefixIcon: Icon(icon, color: const Color(0xFF9CA3AF)), // gray-400
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12), // roughly 0.75rem -> 12px
+          borderRadius: BorderRadius.circular(30), // pill shape
           borderSide: BorderSide.none,
         ),
         enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(30),
           borderSide: const BorderSide(color: AppTheme.primary),
         ),
         contentPadding: const EdgeInsets.symmetric(
@@ -399,7 +399,7 @@ class _RegistrationInfoScreenState extends State<RegistrationInfoScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
         color: AppTheme.surfaceDark,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(30),
       ),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
@@ -452,15 +452,15 @@ class _RegistrationInfoScreenState extends State<RegistrationInfoScreen> {
               horizontal: 16,
             ), // Padding adjustment
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(30),
               borderSide: BorderSide.none,
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(30),
               borderSide: BorderSide.none,
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(30),
               borderSide: const BorderSide(color: AppTheme.primary),
             ),
           ),
@@ -468,7 +468,7 @@ class _RegistrationInfoScreenState extends State<RegistrationInfoScreen> {
             backgroundColor: WidgetStateProperty.all(AppTheme.surfaceDark),
             surfaceTintColor: WidgetStateProperty.all(Colors.transparent),
             shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
             ),
           ),
           dropdownMenuEntries: options.map<DropdownMenuEntry<String>>((

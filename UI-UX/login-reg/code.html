@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Driftin: Discover Connections</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#6366f1",
+            "secondary": "#2dd4bf",
+            "background-dark": "#0B0A16",
+            "surface-dark": "#1C1A2E",
+            "glass": "rgba(255, 255, 255, 0.05)",
+          },
+          fontFamily: {
+            "display": ["Plus Jakarta Sans", "sans-serif"]
+          },
+        },
+      },
+    }
+</script>
+<style>
+    body {
+      background-color: #0B0A16;
+    }
+    .orb-glow {
+        position: absolute;
+        border-radius: 9999px;
+        filter: blur(80px);
+        opacity: 0.4;
+        z-index: 0;
+        pointer-events: none;
+    }
+</style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-dark text-white h-[100dvh] w-full overflow-hidden relative selection:bg-primary selection:text-white">
+<div class="orb-glow bg-primary w-96 h-96 -top-20 -left-20 opacity-30 mix-blend-screen"></div>
+<div class="orb-glow bg-secondary w-72 h-72 top-1/4 -right-20 opacity-20 mix-blend-screen"></div>
+<div class="orb-glow bg-purple-600 w-80 h-80 -bottom-20 -left-10 opacity-30 mix-blend-screen"></div>
+<div class="absolute top-[20%] right-[25%] w-1 h-1 bg-white rounded-full opacity-60"></div>
+<div class="absolute top-[15%] left-[30%] w-0.5 h-0.5 bg-secondary rounded-full opacity-80"></div>
+<div class="absolute bottom-[40%] left-[10%] w-1.5 h-1.5 bg-primary rounded-full opacity-40"></div>
+<div class="absolute bottom-[30%] right-[20%] w-1 h-1 bg-white rounded-full opacity-30"></div>
+<div class="absolute top-[40%] right-[10%] w-1 h-1 bg-purple-400 rounded-full opacity-50"></div>
+<svg class="absolute inset-0 w-full h-full pointer-events-none opacity-20" xmlns="http://www.w3.org/2000/svg">
+<path d="M-50 100 Q 150 250 300 150" fill="none" stroke="url(#grad1)" stroke-width="1"></path>
+<defs>
+<linearGradient id="grad1" x1="0%" x2="100%" y1="0%" y2="0%">
+<stop offset="0%" style="stop-color:#6366f1;stop-opacity:0"></stop>
+<stop offset="50%" style="stop-color:#6366f1;stop-opacity:1"></stop>
+<stop offset="100%" style="stop-color:#2dd4bf;stop-opacity:0"></stop>
+</linearGradient>
+</defs>
+</svg>
+<div class="relative z-10 flex h-full flex-col justify-between p-8">
+<div class="flex-none h-10"></div>
+<div class="flex flex-col items-center text-center space-y-10">
+<div class="relative group">
+<div class="absolute -inset-4 bg-gradient-to-tr from-primary/40 to-secondary/40 rounded-full blur-xl opacity-60"></div>
+<div class="relative h-28 w-28 bg-[#151425] rounded-3xl flex items-center justify-center border border-white/10 shadow-2xl rotate-6 transition-transform hover:rotate-0">
+<span class="material-symbols-outlined text-5xl text-white bg-clip-text bg-gradient-to-br from-white to-gray-400">hub</span>
+</div>
+<div class="absolute -top-6 -right-6 bg-secondary/10 backdrop-blur-md border border-white/5 w-12 h-12 rounded-full flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-secondary text-base">bolt</span>
+</div>
+<div class="absolute -bottom-2 -left-8 bg-primary/10 backdrop-blur-md border border-white/5 w-10 h-10 rounded-full flex items-center justify-center shadow-lg">
+<span class="material-symbols-outlined text-primary text-sm">favorite</span>
+</div>
+</div>
+<div class="space-y-3">
+<h1 class="text-5xl font-extrabold tracking-tight">
+<span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-gray-400 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]">Driftin</span>
+</h1>
+<p class="font-semibold text-secondary tracking-[0.2em] uppercase text-xs opacity-90">Discover Connections</p>
+</div>
+<p class="text-gray-400 max-w-[280px] text-sm leading-relaxed">
+            Anonymous-first matching.<br/>
+            Verified students.<br/>
+<span class="text-gray-300 font-medium">Real friendships.</span>
+</p>
+</div>
+<div class="w-full space-y-4 mb-4">
+<button class="w-full h-14 bg-gradient-to-r from-primary to-[#565add] hover:to-primary rounded-2xl font-bold text-white text-lg shadow-[0_0_30px_-5px_rgba(99,102,241,0.4)] transition-all transform hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center relative overflow-hidden group">
+<div class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></div>
+<span class="relative z-10 flex items-center gap-2">
+                Create Account
+                <span class="material-symbols-outlined text-sm font-bold">arrow_forward</span>
+</span>
+</button>
+<button class="w-full h-14 bg-surface-dark/50 border border-white/10 hover:bg-surface-dark/80 rounded-2xl font-semibold text-gray-200 text-lg transition-all flex items-center justify-center backdrop-blur-md active:scale-[0.98]">
+            Log In
+        </button>
+<p class="text-center text-[10px] text-gray-600 pt-2 uppercase tracking-wider">
+            Verified Campus Access Only
+        </p>
+</div>
+</div>
+
+</body></html>

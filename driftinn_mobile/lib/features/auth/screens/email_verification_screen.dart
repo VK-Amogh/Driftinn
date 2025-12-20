@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:ui';
 import 'package:driftinn_mobile/core/theme/app_theme.dart';
+import 'package:driftinn_mobile/core/utils/toast_utils.dart';
 import 'package:driftinn_mobile/core/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -253,8 +254,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                           debugPrint(
                                             '--- SEND CODE PRESSED ---',
                                           );
-                                          final email = _emailController.text
-                                              .trim();
+                                          final email =
+                                              _emailController.text.trim();
 
                                           if (email.isNotEmpty &&
                                               email.contains('@')) {
@@ -273,12 +274,11 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
 
                                             try {
                                               // Generate 6-digit OTP
-                                              final otp =
-                                                  (100000 +
-                                                          DateTime.now()
-                                                                  .microsecondsSinceEpoch %
-                                                              900000)
-                                                      .toString();
+                                              final otp = (100000 +
+                                                      DateTime.now()
+                                                              .microsecondsSinceEpoch %
+                                                          900000)
+                                                  .toString();
                                               _lastGeneratedOtp =
                                                   otp; // Store locally
                                               debugPrint('Generated OTP: $otp');
@@ -336,8 +336,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                   style: ElevatedButton.styleFrom(
                                     backgroundColor:
                                         (_isButtonDisabled || _isSending)
-                                        ? AppTheme.mutedGray.withAlpha(50)
-                                        : AppTheme.primary,
+                                            ? AppTheme.mutedGray.withAlpha(50)
+                                            : AppTheme.primary,
                                     foregroundColor: Colors.white,
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(16),
@@ -363,8 +363,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                           style: GoogleFonts.plusJakartaSans(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
-                                            color:
-                                                (_isButtonDisabled ||
+                                            color: (_isButtonDisabled ||
                                                     _isSending)
                                                 ? Colors.white.withAlpha(100)
                                                 : Colors.white,
@@ -495,9 +494,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                         onPressed: _isVerifying
                             ? null
                             : () async {
-                                final otp = _otpControllers
-                                    .map((c) => c.text)
-                                    .join();
+                                final otp =
+                                    _otpControllers.map((c) => c.text).join();
                                 final email = _emailController.text.trim();
 
                                 if (otp.length == 6 && email.isNotEmpty) {
@@ -540,28 +538,36 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                       setState(() {
                                         _isVerifying = false;
                                         _isOtpError = false;
-                                        _verifyStatusMessage =
-                                            'Email Verified Successfully!';
-                                        _verifyStatusColor = Colors.green;
+                                        _verifyStatusMessage = null;
                                       });
+                                      ToastUtils.show(
+                                        context,
+                                        message: 'Email Verified Successfully!',
+                                      );
                                       // Navigate to Phone Verification Screen
                                       Navigator.push(
                                         context,
                                         MaterialPageRoute(
                                           builder: (context) =>
                                               PhoneVerificationScreen(
-                                                email: email,
-                                              ),
+                                            email: email,
+                                          ),
                                         ),
                                       );
                                     } else {
-                                      setState(() {
-                                        _isVerifying = false;
-                                        _isOtpError = true;
-                                        _verifyStatusMessage =
-                                            'Invalid Code or Expired. Please try again.';
-                                        _verifyStatusColor = Colors.red;
-                                      });
+                                      if (context.mounted) {
+                                        setState(() {
+                                          _isVerifying = false;
+                                          _isOtpError = true;
+                                          _verifyStatusMessage = null;
+                                        });
+                                        ToastUtils.show(
+                                          context,
+                                          message:
+                                              'Invalid Code or Expired. Please try again.',
+                                          isError: true,
+                                        );
+                                      }
                                     }
                                   }
                                 }

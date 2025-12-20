@@ -19,7 +19,7 @@ class MbtiIntroScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  _buildBackButton(context),
+                  const Spacer(),
                   Text(
                     'Step 1 of 4',
                     style: GoogleFonts.plusJakartaSans(
@@ -135,7 +135,7 @@ class MbtiIntroScreen extends StatelessWidget {
                 height: 56,
                 child: ElevatedButton(
                   onPressed: () {
-                    Navigator.push(
+                    Navigator.pushReplacement(
                       context,
                       MaterialPageRoute(
                         builder: (context) => const MbtiQuestionScreen(),
@@ -162,27 +162,6 @@ class MbtiIntroScreen extends StatelessWidget {
               ),
             ),
           ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildBackButton(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.pop(context),
-      child: Container(
-        height: 40,
-        width: 40,
-        decoration: BoxDecoration(
-          color: const Color(
-            0xFF1F2937,
-          ).withOpacity(0.5), // Matches previous screens
-          shape: BoxShape.circle,
-        ),
-        child: const Icon(
-          Icons.arrow_back_ios_new,
-          color: AppTheme.offWhite,
-          size: 20,
         ),
       ),
     );

@@ -1,468 +1,218 @@
-import 'dart:convert';
+import 'dart:math';
+import 'package:driftinn_mobile/core/services/auth_service.dart';
+import 'package:driftinn_mobile/core/services/database_service.dart';
 import 'package:driftinn_mobile/features/mbti/models/mbti_question.dart';
-import 'package:flutter/foundation.dart'; // For debugPrint
-import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:flutter/foundation.dart';
+import 'package:driftinn_mobile/core/services/offline_question_bank.dart';
+// Added this import
 
 class MbtiService {
-  // Replace with the user's provided API Key
-  static const String _apiKey = 'YOUR_API_KEY_HERE';
+  // Store the active session's unique 25 questions
+  List<MbtiQuestion> _currentSessionPlan = [];
 
-  late GenerativeModel _model;
+  // Track scores: E vs I, S vs N, T vs F, J vs P
+  // Also track Interest categories
+  final Map<String, int> _sessionScores = {
+    'E': 0, 'I': 0,
+    'S': 0, 'N': 0,
+    'T': 0, 'F': 0,
+    'J': 0, 'P': 0,
+    // Interests will be dynamic
+  };
 
-  // History of the conversation/test session to give context to the AI
-  final List<Content> _sessionHistory = [];
+  // Track Interest counts
+  final Map<String, int> _interestScores = {};
 
-  MbtiService() {
-    _model = GenerativeModel(
-      model: 'gemini-1.5-flash',
-      apiKey: _apiKey,
-      generationConfig: GenerationConfig(responseMimeType: 'application/json'),
-    );
+  MbtiService();
+
+  String? getCurrentUserId() {
+    return AuthService().currentUserId;
   }
 
-  /// Starts the assessment by fetching the first question.
-  /// Clears previous history.
+  /// Starts the assessment by generating a UNIQUE, RANDOMIZED plan.
   Future<MbtiQuestion> startAssessment() async {
-    _sessionHistory.clear();
-
-    const String systemPrompt = """
-      You are an expert Psychologist and Career Counselor AI. 
-      Your goal is to determine a user's MBTI type AND core interests/hobbies in exactly 25 steps.
-      
-      This is an INTERACTIVE session. You will generate ONE question at a time.
-      
-      PHASE 1 (Questions 1-12): Focus on determining the 4 MBTI dimensions (E/I, S/N, T/F, J/P).
-      PHASE 2 (Questions 13-25): Focus on specific interests, hobbies, and social preferences.
-      
-      OUTPUT FORMAT:
-      Return a SINGLE JSON object for the next question.
-      {
-        "id": "step_X",
-        "question": "The question text...",
-        "subtitle": "Short context...",
-        "dimension": "TARGET_DIMENSION_OR_TOPIC",
-        "options": [
-          { "label": "A", "text": "Option A", "scores": {"E": 2} },
-          { "label": "B", "text": "Option B", "scores": {"I": 2} },
-          { "label": "C", "text": "Option C", "scores": {"E": 1} },
-          { "label": "D", "text": "Option D", "scores": {"I": 1} }
-        ]
-      }
-    """;
-
-    _sessionHistory.add(Content.text(systemPrompt));
-
-    return _fetchNextQuestionFromAi(
-      "Generate Question 1. Start with a broad scenario about a social situation to gauge Extroversion vs Introversion.",
-    );
+    _sessionScores.updateAll((key, value) => 0);
+    _interestScores.clear();
+    _generateRandomSession();
+    return _currentSessionPlan[0];
   }
 
-  /// Submits the user's answer and gets the NEXT optimized question.
+  /// Submits the answer (locally logged) and returns the NEXT question from the plan.
   Future<MbtiQuestion> submitAnswerAndGetNext(
     int currentStep,
     String answerText,
     String answerLabel,
   ) async {
-    // 1. Add User's Answer to History so AI knows what they picked
-    _sessionHistory.add(
-      Content.model([
-        TextPart("User selected Option $answerLabel: $answerText"),
-      ]),
-    );
+    // 1. Record Score for the ANSWERED question
+    // currentStep is the index of the question we just answered (0-indexed)
+    if (currentStep < _currentSessionPlan.length) {
+      final answeredQuestion = _currentSessionPlan[currentStep];
+      // Find the selected option
+      final selectedOption = answeredQuestion.options.firstWhere(
+        (opt) => opt.label == answerLabel,
+        orElse: () => answeredQuestion.options.first,
+      );
 
-    // 2. prompt for the next step
-    String prompt = "";
-    if (currentStep < 12) {
-      prompt =
-          "Generate Question ${currentStep + 1}. Analyze the previous answer. If the dimension is clear, switch to a new dimension (S/N, T/F, J/P). If unclear, dig deeper.";
-    } else if (currentStep < 25) {
-      prompt =
-          "Generate Question ${currentStep + 1}. Phase 2 (Interests/Niche). Based on their previous answers, ask about specific hobbies or passions to narrow down their 'Vibe'.";
-    } else {
-      prompt = "Generate a final wrap-up question.";
+      // Apply scores
+      selectedOption.scores.forEach((key, value) {
+        if (_sessionScores.containsKey(key)) {
+          _sessionScores[key] = (_sessionScores[key] ?? 0) + value;
+        } else {
+          // It's an interest score
+          _interestScores[key] = (_interestScores[key] ?? 0) + value;
+        }
+      });
     }
 
-    return _fetchNextQuestionFromAi(prompt);
+    // 2. Get Next Question
+    int nextIndex = currentStep + 1;
+
+    if (nextIndex >= _currentSessionPlan.length) {
+      // Return last question to avoid crash if UI goes over
+      return _currentSessionPlan.last;
+    }
+
+    return _currentSessionPlan[nextIndex];
   }
 
   /// Generates the Final detailed analysis report
-  Future<Map<String, dynamic>> generateFinalReport() async {
-    const String analysisPrompt = """
-       ALL 25 Questions are complete.
-       Initialize a deep analysis of the user based on the entire chat history.
-       
-       Return JSON:
-       {
-         "mbti_type": "ENTJ",
-         "confidence": "High",
-         "personality_summary": "A 2-sentence summary of their vibe.",
-         "top_interests": ["Tech", "Hiking", "Debate"],
-         "compatible_types": ["INTP", "INFJ"]
-       }
-     """;
+  Future<Map<String, dynamic>> generateFinalReport(String userId) async {
+    // 1. Calculate MBTI
+    String mbtiType = _calculateFinalType();
 
-    _sessionHistory.add(Content.text(analysisPrompt));
+    // 2. Calculate Top Interests
+    List<String> topInterests = _calculateTopInterests();
 
+    // 3. Generate Analysis (Mock text based on type)
+    Map<String, dynamic> result = {
+      "mbti_type": mbtiType,
+      "confidence": "High", // Static for now
+      "personality_summary": _getSummaryForType(mbtiType),
+      "top_interests": topInterests,
+      "compatible_types": _getCeompatibleTypes(mbtiType),
+      "timestamp": DateTime.now().toIso8601String(),
+    };
+
+    // 4. Save to Database
     try {
-      final response = await _model.generateContent(_sessionHistory);
-      String text = response.text!.trim();
-      if (text.startsWith('```json')) {
-        text = text.replaceAll('```json', '').replaceAll('```', '');
-      }
-      return jsonDecode(text);
+      await DatabaseService().saveMbtiResult(userId, result);
     } catch (e) {
-      print("Analysis Error: $e");
-      return {
-        "mbti_type": "UNKNOWN",
-        "personality_summary": "Could not generate analysis.",
-        "top_interests": [],
-      };
+      debugPrint("Failed to save result to DB: $e");
+      // Proceed returning result so UI can verify, even if save failed (retry later?)
     }
+
+    return result;
   }
 
-  Future<MbtiQuestion> _fetchNextQuestionFromAi(String prompt) async {
-    // List of models to try in order of preference
-    // gemini-1.5-flash is the most reliable and fastest for this API version
-    const List<String> modelsToTry = ['gemini-1.5-flash'];
+  // --- INTERNAL ENGINE ---
 
-    String? lastError;
+  String _calculateFinalType() {
+    String e_i = (_sessionScores['E']! >= _sessionScores['I']!) ? 'E' : 'I';
+    String s_n = (_sessionScores['S']! >= _sessionScores['N']!) ? 'S' : 'N';
+    String t_f = (_sessionScores['T']! >= _sessionScores['F']!) ? 'T' : 'F';
+    String j_p = (_sessionScores['J']! >= _sessionScores['P']!) ? 'J' : 'P';
+    return "$e_i$s_n$t_f$j_p";
+  }
 
-    for (final modelName in modelsToTry) {
-      try {
-        debugPrint("Trying AI model: $modelName...");
-        final model = GenerativeModel(
-          model: modelName,
-          apiKey: _apiKey,
-          generationConfig: GenerationConfig(
-            responseMimeType: 'application/json',
-          ),
-        );
+  List<String> _calculateTopInterests() {
+    var sortedKeys = _interestScores.keys.toList(growable: false)
+      ..sort((k1, k2) =>
+          (_interestScores[k2] ?? 0).compareTo(_interestScores[k1] ?? 0));
+    return sortedKeys.take(3).toList();
+  }
 
-        // Add prompt temporarily.
-        _sessionHistory.add(Content.text(prompt));
+  String _getSummaryForType(String type) {
+    const summaries = {
+      'INTJ':
+          "The Architect: Imaginative and strategic thinkers, with a plan for everything.",
+      'INTP':
+          "The Logician: Innovative inventors with an unquenchable thirst for knowledge.",
+      'ENTJ':
+          "The Commander: Bold, imaginative and strong-willed leaders, always finding a way.",
+      'ENTP':
+          "The Debater: Smart and curious thinkers who cannot resist an intellectual challenge.",
+      'INFJ':
+          "The Advocate: Quiet and mystical, yet very inspiring and tireless idealists.",
+      'INFP':
+          "The Mediator: Poetic, kind and altruistic people, always eager to help a good cause.",
+      'ENFJ':
+          "The Protagonist: Charismatic and inspiring leaders, able to mesmerize their listeners.",
+      'ENFP':
+          "The Campaigner: Enthusiastic, creative and sociable free spirits, who can always find a reason to smile.",
+      'ISTJ':
+          "The Logistician: Practical and fact-minded individuals, whose reliability cannot be doubted.",
+      'ISFJ':
+          "The Defender: Very dedicated and warm protectors, always ready to defend their loved ones.",
+      'ESTJ':
+          "The Executive: Excellent administrators, unsurpassed at managing things or people.",
+      'ESFJ':
+          "The Consul: Extraordinarily caring, social and popular people, always eager to help.",
+      'ISTP':
+          "The Virtuoso: Bold and practical experimenters, masters of all kinds of tools.",
+      'ISFP':
+          "The Adventurer: Flexible and charming artists, always ready to explore and experience something new.",
+      'ESTP':
+          "The Entrepreneur: Smart, energetic and very perceptive people, who truly enjoy living on the edge.",
+      'ESFP':
+          "The Entertainer: Spontaneous, energetic and enthusiastic people – life is never boring around them.",
+    };
+    return summaries[type] ?? "A unique and complex personality.";
+  }
 
-        final response = await model.generateContent(_sessionHistory);
+  List<String> _getCeompatibleTypes(String type) {
+    return ["INTJ", "ENFP"]; // Placeholder logic
+  }
 
-        if (response.text == null) throw Exception("Empty AI Response");
+  void _generateRandomSession() {
+    _currentSessionPlan.clear();
+    final random = Random();
 
-        String rawText = response.text!.trim();
-        debugPrint("AI RESPONSE ($modelName): $rawText");
+    // 1. Get Pools (Copy them so valid changes don't affect static list)
+    List<Map<String, dynamic>> poolA =
+        List.from(OfflineQuestionBank.personalityQuestions);
+    List<Map<String, dynamic>> poolB =
+        List.from(OfflineQuestionBank.interestQuestions);
 
-        // JSON Extraction
-        final int startIndex = rawText.indexOf('{');
-        final int endIndex = rawText.lastIndexOf('}');
-        if (startIndex == -1 || endIndex == -1)
-          throw Exception("No JSON found");
+    // 2. Shuffle Pools to randomize order
+    poolA.shuffle(random);
+    poolB.shuffle(random);
 
-        final String jsonString = rawText.substring(startIndex, endIndex + 1);
-        final dynamic decoded = jsonDecode(jsonString);
-        final Map<String, dynamic> json = (decoded is List)
-            ? decoded.first
-            : decoded;
-
-        // Success!
-        _sessionHistory.add(Content.model([TextPart(jsonString)]));
-        _model = model;
-
-        return MbtiQuestion(
-          id: json['id'] ?? DateTime.now().toString(),
-          question: json['question'],
-          subtitle: json['subtitle'] ?? '',
-          dimension: json['dimension'] ?? 'General',
-          options: (json['options'] as List).map((opt) {
-            return MbtiOption(
-              label: opt['label'],
-              text: opt['text'],
-              scores: opt['scores'] != null
-                  ? Map<String, int>.from(opt['scores'])
-                  : {},
-            );
-          }).toList(),
-        );
-      } catch (e) {
-        debugPrint("Model $modelName failed: $e");
-        lastError = e.toString();
-        // Remove the failed prompt from history so we don't have it twice
-        if (_sessionHistory.isNotEmpty) {
-          _sessionHistory.removeLast();
-        }
-        continue; // Try next model
-      }
+    // 3. Select 15 Personality Questions
+    // We want unique questions. Since we expanded the pool to >30, we can just take the first 15.
+    for (int i = 0; i < 15; i++) {
+      // Use modulo just in case pool is smaller than 15 (safety), but shuffle ensures randomness
+      final data = poolA[i % poolA.length];
+      _currentSessionPlan.add(_mapToQuestion(data, i + 1));
     }
 
-    // If ALL models fail, use OFFLINE SIMULATION silently
+    // 4. Select 10 Interest Questions
+    for (int i = 0; i < 10; i++) {
+      final data = poolB[i % poolB.length];
+      // IDs continue from 16
+      _currentSessionPlan.add(_mapToQuestion(data, 15 + i + 1));
+    }
+
     debugPrint(
-      "ALL AI MODELS FAILED. Switching to Offline Mode (Silent Fallback). Last Error: $lastError",
-    );
-    // Pass null as error so the UI doesn't show the error message to the user
-    return _generateOfflineFallback(null);
+        "Generated Unique Session with ${_currentSessionPlan.length} questions.");
+    if (_currentSessionPlan.isNotEmpty) {
+      debugPrint("First Question: ${_currentSessionPlan[0].question}");
+    }
   }
 
-  /// Generates a valid question locally without AI using a predefined bank.
-  MbtiQuestion _generateOfflineFallback(String? error) {
-    // Determine the step number based on history length approximately
-    // Each question adds 2 items (User Prompt + AI Response). +1 for System.
-    // So (Length - 1) / 2 = Number of completed questions.
-    int currentQuestionIndex = 0;
-    if (_sessionHistory.isNotEmpty) {
-      currentQuestionIndex = (_sessionHistory.length - 1) ~/ 2;
-    }
-
-    // Ensure we don't go out of bounds of our static list
-    // We Loop if user goes beyond bank size
-    final int index = currentQuestionIndex % _staticQuestions.length;
-
-    final Map<String, dynamic> output = _staticQuestions[index];
-
-    // Create a subtitle that includes the error ONLY for the first few failures to help debug
-    String subtitle = output['subtitle'];
-    if (error != null && currentQuestionIndex < 2) {
-      subtitle += "\n[AI Error: $error]";
-    } else {
-      subtitle += " (Offline Backup Mode)";
-    }
-
+  MbtiQuestion _mapToQuestion(Map<String, dynamic> data, int index) {
     return MbtiQuestion(
-      id: 'offline_$index',
-      question: output['question'],
-      subtitle: subtitle,
-      dimension: output['dimension'],
-      options: (output['options'] as List).map((opt) {
+      id: 'step_$index',
+      question: data['question'],
+      subtitle: data['subtitle'] ?? '',
+      dimension: data['dimension'] ?? 'General',
+      options: (data['options'] as List).map((opt) {
         return MbtiOption(
           label: opt['label'],
           text: opt['text'],
-          scores: Map<String, int>.from(opt['scores']),
+          scores:
+              opt['scores'] != null ? Map<String, int>.from(opt['scores']) : {},
         );
       }).toList(),
     );
-  }
-
-  // --- STATIC QUESTION BANK FOR OFFLINE MODE ---
-  static const List<Map<String, dynamic>> _staticQuestions = [
-    {
-      "question": "At a party, do you usually...",
-      "subtitle": "Let's start by gauging your social energy.",
-      "dimension": "E/I",
-      "options": [
-        {
-          "label": "A",
-          "text": "Interact with many, including strangers.",
-          "scores": {"E": 2},
-        },
-        {
-          "label": "B",
-          "text": "Interact with a few people known to you.",
-          "scores": {"I": 2},
-        },
-        {
-          "label": "C",
-          "text": "Leave early to recharge.",
-          "scores": {"I": 1},
-        },
-        {
-          "label": "D",
-          "text": "Host the party and entertain.",
-          "scores": {"E": 3},
-        },
-      ],
-    },
-    {
-      "question": "When solving a problem, do you prefer...",
-      "subtitle": "How do you process information?",
-      "dimension": "S/N",
-      "options": [
-        {
-          "label": "A",
-          "text": "Proven methods and concrete facts.",
-          "scores": {"S": 2},
-        },
-        {
-          "label": "B",
-          "text": "New ideas and future possibilities.",
-          "scores": {"N": 2},
-        },
-        {
-          "label": "C",
-          "text": "Using physical tools and hands-on work.",
-          "scores": {"S": 1},
-        },
-        {
-          "label": "D",
-          "text": "Brainstorming abstract theories.",
-          "scores": {"N": 1},
-        },
-      ],
-    },
-    {
-      "question": "Creating a travel itinerary:",
-      "subtitle": "Planning vs. Spontaneity.",
-      "dimension": "J/P",
-      "options": [
-        {
-          "label": "A",
-          "text": "Plan every hour in detail.",
-          "scores": {"J": 2},
-        },
-        {
-          "label": "B",
-          "text": "Have a rough list but go with the flow.",
-          "scores": {"P": 1},
-        },
-        {
-          "label": "C",
-          "text": "Decide when I get there.",
-          "scores": {"P": 2},
-        },
-        {
-          "label": "D",
-          "text": "Make a checklist of must-sees.",
-          "scores": {"J": 1},
-        },
-      ],
-    },
-    {
-      "question": "In a debate, is it more important to be:",
-      "subtitle": "Heart vs. Head decision making.",
-      "dimension": "T/F",
-      "options": [
-        {
-          "label": "A",
-          "text": "Truthful, even if it hurts feelings.",
-          "scores": {"T": 2},
-        },
-        {
-          "label": "B",
-          "text": "Kind and maintain harmony.",
-          "scores": {"F": 2},
-        },
-        {
-          "label": "C",
-          "text": "Objective and logical.",
-          "scores": {"T": 1},
-        },
-        {
-          "label": "D",
-          "text": "Empathetic to the other side.",
-          "scores": {"F": 1},
-        },
-      ],
-    },
-    {
-      "question": "After a long week, you crave:",
-      "subtitle": "Recharging Strategy.",
-      "dimension": "E/I",
-      "options": [
-        {
-          "label": "A",
-          "text": "A night out with friends.",
-          "scores": {"E": 2},
-        },
-        {
-          "label": "B",
-          "text": "A quiet book or movie at home.",
-          "scores": {"I": 2},
-        },
-        {
-          "label": "C",
-          "text": "A big concert or event.",
-          "scores": {"E": 1},
-        },
-        {
-          "label": "D",
-          "text": "Solo hobby time.",
-          "scores": {"I": 1},
-        },
-      ],
-    },
-    {
-      "question": "You consider yourself more:",
-      "subtitle": "Self-Perception.",
-      "dimension": "S/N",
-      "options": [
-        {
-          "label": "A",
-          "text": "Realistic and Practical.",
-          "scores": {"S": 2},
-        },
-        {
-          "label": "B",
-          "text": "Imaginative and Creative.",
-          "scores": {"N": 2},
-        },
-        {
-          "label": "C",
-          "text": "Observant of details.",
-          "scores": {"S": 1},
-        },
-        {
-          "label": "D",
-          "text": "Future-oriented vision.",
-          "scores": {"N": 1},
-        },
-      ],
-    },
-    {
-      "question": "Deadlines are:",
-      "subtitle": "Time Management.",
-      "dimension": "J/P",
-      "options": [
-        {
-          "label": "A",
-          "text": "Strict targets to be met early.",
-          "scores": {"J": 2},
-        },
-        {
-          "label": "B",
-          "text": "Detailed suggestions.",
-          "scores": {"P": 2},
-        },
-        {
-          "label": "C",
-          "text": "Stressful but necessary.",
-          "scores": {"J": 1},
-        },
-        {
-          "label": "D",
-          "text": "Flexible markers.",
-          "scores": {"P": 1},
-        },
-      ],
-    },
-    {
-      "question": "When a friend is upset, you first:",
-      "subtitle": "Emotional Response.",
-      "dimension": "T/F",
-      "options": [
-        {
-          "label": "A",
-          "text": "Offer practical solutions.",
-          "scores": {"T": 2},
-        },
-        {
-          "label": "B",
-          "text": "Listen and offer emotional support.",
-          "scores": {"F": 2},
-        },
-        {
-          "label": "C",
-          "text": "Analyze why they are upset.",
-          "scores": {"T": 1},
-        },
-        {
-          "label": "D",
-          "text": "Give them a hug.",
-          "scores": {"F": 1},
-        },
-      ],
-    },
-  ];
-
-  // Helper kept for legacy/fallback support if needed
-  String calculateMbtiType(Map<String, int> scores) {
-    // Simple mock calculation if needed locally
-    int e = scores['E'] ?? 0;
-    int i = scores['I'] ?? 0;
-    // ... logic ...
-    return "AI_DETERMINED";
   }
 }

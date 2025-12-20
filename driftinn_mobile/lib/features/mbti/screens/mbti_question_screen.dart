@@ -93,24 +93,37 @@ class _MbtiQuestionScreenState extends State<MbtiQuestionScreen> {
   }
 
   Future<void> _finishTest() async {
-    // In a real app we'd get the final report JSON here
-    // For now, let's just show a completion message or nav to result screen
-    // We can call _mbtiService.generateFinalReport() if we had a result screen ready.
+    final userId = _mbtiService.getCurrentUserId();
 
-    // Simulating final processing
-    final report = await _mbtiService.generateFinalReport();
+    if (userId == null) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+            content: Text("Error: No user found. Cannot save results.")),
+      );
+      // Fallback nav
+      Navigator.pushReplacementNamed(context, '/create_alias');
+      return;
+    }
 
-    if (!mounted) return;
+    try {
+      final report = await _mbtiService.generateFinalReport(userId);
 
-    final type = report['mbti_type'] ?? "Unknown";
-    final summary = report['personality_summary'] ?? "Analysis complete.";
+      if (!mounted) return;
 
-    ScaffoldMessenger.of(
-      context,
-    ).showSnackBar(SnackBar(content: Text("Analysis Complete! Type: $type")));
+      final type = report['mbti_type'] ?? "Unknown";
 
-    // Navigate to a Result Screen (not implemented yet, so just pop or stay)
-    // Navigator.pushReplacement(...)
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text("Analysis Complete! Type: $type")),
+      );
+
+      // Navigate to Alias Creation
+      Navigator.pushReplacementNamed(context, '/create_alias');
+    } catch (e) {
+      debugPrint("Error generating report: $e");
+      if (!mounted) return;
+      Navigator.pushReplacementNamed(context, '/create_alias');
+    }
   }
 
   void _handleBack() {
@@ -197,7 +210,6 @@ class _MbtiQuestionScreenState extends State<MbtiQuestionScreen> {
         child: Column(
           children: [
             _buildHeader(progressPercent, progress),
-
             Expanded(
               child: SingleChildScrollView(
                 padding: const EdgeInsets.all(24),
@@ -246,7 +258,6 @@ class _MbtiQuestionScreenState extends State<MbtiQuestionScreen> {
                 ),
               ),
             ),
-
             _buildBottomButton(),
           ],
         ),
@@ -259,23 +270,26 @@ class _MbtiQuestionScreenState extends State<MbtiQuestionScreen> {
       padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
       child: Row(
         children: [
-          GestureDetector(
-            onTap: _handleBack,
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                color: const Color(0xFF1F2937).withOpacity(0.5),
-                shape: BoxShape.circle,
-                border: Border.all(color: Colors.white10),
+          if (_currentStep > 1)
+            GestureDetector(
+              onTap: _handleBack,
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1F2937).withOpacity(0.5),
+                  shape: BoxShape.circle,
+                  border: Border.all(color: Colors.white10),
+                ),
+                child: const Icon(
+                  Icons.arrow_back_ios_new,
+                  size: 16,
+                  color: AppTheme.offWhite,
+                ),
               ),
-              child: const Icon(
-                Icons.arrow_back_ios_new,
-                size: 16,
-                color: AppTheme.offWhite,
-              ),
-            ),
-          ),
+            )
+          else
+            const SizedBox(width: 40), // Placeholder to keep spacing
           const Spacer(),
           Column(
             crossAxisAlignment: CrossAxisAlignment.end,
@@ -387,18 +401,16 @@ class _MbtiQuestionScreenState extends State<MbtiQuestionScreen> {
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
-                  color: _selectedOptionIndex != null
-                      ? Colors.white
-                      : Colors.grey,
+                  color:
+                      _selectedOptionIndex != null ? Colors.white : Colors.grey,
                 ),
               ),
               const SizedBox(width: 8),
               if (_currentStep < _totalSteps)
                 Icon(
                   Icons.arrow_forward,
-                  color: _selectedOptionIndex != null
-                      ? Colors.white
-                      : Colors.grey,
+                  color:
+                      _selectedOptionIndex != null ? Colors.white : Colors.grey,
                 ),
             ],
           ),

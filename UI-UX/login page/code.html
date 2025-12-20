@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Login to Driftin</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0,
+      'wght' 400,
+      'GRAD' 0,
+      'opsz' 24;
+    }
+  </style>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#412bee",
+            "background-light": "#f6f6f8",
+            "background-dark": "#121022",
+            "deep-indigo": "#4C51BF",
+            "electric-teal": "#3CDBC0",
+            "off-white": "#F8F9FA",
+            "near-black": "#212529",
+            "muted-gray": "#6C757D"
+          },
+          fontFamily: {
+            "display": ["Plus Jakarta Sans", "sans-serif"]
+          },
+          borderRadius: {
+            "DEFAULT": "1rem",
+            "lg": "2rem",
+            "xl": "3rem",
+            "full": "9999px"
+          },
+        },
+      },
+    }
+  </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-dark text-off-white">
+<div class="relative flex min-h-screen w-full flex-col bg-background-dark p-6">
+<div class="absolute left-6 top-14">
+</div>
+<div class="flex flex-1 flex-col justify-center pt-16 pb-10">
+<div class="text-center mb-10">
+<div class="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-2xl bg-primary/20 shadow-lg shadow-primary/10">
+<span class="material-symbols-outlined text-4xl text-primary">diversity_3</span>
+</div>
+<h1 class="text-3xl font-bold tracking-tight text-white mb-2">Welcome Back</h1>
+<p class="text-base text-gray-400 max-w-xs mx-auto">Login to continue your anonymous journey on Driftin.</p>
+</div>
+<div class="space-y-6">
+<div>
+<label class="mb-2 block text-sm font-medium text-gray-300 ml-1" for="email">Email or Phone Number</label>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">mail</span>
+<input class="h-14 w-full rounded-xl border-0 bg-gray-800 pl-12 pr-4 text-off-white placeholder-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary transition-all" id="email" name="email" placeholder="example@college.edu" type="text"/>
+</div>
+</div>
+<div>
+<div class="flex items-center justify-between mb-2">
+<label class="block text-sm font-medium text-gray-300 ml-1" for="password">Password</label>
+<a class="text-sm font-medium text-primary hover:text-electric-teal transition-colors" href="#">Forgot Password?</a>
+</div>
+<div class="relative">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-gray-500">lock</span>
+<input class="h-14 w-full rounded-xl border-0 bg-gray-800 pl-12 pr-12 text-off-white placeholder-gray-500 focus:ring-2 focus:ring-inset focus:ring-primary transition-all" id="password" name="password" placeholder="Enter your password" type="password"/>
+<button class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors" type="button">
+<span class="material-symbols-outlined">visibility</span>
+</button>
+</div>
+</div>
+</div>
+<div class="mt-10 space-y-4">
+<button class="flex h-14 w-full items-center justify-center gap-2 rounded-full bg-primary text-lg font-bold text-white shadow-lg shadow-primary/25 transition-all hover:bg-primary/90 hover:scale-[1.01] active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-primary/30">
+<span>Login</span>
+</button>
+<div class="relative flex items-center py-2">
+<div class="flex-grow border-t border-gray-800"></div>
+<span class="flex-shrink-0 mx-4 text-sm text-gray-500">or</span>
+<div class="flex-grow border-t border-gray-800"></div>
+</div>
+<button class="flex h-14 w-full items-center justify-center gap-2 rounded-full bg-gray-800 border border-gray-700 text-lg font-medium text-white transition-all hover:bg-gray-750 active:scale-[0.98]">
+<span>Register New Account</span>
+</button>
+</div>
+</div>
+<div class="mt-auto pt-6 text-center text-xs text-gray-600">
+<p>By logging in, you agree to our Terms &amp; Privacy Policy.</p>
+</div>
+</div>
+</body></html>

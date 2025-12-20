@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Driftin Profile Tab</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+          font-variation-settings: 'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+        }
+        .material-symbols-outlined.filled {
+          font-variation-settings: 'FILL' 1,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24;
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              colors: {
+                "primary": "#412bee",
+                "background-light": "#f6f6f8",
+                "background-dark": "#121022",
+                "deep-indigo": "#4C51BF",
+                "electric-teal": "#3CDBC0",
+                "off-white": "#F8F9FA",
+                "near-black": "#212529",
+                "muted-gray": "#6C757D"
+              },
+              fontFamily: {
+                "display": ["Plus Jakarta Sans", "sans-serif"]
+              },
+              borderRadius: {
+                "DEFAULT": "1rem",
+                "lg": "2rem",
+                "xl": "3rem",
+                "full": "9999px"
+              },
+            },
+          },
+        }
+    </script>
+<style>
+        body {
+          min-height: max(884px, 100dvh);
+        }::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-dark text-off-white selection:bg-primary/30">
+<div class="relative flex min-h-screen w-full flex-col bg-background-dark pb-24">
+<div class="sticky top-0 z-30 bg-background-dark/80 px-6 pt-14 pb-4 backdrop-blur-md border-b border-white/5">
+<div class="flex items-center justify-between">
+<h1 class="text-xl font-bold tracking-tight text-white">My Profile</h1>
+<button class="flex h-10 w-10 items-center justify-center rounded-full bg-gray-800 text-gray-400 transition-colors hover:bg-gray-700 hover:text-white">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+</button>
+</div>
+</div>
+<div class="flex flex-1 flex-col px-6 pt-6">
+<div class="relative mb-6 overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#2a264d] to-[#1a172e] p-6 shadow-lg shadow-primary/5 ring-1 ring-white/5">
+<div class="absolute right-0 top-0 h-32 w-32 translate-x-1/3 -translate-y-1/3 rounded-full bg-primary/20 blur-3xl"></div>
+<div class="absolute left-0 bottom-0 h-32 w-32 -translate-x-1/3 translate-y-1/3 rounded-full bg-deep-indigo/20 blur-3xl"></div>
+<div class="relative z-10 flex flex-col items-center text-center">
+<div class="relative mb-4">
+<div class="h-28 w-28 rounded-full border-4 border-white/10 p-1 bg-gray-900">
+<div class="flex h-full w-full items-center justify-center rounded-full bg-gradient-to-br from-primary to-deep-indigo">
+<span class="text-3xl font-extrabold text-white">JW</span>
+</div>
+</div>
+<div class="absolute bottom-0 right-1 flex h-8 w-8 items-center justify-center rounded-full bg-electric-teal text-background-dark ring-4 ring-[#1a172e]">
+<span class="material-symbols-outlined text-sm font-bold filled">edit</span>
+</div>
+</div>
+<h2 class="text-2xl font-bold text-white mb-1">Jessica Wave</h2>
+<p class="text-sm text-gray-400 mb-4">@jesswave • UCLA '25</p>
+<div class="flex flex-wrap justify-center gap-2 mb-6">
+<div class="flex items-center gap-1.5 rounded-full bg-primary/20 px-3 py-1.5 text-primary ring-1 ring-primary/30 backdrop-blur-sm">
+<span class="material-symbols-outlined text-[16px]">psychology</span>
+<span class="text-xs font-bold">ENFP</span>
+</div>
+<div class="flex items-center gap-1.5 rounded-full bg-electric-teal/10 px-3 py-1.5 text-electric-teal ring-1 ring-electric-teal/30 backdrop-blur-sm">
+<span class="material-symbols-outlined text-[16px] filled">verified</span>
+<span class="text-xs font-bold">Verified Student</span>
+</div>
+</div>
+<button class="w-full rounded-xl bg-white/10 py-3 text-sm font-bold text-white transition-colors hover:bg-white/20 active:scale-95">
+                        Edit Profile
+                    </button>
+</div>
+</div>
+<div class="mb-8 grid grid-cols-3 divide-x divide-white/5 rounded-2xl bg-gray-800/40 py-4 ring-1 ring-white/5">
+<div class="text-center">
+<span class="block text-lg font-bold text-white">142</span>
+<span class="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Drifts</span>
+</div>
+<div class="text-center">
+<span class="block text-lg font-bold text-white">85%</span>
+<span class="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Reply Rate</span>
+</div>
+<div class="text-center">
+<span class="block text-lg font-bold text-white">24</span>
+<span class="text-[10px] uppercase tracking-wider text-gray-500 font-bold">Friends</span>
+</div>
+</div>
+<div class="mb-8 space-y-3">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-sm font-bold text-gray-300">About Me</h3>
+</div>
+<div class="rounded-2xl bg-gray-800/40 p-5 ring-1 ring-white/5">
+<p class="text-sm leading-relaxed text-gray-400">
+                        Psychology major who loves finding hidden coffee spots on campus. Always down for a late-night debate about movies or a spontaneous hiking trip! 🌲☕️
+                    </p>
+</div>
+</div>
+<div class="mb-8 space-y-3">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-sm font-bold text-gray-300">My Vibe</h3>
+<button class="text-xs font-bold text-primary hover:text-electric-teal">Edit</button>
+</div>
+<div class="flex flex-wrap gap-2">
+<span class="rounded-lg bg-gray-800 px-3 py-2 text-xs font-medium text-gray-300 ring-1 ring-white/10 hover:bg-gray-700 transition-colors cursor-default">Indie Folk</span>
+<span class="rounded-lg bg-gray-800 px-3 py-2 text-xs font-medium text-gray-300 ring-1 ring-white/10 hover:bg-gray-700 transition-colors cursor-default">Thrifting</span>
+<span class="rounded-lg bg-gray-800 px-3 py-2 text-xs font-medium text-gray-300 ring-1 ring-white/10 hover:bg-gray-700 transition-colors cursor-default">Photography</span>
+<span class="rounded-lg bg-gray-800 px-3 py-2 text-xs font-medium text-gray-300 ring-1 ring-white/10 hover:bg-gray-700 transition-colors cursor-default">Matcha Latte</span>
+<span class="rounded-lg bg-gray-800 px-3 py-2 text-xs font-medium text-gray-300 ring-1 ring-white/10 hover:bg-gray-700 transition-colors cursor-default">Hiking</span>
+<span class="rounded-lg bg-gray-800 px-3 py-2 text-xs font-medium text-gray-300 ring-1 ring-white/10 hover:bg-gray-700 transition-colors cursor-default">Horror Movies</span>
+</div>
+</div>
+<div class="space-y-3 mb-6">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-sm font-bold text-gray-300">Account</h3>
+</div>
+<div class="overflow-hidden rounded-2xl bg-gray-800/40 ring-1 ring-white/5">
+<button class="group flex w-full items-center justify-between p-4 hover:bg-white/5 active:bg-white/10 transition-colors">
+<div class="flex items-center gap-3">
+<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-primary/10 text-primary group-hover:bg-primary/20 transition-colors">
+<span class="material-symbols-outlined text-lg">tune</span>
+</div>
+<span class="text-sm font-medium text-white">Preferences</span>
+</div>
+<span class="material-symbols-outlined text-gray-600">chevron_right</span>
+</button>
+<div class="h-px w-full bg-white/5"></div>
+<button class="group flex w-full items-center justify-between p-4 hover:bg-white/5 active:bg-white/10 transition-colors">
+<div class="flex items-center gap-3">
+<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-500/10 text-blue-400 group-hover:bg-blue-500/20 transition-colors">
+<span class="material-symbols-outlined text-lg">school</span>
+</div>
+<span class="text-sm font-medium text-white">Campus Status</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-[10px] text-electric-teal font-medium">Verified</span>
+<span class="material-symbols-outlined text-gray-600">chevron_right</span>
+</div>
+</button>
+<div class="h-px w-full bg-white/5"></div>
+<button class="group flex w-full items-center justify-between p-4 hover:bg-white/5 active:bg-white/10 transition-colors">
+<div class="flex items-center gap-3">
+<div class="flex h-9 w-9 items-center justify-center rounded-lg bg-red-500/10 text-red-400 group-hover:bg-red-500/20 transition-colors">
+<span class="material-symbols-outlined text-lg">logout</span>
+</div>
+<span class="text-sm font-medium text-white">Log Out</span>
+</div>
+</button>
+</div>
+</div>
+</div>
+<div class="fixed bottom-0 left-0 z-50 w-full border-t border-white/5 bg-background-dark/95 backdrop-blur-xl pb-8 pt-2">
+<nav class="flex items-center justify-around px-4">
+<button class="group flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-gray-300">
+<span class="material-symbols-outlined text-[26px] transition-transform group-active:scale-90">home</span>
+<span class="text-[10px] font-medium">Home</span>
+</button>
+<button class="group flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-gray-300">
+<span class="material-symbols-outlined text-[26px] transition-transform group-active:scale-90">diversity_2</span>
+<span class="text-[10px] font-medium">Match</span>
+</button>
+<button class="group flex flex-col items-center gap-1 p-2 text-gray-500 hover:text-gray-300 relative">
+<span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-primary ring-2 ring-background-dark"></span>
+<span class="material-symbols-outlined text-[26px] transition-transform group-active:scale-90">chat_bubble</span>
+<span class="text-[10px] font-medium">Chat</span>
+</button>
+<button class="group flex flex-col items-center gap-1 p-2 text-primary">
+<span class="material-symbols-outlined filled text-[26px] transition-transform group-active:scale-90">person</span>
+<span class="text-[10px] font-semibold">Profile</span>
+</button>
+</nav>
+</div>
+</div>
+
+</body></html>
