@@ -3,6 +3,8 @@ import 'package:driftinn_mobile/core/theme/app_theme.dart';
 import 'package:driftinn_mobile/features/mbti/models/mbti_question.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MbtiQuestionScreen extends StatefulWidget {
   const MbtiQuestionScreen({super.key});
@@ -30,8 +32,15 @@ class _MbtiQuestionScreenState extends State<MbtiQuestionScreen> {
   }
 
   Future<void> _startAssessment() async {
+    // 1. First load whatever we have (Cache or New)
     try {
-      final question = await _mbtiService.startAssessment();
+      // Check connectivity (Handle v6 List return)
+      final connectivityResult = await Connectivity().checkConnectivity();
+      bool isOnline = !connectivityResult.contains(ConnectivityResult.none);
+
+      // Attempt to load from service
+      final question = await _mbtiService.startAssessment(forceNew: false);
+
       if (mounted) {
         setState(() {
           _currentQuestion = question;
@@ -41,11 +50,17 @@ class _MbtiQuestionScreenState extends State<MbtiQuestionScreen> {
           _selectedOptionIndex = null;
         });
       }
+
+      // If online, we could technically fetch a fresh plan in background
+      if (isOnline) {
+        // Background sync logic if needed
+      }
     } catch (e) {
       if (mounted) {
+        // If we have no data and fail, show error
         setState(() {
           _errorMessage =
-              "Failed to start assessment. Please check your connection.";
+              "Failed to load assessment. Connect to internet for first run.";
           _isLoading = false;
         });
       }
@@ -143,29 +158,65 @@ class _MbtiQuestionScreenState extends State<MbtiQuestionScreen> {
   @override
   Widget build(BuildContext context) {
     // 1. Loading State
+    // 1. Loading State (Shimmer Skeleton)
+    // 1. Loading State (Shimmer Skeleton)
     if (_isLoading) {
       return Scaffold(
         backgroundColor: AppTheme.backgroundDark,
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              const CircularProgressIndicator(color: AppTheme.primary),
-              const SizedBox(height: 16),
-              Text(
-                "Consulting AI Psychologist...",
-                style: GoogleFonts.plusJakartaSans(color: AppTheme.offWhite),
-              ),
-              const SizedBox(height: 8),
-              if (_currentStep > 1)
-                Text(
-                  "Analyzing step $_currentStep...",
-                  style: GoogleFonts.plusJakartaSans(
-                    color: AppTheme.mutedGray,
-                    fontSize: 12,
+        body: SafeArea(
+          child: Shimmer.fromColors(
+            baseColor: const Color(0xFF1F2937),
+            highlightColor: const Color(0xFF374151),
+            child: Padding(
+              padding: const EdgeInsets.all(24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Header
+                  Row(children: [
+                    Container(
+                        width: 40,
+                        height: 40,
+                        decoration: const BoxDecoration(
+                            color: Colors.white, shape: BoxShape.circle)),
+                    const Spacer(),
+                    Container(width: 100, height: 10, color: Colors.white),
+                  ]),
+                  const SizedBox(height: 40),
+                  // Tag
+                  Container(
+                      width: 100,
+                      height: 24,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(20))),
+                  const SizedBox(height: 16),
+                  // Question
+                  Container(
+                      width: double.infinity, height: 30, color: Colors.white),
+                  const SizedBox(height: 8),
+                  Container(width: 200, height: 30, color: Colors.white),
+                  const SizedBox(height: 32),
+                  // Options
+                  Expanded(
+                    child: Column(
+                      children: List.generate(
+                          4,
+                          (index) => Padding(
+                                padding: const EdgeInsets.only(bottom: 16),
+                                child: Container(
+                                    width: double.infinity,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                        color: Colors.white,
+                                        borderRadius:
+                                            BorderRadius.circular(16))),
+                              )),
+                    ),
                   ),
-                ),
-            ],
+                ],
+              ),
+            ),
           ),
         ),
       );

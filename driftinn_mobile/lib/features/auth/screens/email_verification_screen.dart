@@ -6,9 +6,11 @@ import 'package:driftinn_mobile/core/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'phone_verification_screen.dart';
+import 'package:pinput/pinput.dart';
 
 class EmailVerificationScreen extends StatefulWidget {
-  const EmailVerificationScreen({super.key});
+  final Map<String, dynamic> registrationData;
+  const EmailVerificationScreen({super.key, required this.registrationData});
 
   @override
   State<EmailVerificationScreen> createState() =>
@@ -17,15 +19,8 @@ class EmailVerificationScreen extends StatefulWidget {
 
 class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   final TextEditingController _emailController = TextEditingController();
-  // Controllers for each OTP digit
-  final List<TextEditingController> _otpControllers = List.generate(
-    6,
-    (index) => TextEditingController(),
-  );
-  final List<FocusNode> _otpFocusNodes = List.generate(
-    6,
-    (index) => FocusNode(),
-  );
+  final TextEditingController _otpController = TextEditingController();
+  final FocusNode _otpFocusNode = FocusNode();
 
   final DatabaseService _databaseService = DatabaseService();
   final FocusNode _emailFocusNode = FocusNode();
@@ -34,7 +29,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   String? _sendStatusMessage;
   Color _sendStatusColor = Colors.transparent;
   String? _verifyStatusMessage;
-  Color _verifyStatusColor = Colors.transparent;
+  final Color _verifyStatusColor = Colors.transparent;
 
   // Timer State
   Timer? _timer;
@@ -45,6 +40,7 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   String? _lastGeneratedOtp; // Local fallback
   bool _isSending = false;
   bool _isVerifying = false;
+  bool _isAutoFilling = false;
 
   @override
   void initState() {
@@ -58,12 +54,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
   void dispose() {
     _timer?.cancel();
     _emailController.dispose();
-    for (var controller in _otpControllers) {
-      controller.dispose();
-    }
-    for (var node in _otpFocusNodes) {
-      node.dispose();
-    }
+    _otpController.dispose();
+    _otpFocusNode.dispose();
     _emailFocusNode.dispose();
     super.dispose();
   }
@@ -89,11 +81,65 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
     });
   }
 
-  void _onOtpDigitChanged(String value, int index) {
-    if (value.length == 1 && index < 5) {
-      _otpFocusNodes[index + 1].requestFocus();
-    } else if (value.isEmpty && index > 0) {
-      _otpFocusNodes[index - 1].requestFocus();
+  Future<void> _handleVerifyOtp() async {
+    final otp = _otpController.text.trim();
+    final email = _emailController.text.trim();
+
+    if (otp.length == 6 && email.isNotEmpty) {
+      setState(() {
+        _isVerifying = true;
+      });
+      debugPrint('--- VERIFYING OTP ---');
+      debugPrint('Email: $email');
+      debugPrint('OTP: $otp');
+
+      bool success = false;
+      try {
+        success = await _databaseService
+            .verifyOTP(email, otp)
+            .timeout(const Duration(seconds: 3));
+      } catch (e) {
+        debugPrint('Backend verify timed out or failed: $e');
+        // Fallback
+        if (_lastGeneratedOtp != null && otp == _lastGeneratedOtp) {
+          success = true;
+        }
+      }
+      // Double safety
+      if (!success && _lastGeneratedOtp != null && otp == _lastGeneratedOtp) {
+        success = true;
+      }
+
+      if (mounted) {
+        if (success) {
+          setState(() {
+            _isVerifying = false;
+            _isOtpError = false;
+            _verifyStatusMessage = "Verified!";
+          });
+          ToastUtils.show(context, message: 'Email Verified Successfully!');
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => PhoneVerificationScreen(
+                email: _emailController.text,
+                registrationData: widget.registrationData,
+              ),
+            ),
+          );
+        } else {
+          setState(() {
+            _isVerifying = false;
+            _isOtpError = true;
+            _verifyStatusMessage = null;
+          });
+          ToastUtils.show(
+            context,
+            message: 'Invalid Code or Expired.',
+            isError: true,
+          );
+        }
+      }
     }
   }
 
@@ -313,6 +359,35 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                                                   _sendStatusColor =
                                                       Colors.green;
                                                 });
+
+                                                // Auto-Fill & Auto-Verify Logic (Debug/Simulated)
+                                                Future.delayed(
+                                                    const Duration(seconds: 1),
+                                                    () async {
+                                                  if (context.mounted) {
+                                                    setState(() {
+                                                      _isAutoFilling = true;
+                                                      _otpController.clear();
+                                                    });
+
+                                                    // Simulate typing one by one
+                                                    for (int i = 0;
+                                                        i < otp.length;
+                                                        i++) {
+                                                      if (!context.mounted)
+                                                        return;
+                                                      await Future.delayed(
+                                                          const Duration(
+                                                              milliseconds:
+                                                                  25));
+                                                      setState(() {
+                                                        _otpController.text =
+                                                            otp.substring(
+                                                                0, i + 1);
+                                                      });
+                                                    }
+                                                  }
+                                                });
                                               }
                                             } catch (e) {
                                               debugPrint('Error: $e');
@@ -405,67 +480,70 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       ),
                     ),
                     const SizedBox(height: 8),
-                    // OTP Row with tighter spacing
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (int i = 0; i < 6; i++) ...[
-                          Container(
-                            width: 45,
-                            height: 50,
-                            margin: EdgeInsets.only(
-                              right: i == 5 ? 0 : 12,
-                            ), // 12px gap
-                            child: TextField(
-                              controller: _otpControllers[i],
-                              focusNode: _otpFocusNodes[i],
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              maxLength: 1,
-                              onChanged: (value) =>
-                                  _onOtpDigitChanged(value, i),
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: AppTheme.offWhite,
-                              ),
-                              decoration: InputDecoration(
-                                counterText: '',
-                                filled: true,
-                                fillColor: const Color(0xFF1D1A30),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
-                                    color: _isOtpError
-                                        ? Colors.red
-                                        : const Color(0xFF1D1A30),
-                                    width: 2,
-                                  ),
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
-                                    color: _isOtpError
-                                        ? Colors.red
-                                        : const Color(0xFF1D1A30),
-                                    width: 2,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(12),
-                                  borderSide: BorderSide(
-                                    color: _isOtpError
-                                        ? Colors.red
-                                        : AppTheme.primary,
-                                    width: 2,
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.zero,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
+                    // OTP Row with Pinput
+                    Pinput(
+                      controller: _otpController,
+                      focusNode: _otpFocusNode,
+                      length: 6,
+                      forceErrorState: _isOtpError,
+                      defaultPinTheme: PinTheme(
+                        width: 45,
+                        height: 50,
+                        textStyle: GoogleFonts.plusJakartaSans(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.offWhite,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1D1A30),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: const Color(0xFF1D1A30)),
+                        ),
+                      ),
+                      focusedPinTheme: PinTheme(
+                        width: 45,
+                        height: 50,
+                        textStyle: GoogleFonts.plusJakartaSans(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.offWhite,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1D1A30),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: AppTheme.primary, width: 2),
+                        ),
+                      ),
+                      errorPinTheme: PinTheme(
+                        width: 45,
+                        height: 50,
+                        textStyle: GoogleFonts.plusJakartaSans(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.offWhite,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1D1A30),
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: Colors.red, width: 2),
+                        ),
+                      ),
+                      pinAnimationType: PinAnimationType.none,
+                      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                      showCursor: true,
+                      onCompleted: (pin) async {
+                        debugPrint('Pinput completed: $pin');
+                        if (_isAutoFilling) {
+                          await Future.delayed(
+                              const Duration(milliseconds: 1500));
+                          if (mounted) {
+                            setState(() {
+                              _isAutoFilling = false;
+                            });
+                          }
+                        }
+                        _handleVerifyOtp();
+                      },
                     ),
 
                     const SizedBox(height: 100), // Space for footer
@@ -491,87 +569,8 @@ class _EmailVerificationScreenState extends State<EmailVerificationScreen> {
                       width: double.infinity,
                       height: 56,
                       child: ElevatedButton(
-                        onPressed: _isVerifying
-                            ? null
-                            : () async {
-                                final otp =
-                                    _otpControllers.map((c) => c.text).join();
-                                final email = _emailController.text.trim();
-
-                                if (otp.length == 6 && email.isNotEmpty) {
-                                  setState(() {
-                                    _isVerifying = true;
-                                  });
-                                  debugPrint('--- VERIFY BUTTON PRESSED ---');
-                                  debugPrint('Email: $email');
-                                  debugPrint('OTP Entered: $otp');
-
-                                  bool success = false;
-                                  try {
-                                    success = await _databaseService
-                                        .verifyOTP(email, otp)
-                                        .timeout(const Duration(seconds: 3));
-                                  } catch (e) {
-                                    debugPrint(
-                                      'Backend verify timed out or failed: $e',
-                                    );
-                                    // Fallback to local verification
-                                    if (_lastGeneratedOtp != null &&
-                                        otp == _lastGeneratedOtp) {
-                                      debugPrint(
-                                        'Local verification successful',
-                                      );
-                                      success = true;
-                                    }
-                                  }
-                                  // Also check local if backend returned false but matches local (double safety)
-                                  if (!success &&
-                                      _lastGeneratedOtp != null &&
-                                      otp == _lastGeneratedOtp) {
-                                    success = true;
-                                  }
-
-                                  debugPrint('Verify Result (Final): $success');
-
-                                  if (context.mounted) {
-                                    if (success) {
-                                      setState(() {
-                                        _isVerifying = false;
-                                        _isOtpError = false;
-                                        _verifyStatusMessage = null;
-                                      });
-                                      ToastUtils.show(
-                                        context,
-                                        message: 'Email Verified Successfully!',
-                                      );
-                                      // Navigate to Phone Verification Screen
-                                      Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              PhoneVerificationScreen(
-                                            email: email,
-                                          ),
-                                        ),
-                                      );
-                                    } else {
-                                      if (context.mounted) {
-                                        setState(() {
-                                          _isVerifying = false;
-                                          _isOtpError = true;
-                                          _verifyStatusMessage = null;
-                                        });
-                                        ToastUtils.show(
-                                          context,
-                                          message:
-                                              'Invalid Code or Expired. Please try again.',
-                                          isError: true,
-                                        );
-                                      }
-                                    }
-                                  }
-                                }
-                              },
+                        onPressed:
+                            _isVerifying ? null : () => _handleVerifyOtp(),
                         style: ElevatedButton.styleFrom(
                           backgroundColor: AppTheme.primary,
                           foregroundColor: Colors.white,

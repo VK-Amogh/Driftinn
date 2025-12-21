@@ -8,12 +8,39 @@ import 'package:driftinn_mobile/firebase_options.dart';
 import 'package:driftinn_mobile/features/auth/screens/landing_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(const DriftinnApp());
+  // Initialize Supabase
+  await Supabase.initialize(
+    url: 'https://atctynzkkqyxnflnjref.supabase.co',
+    anonKey: 'sb_publishable_XLsrWy9z_9LV6dq4h8uUsA_9coiNAaZ',
+  );
+
+  try {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
+    runApp(const DriftinnApp());
+  } catch (e, stackTrace) {
+    print('Initialization failed: $e');
+    runApp(
+      MaterialApp(
+        home: Scaffold(
+          body: Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                'Initialization Failed:\n$e\n\n$stackTrace',
+                style: const TextStyle(color: Colors.red),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class DriftinnApp extends StatelessWidget {

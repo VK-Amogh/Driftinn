@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:driftinn_mobile/core/services/auth_service.dart';
+import 'package:driftinn_mobile/core/services/database_service.dart';
 import 'package:driftinn_mobile/core/theme/app_theme.dart';
 import 'package:driftinn_mobile/core/utils/toast_utils.dart';
 import 'package:driftinn_mobile/features/mbti/screens/mbti_intro_screen.dart';
@@ -10,11 +11,13 @@ import 'package:google_fonts/google_fonts.dart';
 class PasswordEnterScreen extends StatefulWidget {
   final String email;
   final String phone;
+  final Map<String, dynamic> registrationData;
 
   const PasswordEnterScreen({
     super.key,
     required this.email,
     required this.phone,
+    required this.registrationData,
   });
 
   @override
@@ -22,10 +25,12 @@ class PasswordEnterScreen extends StatefulWidget {
 }
 
 class _PasswordEnterScreenState extends State<PasswordEnterScreen> {
+  // ... existing controllers ...
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final AuthService _authService = AuthService();
+  final DatabaseService _databaseService = DatabaseService();
 
   void _showSnackBar(String message, {bool isError = false}) {
     ToastUtils.show(
@@ -104,23 +109,58 @@ class _PasswordEnterScreenState extends State<PasswordEnterScreen> {
 
     try {
       // Create user with Firebase Auth
+      debugPrint('Creating Firebase user for ${widget.email}...');
       final user = await _authService.signUpWithEmailAndPassword(
         widget.email,
         password,
       );
+
+      if (user == null) {
+        throw Exception('Firebase signup returned null user');
+      }
+
+      debugPrint('Firebase user created: ${user.uid}. Saving to Supabase...');
+      debugPrint('=== DATA TO SAVE ===');
+      debugPrint('Email: ${widget.email}');
+      debugPrint('Phone: ${widget.phone}');
+      debugPrint('Registration Data: ${widget.registrationData}');
+
+      // Save user data to Supabase (Merge forwarded data)
+      final dataToSave = {
+        'email': widget.email,
+        'phone': widget.phone,
+        'registration_completed': false,
+        'onboarding_step': 'intro',
+        ...widget.registrationData,
+      };
+
+      debugPrint('=== FINAL PAYLOAD ===');
+      debugPrint('$dataToSave');
+
+      try {
+        await _databaseService.saveUserData(user.uid, dataToSave);
+        debugPrint('=== USER DATA SAVED SUCCESSFULLY! ===');
+      } catch (dbError) {
+        debugPrint('=== DATABASE SAVE FAILED ===');
+        debugPrint('Error: $dbError');
+        // Critical: Show error but still navigate since Firebase account exists
+        // The user can retry profile setup later
+        if (context.mounted) {
+          _showSnackBar('Account created but data sync failed: $dbError',
+              isError: true);
+        }
+      }
 
       if (context.mounted) {
         setState(() {
           _isLoading = false;
         });
 
-        if (user != null) {
-          _showSnackBar('Account Created Successfully!');
-          Navigator.of(context).pushAndRemoveUntil(
-            MaterialPageRoute(builder: (context) => const MbtiIntroScreen()),
-            (route) => false,
-          );
-        }
+        _showSnackBar('Account Created Successfully!');
+        Navigator.of(context).pushAndRemoveUntil(
+          MaterialPageRoute(builder: (context) => const MbtiIntroScreen()),
+          (route) => false,
+        );
       }
     } on FirebaseAuthException catch (e) {
       if (context.mounted) {
@@ -443,8 +483,9 @@ class _PasswordEnterScreenState extends State<PasswordEnterScreen> {
     Color color = const Color(0xFF374151); // gray-700
     if (_strengthLabel == 'Weak' && index < 1) color = Colors.red;
     if (_strengthLabel == 'Medium' && index < 2) color = Colors.yellow;
-    if (_strengthLabel == 'Strong')
+    if (_strengthLabel == 'Strong') {
       color = Colors.green; // Changed from AppTheme.primary to Green
+    }
 
     return Container(
       height: 6,

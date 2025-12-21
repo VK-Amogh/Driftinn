@@ -51,13 +51,21 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
       if (userId == null) throw Exception("User not logged in");
 
       // Upload image if selected
-      String? photoUrl;
-      // Note: Actual Firebase Storage upload logic would be in DatabaseService or StorageService.
-      // For now, we will just simulate strict UI flow. The user asked for "choose their profile picture from their device local storage".
-      // Persisting it to cloud requires Firebase Storage which might be out of scope for just "UI components" requests,
-      // but essential for a real app.
-      // Assuming for this task we implement the SELECTION UI mostly, and if backend supports, we pass the file path or upload it.
-      // Since DatabaseService wasn't modified to accept File, we'll keep it simple or assume it's added later.
+      if (!skip && _selectedImage != null) {
+        try {
+          await _databaseService.uploadProfilePicture(userId, _selectedImage!);
+        } catch (e) {
+          debugPrint("Image upload failed but proceeding: $e");
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                  content:
+                      Text("Image upload failed: $e. Proceeding without it.")),
+            );
+          }
+          // We proceed even if image fails, to unblock the user
+        }
+      }
 
       await _databaseService.updateUserProfile(
         userId,

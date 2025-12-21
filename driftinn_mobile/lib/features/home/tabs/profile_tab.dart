@@ -1,12 +1,63 @@
+import 'package:driftinn_mobile/core/services/auth_service.dart';
+import 'package:driftinn_mobile/core/services/database_service.dart';
 import 'package:driftinn_mobile/core/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class ProfileTab extends StatelessWidget {
+class ProfileTab extends StatefulWidget {
   const ProfileTab({super.key});
 
   @override
+  State<ProfileTab> createState() => _ProfileTabState();
+}
+
+class _ProfileTabState extends State<ProfileTab> {
+  final AuthService _authService = AuthService();
+  final DatabaseService _databaseService = DatabaseService();
+
+  Map<String, dynamic>? _userProfile;
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadProfile();
+  }
+
+  Future<void> _loadProfile() async {
+    final uid = _authService.currentUserId;
+    if (uid != null) {
+      final profile = await _databaseService.getUserProfile(uid);
+      if (mounted) {
+        setState(() {
+          _userProfile = profile;
+          _isLoading = false;
+        });
+      }
+    } else {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_isLoading) {
+      return const Center(
+          child: CircularProgressIndicator(color: AppTheme.primary));
+    }
+
+    // Default values if profile is null or fields missing
+    final alias = _userProfile?['alias'] ?? 'Drifter';
+    final photoUrl = _userProfile?['photo_url'];
+    final bio = _userProfile?['bio'] ?? 'No bio yet.';
+
+    final fullName =
+        _userProfile?['full_name'] ?? _userProfile?['username'] ?? 'Anonymous';
+    final collegeInfo = (_userProfile?['department'] != null &&
+            _userProfile?['grad_year'] != null)
+        ? "${_userProfile!['department']} • Class of ${_userProfile!['grad_year']}"
+        : (_userProfile?['college'] ?? "No college info");
+
     return SingleChildScrollView(
       padding: const EdgeInsets.only(left: 24, right: 24, top: 16, bottom: 100),
       child: Column(
@@ -24,6 +75,7 @@ class ProfileTab extends StatelessWidget {
                   letterSpacing: -0.5,
                 ),
               ),
+              // Settings Icon (Placeholder action)
               Container(
                 height: 40,
                 width: 40,
@@ -80,23 +132,33 @@ class ProfileTab extends StatelessWidget {
                               color: Colors.white.withOpacity(0.1), width: 4),
                         ),
                         child: Container(
-                          decoration: const BoxDecoration(
+                          decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            gradient: LinearGradient(
+                            gradient: const LinearGradient(
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                               colors: [AppTheme.primary, AppTheme.deepIndigo],
                             ),
+                            image: photoUrl != null
+                                ? DecorationImage(
+                                    image: NetworkImage(photoUrl),
+                                    fit: BoxFit.cover,
+                                  )
+                                : null,
                           ),
                           alignment: Alignment.center,
-                          child: Text(
-                            "JW",
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 30,
-                              fontWeight: FontWeight.w800,
-                              color: Colors.white,
-                            ),
-                          ),
+                          child: photoUrl == null
+                              ? Text(
+                                  alias.isNotEmpty
+                                      ? alias[0].toUpperCase()
+                                      : "?",
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 30,
+                                    fontWeight: FontWeight.w800,
+                                    color: Colors.white,
+                                  ),
+                                )
+                              : null,
                         ),
                       ),
                       Positioned(
@@ -120,7 +182,8 @@ class ProfileTab extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 Text(
-                  "Jessica Wave",
+                  fullName,
+                  textAlign: TextAlign.center,
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
@@ -128,18 +191,26 @@ class ProfileTab extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  "@jesswave • UCLA '25",
+                  collegeInfo,
+                  textAlign: TextAlign.center,
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 14,
                     color: const Color(0xFF9CA3AF),
                   ),
                 ),
                 const SizedBox(height: 24),
+
+                // Tags
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _buildTag(Icons.psychology, AppTheme.primary, "ENFP", true),
-                    const SizedBox(width: 8),
+                    // Mbti if avail
+                    if (_userProfile?['mbti_type'] != null)
+                      _buildTag(Icons.psychology, AppTheme.primary,
+                          _userProfile!['mbti_type'], true),
+                    if (_userProfile?['mbti_type'] != null)
+                      const SizedBox(width: 8),
+
                     _buildTag(Icons.verified, AppTheme.electricTeal,
                         "Verified Student", true),
                   ],
@@ -172,32 +243,6 @@ class ProfileTab extends StatelessWidget {
           ),
           const SizedBox(height: 32),
 
-          // Stats Grid
-          Container(
-            padding: const EdgeInsets.symmetric(vertical: 16),
-            decoration: BoxDecoration(
-              color: const Color(0xFF1F2937).withOpacity(0.4),
-              borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: Colors.white.withOpacity(0.05)),
-            ),
-            child: Row(
-              children: [
-                _buildStat("142", "Drifts"),
-                Container(
-                    width: 1,
-                    height: 40,
-                    color: Colors.white.withOpacity(0.05)),
-                _buildStat("85%", "Reply Rate"),
-                Container(
-                    width: 1,
-                    height: 40,
-                    color: Colors.white.withOpacity(0.05)),
-                _buildStat("24", "Friends"),
-              ],
-            ),
-          ),
-          const SizedBox(height: 32),
-
           // About Me
           _buildSectionHeader("About Me"),
           const SizedBox(height: 12),
@@ -210,7 +255,7 @@ class ProfileTab extends StatelessWidget {
               border: Border.all(color: Colors.white.withOpacity(0.05)),
             ),
             child: Text(
-              "Psychology major who loves finding hidden coffee spots on campus. Always down for a late-night debate about movies or a spontaneous hiking trip! 🌲☕️",
+              bio,
               style: GoogleFonts.plusJakartaSans(
                 fontSize: 14,
                 color: const Color(0xFF9CA3AF), // gray-400
@@ -220,43 +265,6 @@ class ProfileTab extends StatelessWidget {
           ),
           const SizedBox(height: 32),
 
-          // My Vibe
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                "My Vibe",
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xFFD1D5DB),
-                ),
-              ),
-              Text(
-                "Edit",
-                style: GoogleFonts.plusJakartaSans(
-                  fontSize: 12,
-                  fontWeight: FontWeight.bold,
-                  color: AppTheme.primary,
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 12),
-          Wrap(
-            spacing: 8,
-            runSpacing: 8,
-            children: [
-              _buildVibeChip("Indie Folk"),
-              _buildVibeChip("Thrifting"),
-              _buildVibeChip("Photography"),
-              _buildVibeChip("Matcha Latte"),
-              _buildVibeChip("Hiking"),
-              _buildVibeChip("Horror Movies"),
-            ],
-          ),
-
-          const SizedBox(height: 32),
           // Account Options
           _buildSectionHeader("Account"),
           const SizedBox(height: 12),
@@ -268,13 +276,15 @@ class ProfileTab extends StatelessWidget {
             ),
             child: Column(
               children: [
-                _buildAccountOption(
-                    Icons.tune, AppTheme.primary, "Preferences"),
-                Divider(height: 1, color: Colors.white.withOpacity(0.05)),
-                _buildAccountOption(Icons.school, Colors.blue, "Campus Status",
-                    "Verified", AppTheme.electricTeal),
-                Divider(height: 1, color: Colors.white.withOpacity(0.05)),
-                _buildAccountOption(Icons.logout, Colors.red, "Log Out"),
+                _buildAccountOption(Icons.logout, Colors.red, "Log Out",
+                    onTap: () async {
+                  await _authService.signOut();
+                  // Navigate back to login
+                  if (context.mounted) {
+                    Navigator.of(context)
+                        .pushNamedAndRemoveUntil('/', (route) => false);
+                  }
+                }),
               ],
             ),
           ),
@@ -323,57 +333,12 @@ class ProfileTab extends StatelessWidget {
     );
   }
 
-  Widget _buildStat(String val, String label) {
-    return Expanded(
-      child: Column(
-        children: [
-          Text(
-            val,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-            ),
-          ),
-          Text(
-            label,
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: 10,
-              fontWeight: FontWeight.bold,
-              color: const Color(0xFF6B7280),
-              letterSpacing: 0.5,
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildVibeChip(String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1F2937),
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.white.withOpacity(0.1)),
-      ),
-      child: Text(
-        label,
-        style: GoogleFonts.plusJakartaSans(
-          fontSize: 12,
-          fontWeight: FontWeight.w500,
-          color: const Color(0xFFD1D5DB),
-        ),
-      ),
-    );
-  }
-
   Widget _buildAccountOption(IconData icon, Color color, String label,
-      [String? trailingText, Color? trailingColor]) {
+      {String? trailingText, Color? trailingColor, VoidCallback? onTap}) {
     return Material(
       color: Colors.transparent,
       child: InkWell(
-        onTap: () {},
+        onTap: onTap ?? () {},
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(

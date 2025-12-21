@@ -20,7 +20,7 @@ class _CreateAliasScreenState extends State<CreateAliasScreen> {
 
   String? _errorText;
   bool _isLoading = false;
-  bool _isChecking = false;
+  final bool _isChecking = false;
 
   void _generateAlias() {
     const adjectives = [

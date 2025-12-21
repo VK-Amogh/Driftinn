@@ -52,9 +52,10 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                 ),
-                padding: const EdgeInsets.only(
+                padding: EdgeInsets.only(
                   top: 8,
-                  bottom: 32, // pb-8 from HTML
+                  bottom: MediaQuery.of(context).padding.bottom +
+                      8, // Dynamic safe area
                   left: 16,
                   right: 16,
                 ),

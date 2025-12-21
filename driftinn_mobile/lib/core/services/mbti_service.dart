@@ -1,14 +1,17 @@
 import 'dart:math';
+import 'package:connectivity_plus/connectivity_plus.dart'; // Added
 import 'package:driftinn_mobile/core/services/auth_service.dart';
 import 'package:driftinn_mobile/core/services/database_service.dart';
 import 'package:driftinn_mobile/features/mbti/models/mbti_question.dart';
 import 'package:flutter/foundation.dart';
 import 'package:driftinn_mobile/core/services/offline_question_bank.dart';
-// Added this import
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'; // Added
 
 class MbtiService {
   // Store the active session's unique 25 questions
-  List<MbtiQuestion> _currentSessionPlan = [];
+  final List<MbtiQuestion> _currentSessionPlan = [];
 
   // Track scores: E vs I, S vs N, T vs F, J vs P
   // Also track Interest categories
@@ -29,12 +32,116 @@ class MbtiService {
     return AuthService().currentUserId;
   }
 
-  /// Starts the assessment by generating a UNIQUE, RANDOMIZED plan.
-  Future<MbtiQuestion> startAssessment() async {
+  /// Starts the assessment.
+  /// If [forceNew] is true or no cache exists, generates a new session.
+  /// Otherwise, loads from cache.
+  Future<MbtiQuestion> startAssessment({bool forceNew = false}) async {
     _sessionScores.updateAll((key, value) => 0);
     _interestScores.clear();
-    _generateRandomSession();
+
+    if (!forceNew && await _hasCachedSession()) {
+      debugPrint("Loading session from CACHE...");
+      await _loadSessionFromCache();
+    } else {
+      debugPrint("Attempting to fetch NEW session...");
+
+      // Try Cloud First
+      bool cloudSuccess = false;
+      try {
+        final connectivityResult = await Connectivity().checkConnectivity();
+        if (!connectivityResult.contains(ConnectivityResult.none)) {
+          cloudSuccess = await _generateSessionFromSupabase();
+        }
+      } catch (e) {
+        debugPrint("Cloud fetch failed: $e");
+      }
+
+      if (!cloudSuccess) {
+        debugPrint("Falling back to local generator...");
+        _generateRandomSession();
+      }
+
+      await _saveSessionToCache();
+    }
+
+    // Safety check
+    if (_currentSessionPlan.isEmpty) {
+      _generateRandomSession();
+    }
+
     return _currentSessionPlan[0];
+  }
+
+  // --- CACHING LOGIC ---
+
+  Future<bool> _hasCachedSession() async {
+    final prefs = await SharedPreferences.getInstance();
+    return prefs.containsKey('mbti_session_plan');
+  }
+
+  Future<void> _saveSessionToCache() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+
+      // 1. Serialize Plan
+      final List<Map<String, dynamic>> planJson = _currentSessionPlan
+          .map((q) => {
+                'id': q.id,
+                'question': q.question,
+                'subtitle': q.subtitle,
+                'dimension': q.dimension,
+                'options': q.options
+                    .map((o) => {
+                          'label': o.label,
+                          'text': o.text,
+                          'scores': o.scores,
+                        })
+                    .toList(),
+              })
+          .toList();
+
+      await prefs.setString('mbti_session_plan', jsonEncode(planJson));
+      await prefs.setString('mbti_session_scores', jsonEncode(_sessionScores));
+      await prefs.setString(
+          'mbti_interest_scores', jsonEncode(_interestScores));
+      debugPrint("Session cached successfully.");
+    } catch (e) {
+      debugPrint("Failed to cache session: $e");
+    }
+  }
+
+  Future<void> _loadSessionFromCache() async {
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final String? planString = prefs.getString('mbti_session_plan');
+
+      if (planString != null) {
+        final List<dynamic> decoded = jsonDecode(planString);
+        _currentSessionPlan.clear();
+
+        for (var item in decoded) {
+          List<MbtiOption> options = (item['options'] as List).map((opt) {
+            return MbtiOption(
+              label: opt['label'],
+              text: opt['text'],
+              scores: Map<String, int>.from(opt['scores']),
+            );
+          }).toList();
+
+          _currentSessionPlan.add(MbtiQuestion(
+            id: item['id'],
+            question: item['question'],
+            subtitle: item['subtitle'],
+            dimension: item['dimension'],
+            options: options,
+          ));
+        }
+      }
+    } catch (e) {
+      debugPrint("Failed to load cache: $e");
+      // Fallback
+      _generateRandomSession();
+    }
   }
 
   /// Submits the answer (locally logged) and returns the NEXT question from the plan.
@@ -62,6 +169,9 @@ class MbtiService {
           _interestScores[key] = (_interestScores[key] ?? 0) + value;
         }
       });
+
+      // SAVE PROGRESS TO CACHE AFTER EACH ANSWER
+      _saveSessionToCache();
     }
 
     // 2. Get Next Question
@@ -107,11 +217,11 @@ class MbtiService {
   // --- INTERNAL ENGINE ---
 
   String _calculateFinalType() {
-    String e_i = (_sessionScores['E']! >= _sessionScores['I']!) ? 'E' : 'I';
-    String s_n = (_sessionScores['S']! >= _sessionScores['N']!) ? 'S' : 'N';
-    String t_f = (_sessionScores['T']! >= _sessionScores['F']!) ? 'T' : 'F';
-    String j_p = (_sessionScores['J']! >= _sessionScores['P']!) ? 'J' : 'P';
-    return "$e_i$s_n$t_f$j_p";
+    String eI = (_sessionScores['E']! >= _sessionScores['I']!) ? 'E' : 'I';
+    String sN = (_sessionScores['S']! >= _sessionScores['N']!) ? 'S' : 'N';
+    String tF = (_sessionScores['T']! >= _sessionScores['F']!) ? 'T' : 'F';
+    String jP = (_sessionScores['J']! >= _sessionScores['P']!) ? 'J' : 'P';
+    return "$eI$sN$tF$jP";
   }
 
   List<String> _calculateTopInterests() {
@@ -161,6 +271,38 @@ class MbtiService {
 
   List<String> _getCeompatibleTypes(String type) {
     return ["INTJ", "ENFP"]; // Placeholder logic
+  }
+
+  Future<bool> _generateSessionFromSupabase() async {
+    try {
+      final supabase = Supabase.instance.client;
+      // Fetch randomized questions (limit 25)
+      // Note: Supabase doesn't have native 'ORDER BY RANDOM()' easily exposed via SDK without RPC
+      // For now, we'll fetch a batch and shuffle locally, or strictly fetch all if small.
+      final response = await supabase.from('mbti_questions').select().limit(50);
+
+      if ((response as List).length < 25) {
+        debugPrint(
+            "Not enough questions in Supabase (found ${(response as List).length}). Falling back to local.");
+        return false;
+      }
+
+      final List<dynamic> dataList = response as List<dynamic>;
+      dataList.shuffle(); // Randomize client-side
+
+      _currentSessionPlan.clear();
+      // Take up to 25
+      for (int i = 0; i < min(25, dataList.length); i++) {
+        _currentSessionPlan.add(_mapToQuestion(dataList[i], i + 1));
+      }
+
+      debugPrint(
+          "Fetched ${_currentSessionPlan.length} questions from Supabase.");
+      return _currentSessionPlan.isNotEmpty;
+    } catch (e) {
+      debugPrint("Error fetching from Supabase: $e");
+      return false;
+    }
   }
 
   void _generateRandomSession() {

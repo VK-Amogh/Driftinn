@@ -1,15 +1,21 @@
 import 'dart:async';
-import 'dart:ui';
 import 'package:driftinn_mobile/core/theme/app_theme.dart';
 import 'package:driftinn_mobile/core/utils/toast_utils.dart';
 import 'package:driftinn_mobile/core/services/database_service.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'password_enter_screen.dart';
+import 'package:pinput/pinput.dart';
 
 class PhoneVerificationScreen extends StatefulWidget {
   final String email;
-  const PhoneVerificationScreen({super.key, required this.email});
+  final Map<String, dynamic> registrationData;
+
+  const PhoneVerificationScreen({
+    super.key,
+    required this.email,
+    required this.registrationData,
+  });
 
   @override
   State<PhoneVerificationScreen> createState() =>
@@ -18,14 +24,8 @@ class PhoneVerificationScreen extends StatefulWidget {
 
 class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   final TextEditingController _phoneController = TextEditingController();
-  final List<TextEditingController> _otpControllers = List.generate(
-    6,
-    (index) => TextEditingController(),
-  );
-  final List<FocusNode> _otpFocusNodes = List.generate(
-    6,
-    (index) => FocusNode(),
-  );
+  final TextEditingController _otpController = TextEditingController();
+  final FocusNode _otpFocusNode = FocusNode();
 
   final DatabaseService _databaseService = DatabaseService();
   final FocusNode _phoneFocusNode = FocusNode();
@@ -34,16 +34,17 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   String? _sendStatusMessage;
   Color _sendStatusColor = Colors.transparent;
   String? _verifyStatusMessage;
-  Color _verifyStatusColor = Colors.transparent;
+  final Color _verifyStatusColor = Colors.transparent;
 
   // Timer State
   Timer? _timer;
   int _start = 60;
   bool _isButtonDisabled = false;
   String _buttonText = 'Send OTP';
-  bool _isOtpError = false;
   bool _isSending = false;
   bool _isVerifying = false;
+  bool _isAutoFilling = false;
+  bool _isOtpError = false;
 
   @override
   void initState() {
@@ -57,12 +58,10 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   void dispose() {
     _timer?.cancel();
     _phoneController.dispose();
-    for (var controller in _otpControllers) {
-      controller.dispose();
-    }
-    for (var node in _otpFocusNodes) {
-      node.dispose();
-    }
+    _timer?.cancel();
+    _phoneController.dispose();
+    _otpController.dispose();
+    _otpFocusNode.dispose();
     _phoneFocusNode.dispose();
     super.dispose();
   }
@@ -86,14 +85,6 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
         });
       }
     });
-  }
-
-  void _onOtpDigitChanged(String value, int index) {
-    if (value.length == 1 && index < 5) {
-      _otpFocusNodes[index + 1].requestFocus();
-    } else if (value.isEmpty && index > 0) {
-      _otpFocusNodes[index - 1].requestFocus();
-    }
   }
 
   @override
@@ -306,62 +297,72 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                     ),
                     const SizedBox(height: 12),
 
-                    // OTP Row
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        for (int i = 0; i < 6; i++) ...[
-                          Container(
-                            width: 45,
-                            height: 50,
-                            margin: EdgeInsets.only(right: i == 5 ? 0 : 12),
-                            child: TextField(
-                              controller: _otpControllers[i],
-                              focusNode: _otpFocusNodes[i],
-                              keyboardType: TextInputType.number,
-                              textAlign: TextAlign.center,
-                              maxLength: 1,
-                              onChanged: (value) =>
-                                  _onOtpDigitChanged(value, i),
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: AppTheme.offWhite,
-                              ),
-                              decoration: InputDecoration(
-                                counterText: '',
-                                filled: true,
-                                fillColor: const Color(0xFF1D1A30),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(
-                                    8,
-                                  ), // rounded-md
-                                  borderSide: BorderSide.none,
-                                ),
-                                enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(
-                                    color: _isOtpError
-                                        ? Colors.red
-                                        : Colors.transparent,
-                                    width: 2,
-                                  ),
-                                ),
-                                focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(8),
-                                  borderSide: BorderSide(
-                                    color: _isOtpError
-                                        ? Colors.red
-                                        : AppTheme.primary,
-                                    width: 2,
-                                  ),
-                                ),
-                                contentPadding: EdgeInsets.zero,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ],
+                    // OTP Row with Pinput
+                    Pinput(
+                      controller: _otpController,
+                      focusNode: _otpFocusNode,
+                      length: 6,
+                      // androidSmsAutofillMethod:
+                      //    AndroidSmsAutofillMethod.smsUserConsentApi,
+                      // listenForMultipleSmsOnAndroid: true,
+                      forceErrorState: _isOtpError,
+                      defaultPinTheme: PinTheme(
+                        width: 45,
+                        height: 50,
+                        textStyle: GoogleFonts.plusJakartaSans(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.offWhite,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1D1A30),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      focusedPinTheme: PinTheme(
+                        width: 45,
+                        height: 50,
+                        textStyle: GoogleFonts.plusJakartaSans(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.offWhite,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1D1A30),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: AppTheme.primary, width: 2),
+                        ),
+                      ),
+                      errorPinTheme: PinTheme(
+                        width: 45,
+                        height: 50,
+                        textStyle: GoogleFonts.plusJakartaSans(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: AppTheme.offWhite,
+                        ),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFF1D1A30),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(color: Colors.red, width: 2),
+                        ),
+                      ),
+                      pinAnimationType: PinAnimationType.none,
+                      pinputAutovalidateMode: PinputAutovalidateMode.onSubmit,
+                      showCursor: true,
+                      onCompleted: (pin) async {
+                        debugPrint('Pinput completed: $pin');
+                        if (_isAutoFilling) {
+                          await Future.delayed(
+                              const Duration(milliseconds: 1500));
+                          if (mounted) {
+                            setState(() {
+                              _isAutoFilling = false;
+                            });
+                          }
+                        }
+                        _handleVerifyOtp();
+                      },
                     ),
                   ],
                 ),
@@ -494,6 +495,25 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
             _sendStatusMessage = 'OTP sent to $fullPhone (Check Console: $otp)';
             _sendStatusColor = Colors.green;
           });
+
+          // Auto-Fill & Auto-Verify Logic (Debug/Simulated)
+          Future.delayed(const Duration(seconds: 1), () async {
+            if (context.mounted) {
+              setState(() {
+                _isAutoFilling = true;
+                _otpController.clear();
+              });
+
+              // Simulate typing one by one
+              for (int i = 0; i < otp.length; i++) {
+                if (!context.mounted) return;
+                await Future.delayed(const Duration(milliseconds: 25));
+                setState(() {
+                  _otpController.text = otp.substring(0, i + 1);
+                });
+              }
+            }
+          });
         }
       } catch (e) {
         if (context.mounted) {
@@ -513,7 +533,7 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
   }
 
   Future<void> _handleVerifyOtp() async {
-    final otp = _otpControllers.map((c) => c.text).join();
+    final otp = _otpController.text.trim();
     final phone = _phoneController.text.trim();
     final fullPhone = '+91$phone';
 
@@ -552,7 +572,8 @@ class _PhoneVerificationScreenState extends State<PhoneVerificationScreen> {
                 debugPrint('Building PasswordEnterScreen');
                 return PasswordEnterScreen(
                   email: widget.email,
-                  phone: fullPhone,
+                  phone: _phoneController.text,
+                  registrationData: widget.registrationData,
                 );
               },
             ),

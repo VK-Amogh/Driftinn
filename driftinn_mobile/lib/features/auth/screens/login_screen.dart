@@ -38,11 +38,14 @@ class _LoginScreenState extends State<LoginScreen> {
     setState(() => _isLoading = true);
 
     try {
-      // 1. Sign In
       final user =
           await _authService.signInWithEmailAndPassword(email, password);
 
       if (user != null) {
+        // Recover User Logic: Ensure they exist in Supabase
+        await _databaseService.saveUserData(user.uid, {
+          'email': email,
+        });
         // 2. Check Onboarding Status
         final status = await _databaseService.getUserOnboardingStatus(user.uid);
 
