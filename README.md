@@ -44,6 +44,19 @@ Driftinn offers a gated community where **trust is the baseline**.
 ---
 
 ## 🛠️ Engineering Architecture
+
+### Local Flutter setup
+
+The app imports `lib/firebase_options.dart`, which is intentionally ignored by Git. Before running it from a fresh clone, copy the checked-in development template into place:
+
+```powershell
+Copy-Item driftinn_mobile/lib/firebase_options_temp.txt driftinn_mobile/lib/firebase_options.dart
+cd driftinn_mobile
+flutter pub get
+flutter run
+```
+
+The template contains client-side Firebase project identifiers. Configure your own Firebase and Supabase projects for a separate deployment. The social graph and matching algorithm remain roadmap items.
 Driftinn is built on a robust, scalable stack designed for performance and security.
 
 ### **Client-Side (The App)**
